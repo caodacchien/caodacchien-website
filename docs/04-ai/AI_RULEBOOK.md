@@ -26,7 +26,17 @@ Khi phát hiện tài liệu mâu thuẫn với Decision Log, phải dừng lạ
 
 ## 4. Khi làm nội dung
 
-Đây là quy tắc bắt buộc, xem D6 và D7 trong Decision Log.
+Đây là quy tắc bắt buộc, xem D6, D7, D12 và D13 trong Decision Log.
+
+### 4.0 Định vị là nguồn sự thật
+
+`docs/01-product/BRAND_POSITIONING.md` là nguồn sự thật về định vị. Trước mỗi milestone liên quan tới thiết kế, kiến trúc thông tin, copywriting, UX hoặc chiến lược nội dung, phải đọc tài liệu đó trước.
+
+**Cấm suy ra định vị từ nguồn ngoài repository.** Cụ thể, cấm suy ra tệp khách hàng, ngành dọc, chủ đề nội dung hoặc ngôn ngữ thẩm mỹ từ công việc hiện tại của chủ dự án, từ hồ sơ cá nhân trong cấu hình toàn cục, hay từ bất kỳ ngữ cảnh nào bên ngoài `BRAND_POSITIONING.md`.
+
+Lý do quy tắc này tồn tại: ở Milestone 0.3, AI agent đã lấp khoảng trống định vị trong tài liệu bằng thông tin về công ty hiện tại của chủ dự án, và đề xuất một hướng thiết kế lấy cảm hứng từ ngành robot. Toàn bộ vòng làm việc đó phải bỏ đi. Xem D17.
+
+Khi phát hiện tài liệu thiếu thông tin định vị cần thiết, **hỏi chủ dự án**, không tự suy diễn.
 
 ### 4.1 Cấm bịa
 Không được tạo ra thành tích, số liệu, chức danh, tên dự án, tên khách hàng, học vấn hoặc chứng chỉ không có thật. Khi thiếu thông tin, phải hỏi chủ dự án, không được suy đoán rồi điền vào.

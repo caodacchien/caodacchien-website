@@ -27,6 +27,8 @@ MVP **không** dùng Supabase Auth và **không** có CMS. Xem D3.
 - API routes/server actions chỉ dùng khi cần.
 - Tích hợp bên ngoài thông qua adapter/service layer.
 - Dự án có hai nguồn nội dung theo D2. Bắt buộc có một **content service layer hợp nhất** tại `src/services/content/` để tầng UI không cần biết dữ liệu đến từ MDX hay từ database.
+- Sản phẩm là nền tảng xuất bản theo D12, không phải portfolio. Hệ quả kiến trúc: đường đi từ "viết xong một bài" tới "bài đã lên production" phải ngắn và ít ma sát. Mọi lựa chọn kỹ thuật làm chậm đường đi đó đều phải được cân nhắc lại, kể cả khi nó tối ưu ở khía cạnh khác.
+- Tầng service chịu trách nhiệm thi hành ranh giới D6. Cụ thể, `client_name` chỉ được trả ra ngoài khi `client_is_public = true`. Không để việc này phụ thuộc vào kỷ luật của tầng UI.
 
 ## 3. Stack đề xuất
 
@@ -95,6 +97,11 @@ docs/
 | Vấn đề | Hạn chót | Tham chiếu |
 | --- | --- | --- |
 | Media storage: `public/` hay Supabase Storage hay Cloudinary | trước Milestone 1.3 | D11 |
+| Gói Vercel khi bật nội dung consulting | trước Milestone 1.8 | D19 |
+
+**D18 đã chốt:** MVP giữ sáu trang, bổ sung khối "Làm việc cùng tôi" trên Home và About, Resources lùi sang Phase 2.
+
+Ràng buộc kiến trúc kèm theo: hệ thống điều hướng và bố cục phải chứa được Resources và Speaking ở Phase 2 mà không cần thiết kế lại. Khi Resources được bật, kiến trúc sẽ cần bổ sung khả năng phát hành file tải về, kéo theo quyết định lưu trữ file và có thể kéo theo luồng thu thập email trước khi tải, vốn là một luồng dữ liệu cá nhân mới cần đánh giá riêng về privacy. Thiết kế MVP không được tạo ra rào cản cho việc đó.
 
 ## 8. Internationalization
 

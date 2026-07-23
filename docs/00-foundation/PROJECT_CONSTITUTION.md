@@ -2,7 +2,15 @@
 
 ## 1. Tầm nhìn
 
-Xây dựng `caodacchien.io.vn` thành nền tảng thương hiệu cá nhân bền vững trong 5–10 năm, kết hợp portfolio, blog, hồ sơ nghề nghiệp, hồ sơ học thuật và AI-assisted publishing.
+Xây dựng `caodacchien.io.vn` thành **Publishing Platform** của một **Marketing Leader / Brand & Marketing Strategist**, bền vững trong 5–10 năm.
+
+Sản phẩm chứng minh năng lực chuyên môn ở mười vùng: Marketing Strategy, Brand Strategy, Communication Strategy, Content Marketing, Digital Marketing, Marketing Automation, AI for Marketing, Marketing Leadership, Business Growth, và quan điểm cá nhân về marketing và truyền thông.
+
+Đây là **nền tảng xuất bản**. Nó không phải portfolio, không phải gallery, không phải personal homepage, không phải consulting landing page, không phải portfolio freelancer, và không phải website công ty. Trung tâm của sản phẩm là bài viết, khung tư duy và case study.
+
+Cảm giác đích cần đạt: **tổng hành dinh số của một Marketing Leader**.
+
+Nguồn sự thật về định vị: `docs/01-product/BRAND_POSITIONING.md`. Chốt theo D12, tinh chỉnh theo D20 và D22.
 
 ## 2. Nguyên tắc cốt lõi
 
@@ -43,8 +51,13 @@ Không dùng email công ty, tổ chức GitHub hoặc team Vercel của Robowor
 ### 2.5 Tài liệu là bắt buộc
 Mọi thay đổi lớn phải cập nhật tài liệu liên quan và được ghi vào `DECISION_LOG.md`.
 
-### 2.6 Ranh giới thông tin với Roboworld
-Chủ dự án là CEO Công ty Cổ phần Tập đoàn Roboworld. Website được phép nhắc tới Roboworld trong Experience và Projects dưới góc độ portfolio cá nhân. Xem D6 trong `DECISION_LOG.md`.
+### 2.6 Ranh giới với công ty hiện tại
+
+Roboworld là **một case study trong nhiều case study**, và là **một mục trong Experience**. Không hơn. Xem D13.
+
+Cấm dùng công ty hiện tại của chủ dự án làm khung định vị website, làm nguồn suy ra tệp khách hàng mục tiêu, làm nguồn suy ra chủ đề nội dung, hoặc làm nguồn cảm hứng thẩm mỹ cho thiết kế. Năng lực marketing là năng lực xuyên ngành; website không được mặc định khách hàng thuộc bất kỳ ngành dọc nào.
+
+Về mặt bảo mật, website được phép nhắc tới Roboworld trong Experience và Projects dưới góc độ portfolio cá nhân. Xem D6 trong `DECISION_LOG.md`.
 
 Được phép:
 - Chức danh, giai đoạn công tác, phạm vi trách nhiệm
@@ -66,8 +79,10 @@ Khi chưa có nội dung thật, placeholder phải được đánh dấu bằng
 
 ## 3. Phạm vi sản phẩm
 
+Bản chất sản phẩm là nền tảng xuất bản. Mọi giai đoạn đều phải giữ được năng lực xuất bản đều đặn làm trục chính, thay vì tích lũy tính năng.
+
 ### MVP — 6 trang
-Chốt theo D4 trong `DECISION_LOG.md`.
+Chốt theo D4 trong `DECISION_LOG.md`. Đang chờ quyết định D18 về việc có bổ sung khối "Làm việc cùng tôi" hoặc trang Resources hay không.
 
 - Home
 - About

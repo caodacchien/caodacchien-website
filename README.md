@@ -1,19 +1,33 @@
 # Personal Brand OS
 
-Nền tảng thương hiệu cá nhân của **Cao Đắc Chiến** tại `caodacchien.io.vn`.
+Nền tảng xuất bản cá nhân của **Cao Đắc Chiến** tại `caodacchien.io.vn`.
+
+## Định vị
+
+**Cao Đắc Chiến — Marketing Leader / Brand & Marketing Strategist.**
+
+Website là **Publishing Platform** của người đó. Không phải portfolio, không phải gallery, không phải personal homepage, không phải consulting landing page, không phải website công ty.
+
+Nguồn sự thật: `docs/01-product/BRAND_POSITIONING.md`. Chốt theo D12, tinh chỉnh theo D20, D21, D22.
+
+Mười vùng năng lực website phải chứng minh: Marketing Strategy · Brand Strategy · Communication Strategy · Content Marketing · Digital Marketing · Marketing Automation · AI for Marketing · Marketing Leadership · Business Growth · quan điểm cá nhân về marketing và truyền thông.
+
+Cảm giác đích: **tổng hành dinh số của một Marketing Leader**.
 
 ## Mục tiêu
 
-Dự án được xây dựng theo hướng **Personal Brand OS**, không chỉ là website portfolio. Hệ thống phục vụ:
+Hệ thống là nền tảng xuất bản cho:
 
-- Xây dựng thương hiệu cá nhân
-- Hồ sơ ứng tuyển
-- Portfolio động
-- Blog chuyên môn
-- Hồ sơ du học
-- Chia sẻ tài nguyên
-- CMS và AI-assisted content workflow
-- Mở rộng newsletter, community và automation trong tương lai
+- Bài viết chuyên sâu dạng dài
+- Case study
+- Trưng bày dự án
+- Hướng dẫn marketing thực chiến
+- Framework và template
+- Speaking
+- Consulting
+- Sản phẩm số trong tương lai
+
+Roboworld là **một case study trong nhiều case study**, không phải khung định vị. Xem D13.
 
 ## Stack
 
@@ -42,8 +56,21 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | D8 | Email dùng Resend, tích hợp ở Milestone 1.7 |
 | D9 | MVP chỉ dùng Google Analytics 4 |
 | D10 | MVP hỗ trợ cả light mode và dark mode |
+| **D12** | **Định vị: Publishing Platform, không phải portfolio** (tinh chỉnh bởi D20) |
+| D13 | Roboworld là một case study, không phải khung định vị |
+| D14 | `projects` là mô hình case study marketing, không phải dự án phần mềm |
+| D15 | Tệp khán giả định nghĩa lại, có xếp ưu tiên |
+| D16 | Năm trụ nội dung cố định |
+| D17 | Hủy kết quả Milestone 0.3, làm lại theo định vị mới |
+| D18 | MVP giữ 6 trang, thêm khối "Làm việc cùng tôi" trên Home và About, Resources sang Phase 2 |
+| **D20** | **Định vị đầy đủ: Marketing Leader / Brand & Marketing Strategist** |
+| D21 | Thứ tự khán giả: CEO/Founder trước, nhà tuyển dụng cuối |
+| **D22** | **Triết lý thiết kế: khả năng đọc → xuất bản → mở rộng → thẩm mỹ** |
 
-Còn mở: **D11** — media storage, cần chốt trước Milestone 1.3.
+Còn mở:
+
+- **D11** — media storage, chốt trước Milestone 1.3
+- **D19** — gói Vercel khi bật nội dung consulting, chốt trước Milestone 1.8
 
 ## Nguyên tắc bắt buộc
 
@@ -59,6 +86,7 @@ Còn mở: **D11** — media storage, cần chốt trước Milestone 1.3.
 - `CLAUDE.md`: hướng dẫn Claude Code
 - `docs/00-foundation/PROJECT_CONSTITUTION.md`: hiến pháp dự án
 - `docs/00-foundation/DECISION_LOG.md`: nhật ký quyết định D1–D11
+- `docs/01-product/BRAND_POSITIONING.md`: **nguồn sự thật về định vị**
 - `docs/01-product/PRODUCT_REQUIREMENTS.md`: yêu cầu sản phẩm
 - `docs/01-product/CONTENT_INVENTORY.md`: danh mục nội dung thật cần cung cấp
 - `docs/02-design/DESIGN_SYSTEM.md`: hệ thống thiết kế
@@ -72,7 +100,7 @@ Còn mở: **D11** — media storage, cần chốt trước Milestone 1.3.
 ## Trạng thái
 
 **Phase hiện tại:** Phase 0 — Foundation
-**Milestone hiện tại:** 0.1 và 0.2 hoàn tất. Tiếp theo là 0.3 Design Direction.
+**Milestone hiện tại:** 0.1, 0.2 và 0.2b hoàn tất. Đang làm 0.3 Design Direction, làm lại từ đầu theo định vị mới.
 **Chặn Phase 1:** Design Direction chưa chọn, và `CONTENT_INVENTORY.md` chưa có nội dung thật.
 
 **Không được viết production code trước khi Design System được khóa.**

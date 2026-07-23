@@ -8,6 +8,14 @@ Danh mục toàn bộ nội dung thật mà chủ dự án cần cung cấp, kè
 2. Cập nhật cột **Trạng thái** khi hoàn thành.
 3. Nội dung có nhắc tới Roboworld hoặc khách hàng của Roboworld phải đánh dấu `REVIEW-REQUIRED` và chỉ xuất bản sau khi chủ dự án kiểm duyệt. Xem D6 trong `docs/00-foundation/DECISION_LOG.md`.
 
+## Định vị chi phối toàn bộ nội dung ở đây
+
+Nội dung điền vào tài liệu này phải phục vụ định vị tại `docs/01-product/BRAND_POSITIONING.md`: **Marketing Leader / Brand & Marketing Strategist**, không phải kỹ sư và không phải người điều hành một ngành dọc cụ thể. Xem D12 và D20.
+
+Ưu tiên khán giả khi viết nội dung, theo D21: CEO và Founder trước, rồi CMO và Marketing Director, rồi người làm nghề. Nhà tuyển dụng đứng cuối.
+
+Roboworld là **một case study trong nhiều case study**. Khi điền mục 5, đừng để nó chiếm chỗ của các dự án khác. Xem D13.
+
 ## Nguyên tắc bắt buộc
 
 - Claude Code **không được tự bịa** thành tích, số liệu, chức danh, dự án, khách hàng, học vấn hoặc chứng chỉ. Xem D7.
@@ -165,19 +173,44 @@ trang_thai: TODO
 tieu_de:
 slug:                     # kebab-case, dùng làm URL
 tom_tat:                  # 1-2 câu, hiển thị ở thẻ danh sách
-van_de:                   # Problem: bối cảnh và khó khăn
-giai_phap:                # Solution: đã làm gì, vai trò của bạn là gì
-ket_qua:                  # Result: kết quả đo được. Chỉ ghi số liệu được phép công khai.
-vai_tro_cua_ban:          # Nêu rõ phần bạn trực tiếp làm, tránh gây hiểu nhầm về công sức tập thể
-cong_nghe:                # danh sách
+
+# Bối cảnh
+khach_hang:               # tên khách hàng hoặc tổ chức
+khach_hang_duoc_cong_khai: false   # true chỉ khi đã có phép nêu tên
+nganh:                    # ngành của khách hàng, chỉ để phân loại
+hinh_thuc:                # in_house | consulting | advisory | personal
+thoi_gian:                # ví dụ: 2024-03 đến 2024-11
+
+# Nội dung case study
+boi_canh:                 # tình hình trước khi bắt đầu
+van_de:                   # bài toán marketing hoặc thương hiệu cần giải
+cach_tiep_can:            # chiến lược và lý do chọn chiến lược đó
+trien_khai:               # đã làm gì, qua kênh nào
+ket_qua:                  # diễn giải kết quả bằng lời
+
+# Dịch vụ đã cung cấp — rút từ 10 vùng năng lực trong BRAND_POSITIONING.md §2
+dich_vu:
   -
+  -
+
+# Số liệu kết quả. Chỉ ghi số đã được phép công khai.
+# Không có số liệu thì để trống, tuyệt đối không ước lượng.
+so_lieu:
+  - nhan:                 # ví dụ: Tăng trưởng lead
+    gia_tri:              # ví dụ: +180%
+    ghi_chu:              # ví dụ: 6 tháng, so với cùng kỳ
+
+vai_tro_cua_ban:          # Nêu rõ phần bạn trực tiếp làm, tránh gây hiểu nhầm về công sức tập thể
 anh_bia:                  # đường dẫn hoặc mô tả
 thu_vien_anh:             # danh sách ảnh
   -
-demo_url:                 # để trống nếu không có
-repository_url:           # để trống nếu không có
+lien_ket_tham_khao:       # link tới chiến dịch hoặc sản phẩm thật, để trống nếu không có
 noi_bat: false            # true nếu muốn hiện ở Home
 ```
+
+Ghi chú theo D14: template này dành cho **case study marketing**. Không có trường tech stack và không có link repository. Nếu một dự án chỉ mô tả được bằng công nghệ đã dùng thì nó chưa phải case study, mới chỉ là ghi chép công việc.
+
+Ghi chú theo D6: điền `khach_hang` vào đây không đồng nghĩa với việc được công khai. Chỉ đặt `khach_hang_duoc_cong_khai: true` khi đã thực sự có phép.
 
 ### Project 1
 
@@ -233,6 +266,35 @@ Nhóm theo chủ đề, mỗi nhóm 4–8 kỹ năng. Tránh danh sách dài dà
 
 ---
 
+## 8b. Làm việc cùng tôi
+
+Nội dung cho khối "Làm việc cùng tôi" xuất hiện trên Home và About. Chốt theo D18.
+
+Đây là **khối thông tin**, không phải phễu bán hàng. Không điền bảng giá vào đây.
+
+### Template — mỗi hình thức hợp tác một khối
+
+```yaml
+trang_thai: TODO
+hinh_thuc:                # ví dụ: Tư vấn chiến lược thương hiệu
+mo_ta:                    # 2-3 câu về hình thức này
+phu_hop_voi:              # loại bài toán và loại doanh nghiệp phù hợp
+  -
+khong_phu_hop_voi:        # loại bài toán bạn không nhận. Mục này quan trọng ngang mục trên.
+  -
+```
+
+Ghi chú: mục `khong_phu_hop_voi` không phải để khiêm tốn. Nói rõ mình không nhận việc gì là tín hiệu thẩm quyền mạnh, và lọc trước những cuộc trao đổi không dẫn tới đâu.
+
+### Cách bắt đầu trao đổi
+
+```text
+Trạng thái: TODO
+Nội dung:
+```
+
+---
+
 ## 9. Liên hệ và mạng xã hội
 
 | Kênh | Giá trị | Hiển thị công khai | Trạng thái |
@@ -249,19 +311,27 @@ Nhóm theo chủ đề, mỗi nhóm 4–8 kỹ năng. Tránh danh sách dài dà
 
 ## 10. Blog
 
-MVP không bắt buộc có bài viết, nhưng Blog rỗng làm giảm giá trị của Home.
+Với định vị nền tảng xuất bản theo D12, Blog không còn là phần phụ. **Blog rỗng khi ra mắt là một thất bại về định vị, không chỉ là thiếu nội dung.**
 
-- Số bài mục tiêu khi ra mắt: 3
-- Danh mục dự kiến:
+- Số bài mục tiêu khi ra mắt: 3, mỗi bài thuộc một trụ khác nhau.
 
-| # | Danh mục | Mô tả | Trạng thái |
+### Năm trụ nội dung
+
+Danh mục đã cố định theo D16. Không tạo danh mục ngoài năm trụ này.
+
+| # | Trụ | Bao gồm | Số bài dự kiến khi ra mắt |
 | --- | --- | --- | --- |
-| 1 |  |  | `TODO` |
-| 2 |  |  | `TODO` |
+| 1 | Chiến lược | Marketing Strategy, Brand Strategy, Business Growth | |
+| 2 | Tăng trưởng số | Digital Marketing, Marketing Automation | |
+| 3 | Nội dung và Truyền thông | Content Marketing, Communication | |
+| 4 | AI cho Marketing | AI for Marketing | |
+| 5 | Lãnh đạo và Quan điểm | Marketing Leadership, quan điểm cá nhân | |
+
+Khuyến nghị: ưu tiên trụ **AI cho Marketing**. Đây là vùng ít người Việt viết sâu và có thẩm quyền, nên cơ hội chiếm lĩnh vị trí đang mở.
 
 ### Ý tưởng bài viết
 
-| # | Tiêu đề dự kiến | Danh mục | Trạng thái |
+| # | Tiêu đề dự kiến | Trụ | Trạng thái |
 | --- | --- | --- | --- |
 | 1 |  |  | `TODO` |
 | 2 |  |  | `TODO` |

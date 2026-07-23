@@ -14,7 +14,18 @@
 
 Toàn bộ hạ tầng nằm dưới tài khoản cá nhân, không thuộc Roboworld. Xem D5.
 
-Vercel Hobby cấm sử dụng thương mại. Website phải giữ đúng tính chất portfolio cá nhân. Nếu về sau bổ sung nội dung bán hàng hoặc dịch vụ thì phải nâng cấp gói trước khi xuất bản.
+### Rủi ro giấy phép Vercel Hobby — đã nâng mức
+
+Gói Vercel Hobby cấm sử dụng cho mục đích thương mại.
+
+Khi định vị còn là "website thương hiệu cá nhân" chung chung, rủi ro này ở mức lý thuyết. **D12 đã đổi tình thế.** Consulting và sản phẩm số giờ là mục đích được tuyên bố công khai của sản phẩm, xem `BRAND_POSITIONING.md` §4. Một trang mời gọi tư vấn trả phí rất khó lập luận là phi thương mại.
+
+Hướng xử lý, chờ chốt tại D19:
+
+- Phase 1: giữ Hobby, MVP không đặt lời mời chào dịch vụ trả phí.
+- Ngay khi bật nội dung consulting: nâng Vercel Pro, khoảng 20 USD mỗi tháng.
+
+Đây là ngoại lệ có lý do đối với nguyên tắc free tier ở `PROJECT_CONSTITUTION.md` §2.2. Nguyên tắc đó cho phép thêm dịch vụ trả phí khi có nhu cầu thực tế, và tránh bị gỡ site đúng lúc khách hàng đang xem là nhu cầu thực tế.
 
 ### Không dùng ở MVP
 

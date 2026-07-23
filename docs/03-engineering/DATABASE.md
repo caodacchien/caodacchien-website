@@ -57,11 +57,14 @@ Hồ sơ của chủ dự án. Mỗi locale đúng một bản ghi.
 | `education` | jsonb | not null, default `'[]'` |
 | `certifications` | jsonb | not null, default `'[]'` |
 | `core_values` | jsonb | not null, default `'[]'` |
+| `services_offered` | jsonb | not null, default `'[]'` |
 | `status` | text | not null, default `'draft'` |
 
 Ràng buộc: `unique (translation_key, locale)`
 
-Ghi chú: `skills`, `education`, `certifications`, `core_values`, `social_links` dùng `jsonb` thay vì tách bảng riêng. Đây là dữ liệu chỉ đọc, chỉ thuộc về một chủ thể duy nhất và không cần truy vấn chéo. Tách thành 5 bảng con là over-engineering, vi phạm `PROJECT_CONSTITUTION.md` §4. Cấu trúc bên trong `jsonb` được validate bằng Zod ở tầng service.
+Ghi chú về `services_offered`: nguồn dữ liệu cho khối "Làm việc cùng tôi" trên Home và About, chốt theo D18. Mỗi phần tử gồm `{ title, description, fit, not_fit }`, trong đó `fit` và `not_fit` mô tả loại bài toán phù hợp và không phù hợp. **Không có trường giá.** Đây là khối thông tin, không phải phễu bán hàng.
+
+Ghi chú: `skills`, `education`, `certifications`, `core_values`, `social_links`, `services_offered` dùng `jsonb` thay vì tách bảng riêng. Đây là dữ liệu chỉ đọc, chỉ thuộc về một chủ thể duy nhất và không cần truy vấn chéo. Tách thành 5 bảng con là over-engineering, vi phạm `PROJECT_CONSTITUTION.md` §4. Cấu trúc bên trong `jsonb` được validate bằng Zod ở tầng service.
 
 ---
 
@@ -108,10 +111,14 @@ Ghi chú theo D6: `achievements` chỉ được chứa số liệu đã được
 | `solution` | text | |
 | `result` | text | |
 | `my_role` | text | |
-| `tech_stack` | text[] | not null, default `'{}'` |
+| `engagement_type` | text | not null, check in (`'in_house'`,`'consulting'`,`'advisory'`,`'personal'`) |
+| `services` | text[] | not null, default `'{}'` — dịch vụ đã cung cấp, trục filter chính |
+| `industry` | text | ngành của khách hàng, chỉ dùng để phân loại |
+| `client_name` | text | nullable, chịu ràng buộc kiểm duyệt của D6 |
+| `client_is_public` | boolean | not null, default false |
+| `outcome_metrics` | jsonb | not null, default `'[]'` |
 | `cover_image_url` | text | |
-| `demo_url` | text | |
-| `repository_url` | text | |
+| `reference_url` | text | trỏ tới chiến dịch hoặc sản phẩm thật |
 | `is_featured` | boolean | not null, default false |
 | `sort_order` | integer | not null, default 0 |
 | `published_at` | timestamptz | |
@@ -124,9 +131,15 @@ Ràng buộc:
 Index:
 - `(status, locale, published_at desc)`
 - `(is_featured) where status = 'published'`
-- GIN trên `tech_stack` để phục vụ filter theo công nghệ ở trang Projects
+- GIN trên `services` để phục vụ filter theo dịch vụ ở trang Projects
+- `(industry)` để phục vụ filter theo ngành
 
 Ghi chú:
+- Bảng này mô hình hóa **case study marketing**, không phải dự án phần mềm. Chốt theo D14. Thiết kế trước đó có `tech_stack` và `repository_url` là sai archetype và đã bị loại bỏ.
+- `services` là trục phân loại chính, chứa các giá trị như `Brand Strategy`, `Content Marketing`, `Marketing Automation`. Nên rút từ mười vùng năng lực ở `BRAND_POSITIONING.md` §2 để giữ nhất quán với ngôn ngữ toàn site.
+- `industry` chỉ để phân loại và lọc. **Không được dùng để suy ra tệp khách hàng mục tiêu của website.** Xem D13.
+- `client_name` và `client_is_public` tách riêng có chủ đích: nhiều case study có tên khách hàng trong database phục vụ quản lý nội bộ, nhưng chưa được phép công khai. Tầng service chỉ trả `client_name` ra ngoài khi `client_is_public = true`. Đây là ràng buộc D6 được thi hành ở tầng dữ liệu thay vì trông chờ vào kỷ luật của người biên tập.
+- `outcome_metrics` là mảng các đối tượng `{ label, value, note }`, ví dụ `{ "label": "Tăng trưởng lead", "value": "+180%", "note": "6 tháng, so với cùng kỳ" }`. Dùng `jsonb` vì số lượng và loại chỉ số khác nhau ở từng dự án. Validate bằng Zod ở tầng service. Chỉ ghi số liệu đã được phép công khai theo D6.
 - `experience_id` giải quyết yêu cầu "Related projects" của `PRODUCT_REQUIREMENTS.md` §5. Một experience có nhiều project. Dùng khóa ngoại một chiều thay vì bảng nối vì quan hệ thực tế là một-nhiều.
 - `my_role` bắt buộc có nội dung với các dự án tập thể, để không gây hiểu nhầm về phần đóng góp cá nhân.
 
@@ -270,12 +283,20 @@ excerpt: string               # bắt buộc, dùng cho meta description và th�
 publishedAt: YYYY-MM-DD       # bắt buộc
 updatedAt: YYYY-MM-DD         # tùy chọn
 status: draft | published     # bắt buộc, chỉ 'published' mới được build ra trang
-category: string              # bắt buộc, một danh mục
-tags: string[]                # tùy chọn
+category: string              # bắt buộc, PHẢI là một trong năm trụ nội dung của D16
+tags: string[]                # tùy chọn, tự do
 coverImage: string            # tùy chọn
 seoTitle: string              # tùy chọn, mặc định lấy title
 seoDescription: string        # tùy chọn, mặc định lấy excerpt
 ```
+
+`category` bị ràng buộc bằng Zod enum vào đúng năm giá trị của D16:
+
+```
+'Chiến lược' | 'Tăng trưởng số' | 'Nội dung và Truyền thông' | 'AI cho Marketing' | 'Lãnh đạo và Quan điểm'
+```
+
+Danh mục nằm ngoài năm giá trị này làm build fail. Đây là cách thi hành D16 ở tầng kỹ thuật thay vì trông chờ vào kỷ luật khi viết bài.
 
 `readingTime`, `tableOfContents` và chỉ mục tìm kiếm được sinh lúc build, không lưu trong frontmatter để tránh lệch dữ liệu.
 
