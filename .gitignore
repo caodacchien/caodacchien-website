@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# environment
+.env
+.env.*
+!.env.example
+
+# next
+.next/
+out/
+
+# logs
+*.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Claude local settings
+.claude/settings.local.json
