@@ -124,7 +124,26 @@ Cloudflare được dùng cho:
 
 Không bật proxy hoặc caching rule phức tạp trước khi xác nhận tương thích với Vercel.
 
-Lưu ý riêng cho `.io.vn`: cần xác nhận nhà đăng ký cho phép trỏ nameserver sang Cloudflare. Việc này phải kiểm tra ở Milestone 0.6, trước khi bắt đầu Phase 1.
+Lưu ý riêng cho `.io.vn`: **đã xác nhận (Milestone 0.6C, 2026-07-25)** — nhà đăng ký **Nhân Hòa** cho phép đổi nameserver; nameserver đã trỏ sang Cloudflare và zone active. Rủi ro R4 đã giải quyết.
+
+## Hiện trạng hạ tầng đã xác minh (Milestone 0.6C — 2026-07-25)
+
+Ghi lại fact **không chứa secret**. Đây là bằng chứng hạ tầng đã thiết lập, không phải cấu hình runtime (secret/table/CI vẫn ở milestone sau).
+
+| Hạng mục | Hiện trạng |
+| --- | --- |
+| GitHub repository | `caodacchien/caodacchien-website` — **Public**, default branch `main` |
+| GitHub protection | Ruleset **"Protect Main Branch"** active: require PR before merging, required approvals = 0, block force pushes, **chưa** required status checks (CI ở 1.1) |
+| Vercel | project `caodacchien-website`, gói **Hobby**, GitHub đã kết nối, production branch `main`, deployment **Ready** (404 hiện tại là expected — chưa có application scaffold) |
+| Vercel custom domain | `caodacchien.io.vn` — **Valid Configuration** |
+| Supabase | project `caodacchien-website`, gói **Free**, region **Southeast Asia (Singapore) `ap-southeast-1`**. Chưa tạo table/migration/integration/key |
+| Cloudflare | gói **Free**, zone `caodacchien.io.vn` **active/protected** |
+| Nameserver | `linda.ns.cloudflare.com` · `lochlan.ns.cloudflare.com` |
+| DNS record → Vercel | **DNS only** (không proxy), đúng ràng buộc mục Cloudflare bên dưới |
+| TLS/SSL | Cert do **Vercel** cấp (vì DNS-only); Cloudflare hiện đóng vai trò **authoritative DNS**. HTTPS đã xác minh hoạt động, không cảnh báo chứng chỉ |
+| Registrar | Nhân Hòa |
+| Secrets / DB / CI | **Chưa** nhập secret thật · **chưa** tạo database table/migration · **chưa** tạo CI |
+| Chi phí | GitHub Free · Vercel Hobby · Cloudflare Free · Supabase Free — không kích hoạt dịch vụ trả phí |
 
 ## Vận hành Supabase Free
 
