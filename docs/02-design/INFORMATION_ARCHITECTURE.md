@@ -17,8 +17,7 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 ├── /case-studies/             Danh sách case study (hiển thị hết — filter Phase 2)
 │   └── /case-studies/[slug]/   Một case study
 │
-├── /about/                    Giới thiệu + khối "Làm việc cùng tôi"
-├── /experience/               Kinh nghiệm   ⚠️ pending R1/D26 — có thể gộp vào /about
+├── /about/                    Giới thiệu + section Experience (timeline) + khối "Làm việc cùng tôi"  (D26)
 ├── /contact/                  Liên hệ
 │
 ├── /privacy/                  Chính sách riêng tư
@@ -34,7 +33,7 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 
 | Vị trí | Nội dung |
 | --- | --- |
-| Header chính | Viết · Case study · Giới thiệu · Kinh nghiệm · Liên hệ *(6 trang theo D4; nhãn và việc gộp Experience chờ R1/D26)* |
+| Header chính | **Viết · Case study · Chủ đề · Giới thiệu · Liên hệ** (5 mục, D26). Experience là section trong About, không lên nav |
 | Header phụ | Nút chuyển theme (D10) |
 | Không lên header | "Làm việc cùng tôi" — là **khối** trên Home và About, không phải mục nav (D18, P2) |
 | Trong bài | Mục lục dính ở cột lề phải (desktop), thu gọn trên mobile |
@@ -115,7 +114,7 @@ Chốt theo **D25**. Chi tiết ở `PRODUCT_REQUIREMENTS.md` §5.
 3. Case study `featured: true` có số liệu
 4. Bản đồ 5 trụ → `/topics/[pillar]`
 5. Khối "Làm việc cùng tôi" (D18)
-6. CTA đăng ký nhận bài *(chờ D27)* hoặc CTA liên hệ
+6. CTA chính = "Làm việc cùng tôi" / Liên hệ (newsletter hoãn Phase 2, D27)
 7. Footer
 
 Trần 2 CTA mỗi trang (D23/P8).
@@ -126,11 +125,11 @@ Footer nhỏ, **không phải sitemap**. Hai cột + dòng cuối:
 
 | Cột 1 — Nội dung | Cột 2 — Kết nối |
 | --- | --- |
-| Viết · Case study · Giới thiệu · Liên hệ | Đăng ký nhận bài *(chờ D27)* · Social · RSS |
+| Viết · Case study · Chủ đề · Giới thiệu · Liên hệ · Kinh nghiệm (anchor About) | Social · RSS |
 
 Dòng cuối: bản quyền · Chính sách riêng tư · nút chuyển theme. Experience nằm ở footer/About (D21).
 
-## 10. Ghi chú cần Review sau (không tự sửa)
+## 10. Trạng thái quyết định (đã đóng ở 0.5D)
 
-- **R1/D26 OPEN:** nhãn nav và việc gộp Experience vào About chưa được khóa. Sitemap hiện giữ `/experience/` riêng theo D4, đánh dấu chờ quyết.
-- **R6/D27 OPEN:** newsletter (mục 8.6 và footer) đang chờ. Nếu không duyệt, bỏ khối đăng ký, CTA chính của Home lùi về "Làm việc cùng tôi"/Liên hệ.
+- **D26 Approved (A):** nav 5 mục theo loại nội dung; Experience là section trong About + anchor footer. Không còn route `/experience/` riêng.
+- **D27 Approved (B):** newsletter hoãn Phase 2; Home CTA chính = "Làm việc cùng tôi"/Liên hệ; footer không có khối đăng ký (giữ Social + RSS).

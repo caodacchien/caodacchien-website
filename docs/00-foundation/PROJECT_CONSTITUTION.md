@@ -81,21 +81,26 @@ Khi chưa có nội dung thật, placeholder phải được đánh dấu bằng
 
 Bản chất sản phẩm là nền tảng xuất bản. Mọi giai đoạn đều phải giữ được năng lực xuất bản đều đặn làm trục chính, thay vì tích lũy tính năng.
 
-### MVP — 6 trang
-Chốt theo D4 trong `DECISION_LOG.md`. Đang chờ quyết định D18 về việc có bổ sung khối "Làm việc cùng tôi" hoặc trang Resources hay không.
+### MVP — trang
+Chốt theo D4, tu chỉnh theo **D26** (nav) và **D35** (nguồn nội dung MDX). Khối "Làm việc cùng tôi" trên Home và About đã chốt theo D18.
 
+Trang MVP:
 - Home
-- About
-- Experience
-- Projects
-- Blog
+- Viết (Writing)
+- Case study
+- Chủ đề (Topic Hub, `/topics/[pillar]`)
+- About — gồm section Experience (timeline) + khối "Làm việc cùng tôi"
 - Contact
+
+Điều hướng chính 5 mục (D26): Viết · Case study · Chủ đề · Giới thiệu · Liên hệ. Experience **không** còn là trang riêng — là section trong About. Không còn mô hình cũ Home/About/Experience/Projects/Blog/Contact.
+
+Kèm theo:
 - SEO nền tảng
 - Analytics (chỉ Google Analytics 4, theo D9)
 - Light mode và dark mode (theo D10)
 - Tiếng Việt, kiến trúc sẵn sàng song ngữ (theo D1)
 
-MVP **không** bao gồm CMS và Authentication. Nội dung được sửa qua Git với bài blog dạng MDX, và qua Supabase Studio với dữ liệu có cấu trúc. Xem D3.
+MVP **không** bao gồm CMS và Authentication. Bài viết và case study là MDX (D35); dữ liệu hồ sơ ở `profile.config.ts`; chỉ `contacts` nằm trên Supabase. Xem D3, D35.
 
 ### Giai đoạn sau
 - CMS và content workflow

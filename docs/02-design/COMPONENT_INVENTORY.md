@@ -8,9 +8,9 @@ Phiên bản 1.0 — 2026-07-24. Chốt theo **D32** (token) và **D33** (compon
 
 ## Phần A — Component Inventory
 
-**20 component cho MVP** (từ 38 sau vòng tối giản hóa). Mỗi component tái sử dụng nhiều nơi, trách nhiệm rõ.
+**19 component cho MVP** (từ 38 sau tối giản hóa; `NewsletterForm` lùi Phase 2 theo D27). Mỗi component tái sử dụng nhiều nơi, trách nhiệm rõ.
 
-`SearchDialog`, `Pagination`, `FilterBar` **hoãn Phase 2** theo D33.
+`SearchDialog`, `Pagination`, `FilterBar`, `NewsletterForm` **hoãn Phase 2** (D33, D27).
 
 ### Nền tảng
 
@@ -47,7 +47,6 @@ Phiên bản 1.0 — 2026-07-24. Chốt theo **D32** (token) và **D33** (compon
 | Component | Mục đích | Xuất hiện ở |
 | --- | --- | --- |
 | `WorkWithMeBlock` | Khối thông tin, **không phải phễu** (D18) | Home, About |
-| `NewsletterForm` | CTA tầng 1 (D23) — ⚠️ **chờ D27** | cuối bài, Home |
 | `ContactForm` | Form + honeypot + rate limit | Contact |
 | `AuthorBio` | Tiểu sử ngắn cuối bài, từ `profile.config.ts` | cuối bài |
 | `StatusMessage` | Empty state + 404 + 500 (gộp) | mọi danh sách, trang lỗi |
@@ -59,11 +58,11 @@ Phiên bản 1.0 — 2026-07-24. Chốt theo **D32** (token) và **D33** (compon
 | Gộp | ArticleCard + CaseStudyCard → `ContentCard`; ArticleHeader + CaseStudyHeader → `ContentHeader`; Metadata + ReadingTime → `ArticleMeta`; PillarBadge + Tag → `Label`; EmptyState + ErrorState → `StatusMessage` |
 | MDX/Prose | Footnote, Table, Quote, Figure, CodeBlock, ComparisonTable → style trong `Prose`, không component riêng |
 | Inline (dùng 1 lần) | Timeline (trong About), SkipLink (trong Header), SocialLinks (map data), RelatedContent (ghép `ContentCard`) |
-| Hoãn Phase 2 | `SearchDialog`, `Pagination`, `FilterBar` |
+| Hoãn Phase 2 | `SearchDialog`, `Pagination`, `FilterBar`, **`NewsletterForm` (D27)** |
 
 **Ghi chú:** `/topics/[pillar]` được giữ (D31) nhưng **không thêm component mới** — trang hub ghép từ `ContentHeader` + danh sách `ContentCard` + `PillarMap`.
 
-**Future (không tính vào 20 component MVP):** một `SoundToggle` / nút Mute luôn hiển thị sẽ cần khi triển khai Sound & Interaction (D36, mặc định ON). Xem `DESIGN_SYSTEM.md` §Future Enhancement — Sound & Interaction. Không implement ở milestone hiện tại.
+**Future (không tính vào 19 component MVP):** một `SoundToggle` / nút Mute luôn hiển thị sẽ cần khi triển khai Sound & Interaction (D36, mặc định ON). Xem `DESIGN_SYSTEM.md` §Future Enhancement — Sound & Interaction. Không implement ở milestone hiện tại.
 
 ---
 

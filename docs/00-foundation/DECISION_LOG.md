@@ -83,6 +83,7 @@ Trạng thái: `Approved` | `Open` | `Superseded`
 ## D4 — Phạm vi trang của MVP
 
 **Trạng thái:** Approved — 2026-07-23
+**Đã tu chỉnh bởi:** D26 — nhãn/route đổi (Projects→Case study, Blog→Viết theo D35) và Experience thành section trong About; nav chính còn 5 mục. Số trang nội dung MVP không đổi về bản chất.
 
 **Bối cảnh:** `PROJECT_CONSTITUTION.md` §3 liệt kê 6 trang, `PRODUCT_REQUIREMENTS.md` §4 liệt kê 8 trang. Đây là mâu thuẫn C1.
 
@@ -435,29 +436,29 @@ Hai vế có vai trò khác nhau và không được rút gọn còn một:
 
 ---
 
-## Quyết định còn mở
+## Quyết định media & hạ tầng (đã đóng ở Milestone 0.5D)
 
 ### D11 — Media storage
 
-**Trạng thái:** Open
+**Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn phương án A)
 
-**Vấn đề:** `SYSTEM_ARCHITECTURE.md` §6 để ngỏ Supabase Storage hay Cloudinary. Quyết định này chưa được đưa ra vì D2 làm thay đổi bài toán: ảnh trong bài blog giờ có thể để thẳng trong repository, chỉ còn ảnh gallery của Projects là thực sự cần storage động.
+**Quyết định:** Ảnh để trong **`public/`**, tối ưu bằng `next/image`.
 
-**Cần chốt trước:** Milestone 1.3 (Data layer).
+**Lý do:** Sau D35, project_media bị loại; chỉ còn vài ảnh case study. `public/` chi phí 0, tĩnh, đơn giản nhất, đúng nguyên tắc không over-engineering. Không kéo Supabase/Cloudinary vào đường đọc.
 
-**Ba phương án sẽ trình bày ở Milestone 0.5:**
+**Xem lại (Future):** nếu số ảnh phình lớn làm nặng repo, cân nhắc Supabase Storage/Cloudinary ở Phase sau.
 
-1. Toàn bộ ảnh để trong `public/`, tối ưu bằng `next/image`. Chi phí bằng 0, nhưng ảnh nặng làm phình repository.
-2. Supabase Storage. Cùng một nhà cung cấp, free tier 1 GB, nhưng không có CDN transform mạnh.
-3. Cloudinary free tier. Transform và tối ưu tốt nhất, nhưng thêm một nhà cung cấp bên ngoài.
+**Ba phương án đã cân nhắc (lịch sử):**
 
-**Khuyến nghị sơ bộ:** phương án 1 cho MVP vì số lượng ảnh còn nhỏ, đúng nguyên tắc không over-engineering. Chờ chủ dự án quyết ở Milestone 0.5.
+1. `public/` — chọn.
+2. Supabase Storage — cùng nhà cung cấp, free 1 GB, không CDN transform mạnh.
+3. Cloudinary free tier — transform tốt nhất, thêm nhà cung cấp ngoài.
 
 ---
 
 ### D19 — Rủi ro giấy phép Vercel Hobby
 
-**Trạng thái:** Open
+**Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn phương án A: Hobby → Pro theo điều kiện)
 **Liên quan:** D5, D12
 
 **Vấn đề:** Gói Vercel Hobby cấm sử dụng cho mục đích thương mại. Khi định vị còn là "website thương hiệu cá nhân" chung chung, rủi ro này ở mức lý thuyết. D12 đã đổi tình thế: consulting và sản phẩm số giờ là **mục đích được tuyên bố công khai** của sản phẩm.
@@ -472,9 +473,9 @@ Một trang mời gọi tư vấn trả phí, hoặc về sau bán sản phẩm 
 | 2 | Nâng Vercel Pro khi bật nội dung consulting | khoảng 20 USD mỗi tháng |
 | 3 | Chuyển hosting sang nền tảng khác không giới hạn thương mại ở gói miễn phí | 0 đồng nhưng tốn công di chuyển và lệch với kiến trúc đã chốt |
 
-**Khuyến nghị:** phương án 1 cho tới hết Phase 1, rồi phương án 2 ngay khi bật nội dung consulting. Hai mươi USD mỗi tháng là chi phí nhỏ so với rủi ro bị gỡ site đúng lúc đang có khách hàng xem.
+**Quyết định:** Giữ **Vercel Hobby** tới hết Phase 1; **nâng Vercel Pro** ngay khi bật nội dung consulting/thương mại (gate Milestone 1.8). ~20 USD/tháng là chi phí nhỏ so với rủi ro bị gỡ site khi có khách hàng xem.
 
-**Cần chốt trước:** Milestone 1.8, hoặc sớm hơn nếu D18 chọn phương án 2 hoặc 3.
+**Ràng buộc thực thi:** trước khi xuất bản bất kỳ nội dung consulting/bán hàng nào, phải nâng gói trước. Đây là mục kiểm ở checklist Milestone 1.8.
 
 ---
 
@@ -508,19 +509,32 @@ CTA được phép: đăng ký nhận bài, "Làm việc cùng tôi", đọc ti�
 
 ## D26 — Nhãn điều hướng và gộp Experience vào About
 
-**Trạng thái:** **OPEN** — chưa nằm trong bản khóa 2026-07-24
+**Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn phương án A)
+**Tu chỉnh:** D4
 
-**Vấn đề:** Đề xuất R1 (đổi nhãn nav theo loại nội dung, gộp Experience vào About, nav còn 4–5 mục) **không có trong danh sách khóa của chủ dự án**. Vì cấm tự tạo/đổi quyết định, D4 (6 trang, Experience là trang riêng) vẫn là trạng thái có hiệu lực.
+**Quyết định:** Điều hướng theo **loại nội dung**, và **gộp Experience thành một section trong About**.
 
-**Ghi chú để Review sau:** nếu duyệt R1, Experience thành một mục trong About và nav gọn hơn. Nếu không, Experience giữ trang riêng. Tài liệu hiện đồng bộ theo D4 (Experience tách riêng) và đánh dấu chỗ này là TODO.
+- Navigation MVP (5 mục): **Viết · Case study · Chủ đề · Giới thiệu · Liên hệ**. Home là logo. "Làm việc cùng tôi" là khối trên Home/About, không lên nav (D18).
+- `Chủ đề` = hub `/topics/[pillar]` (D31).
+- **Experience không còn là trang riêng** — trở thành section trong `/about/` (timeline), có anchor ở footer.
+
+**Tu chỉnh D4:** D4 liệt kê 6 trang gồm Experience/Projects/Blog riêng. D26 chuyển: Projects→Case study, Blog→Viết (theo D35), Experience→section trong About. Số trang điều hướng chính còn 5; vẫn chịu được 8 mục khi Phase 2 thêm Resources/Speaking (D18).
+
+**Lý do chọn A:** chỉ A nhất quán với D35 (content type), D31 (route), D25 và D21; loại bỏ mâu thuẫn thuật ngữ "Blog/Projects" và tránh đọc như portfolio.
 
 ## D27 — Newsletter trong MVP
 
-**Trạng thái:** **OPEN** — chưa nằm trong bản khóa 2026-07-24
+**Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn phương án B)
 
-**Vấn đề:** Nghiên cứu kết luận newsletter là chuyển đổi quan trọng nhất (D23 tầng 1). Nhưng bản khóa không nhắc newsletter, và `ROADMAP.md` đang đặt Newsletter ở Phase 2. Không tự quyết.
+**Quyết định:** **Hoãn newsletter sang Phase 2.** MVP **không** có `NewsletterForm`.
 
-**Ghi chú để Review sau:** component `NewsletterForm` và khối đăng ký ở Home/cuối bài đang ở trạng thái **chờ R6**. Nếu duyệt phương án (a) — nhúng form dịch vụ ngoài (Substack/Beehiiv) — thì đưa vào MVP với chi phí gần bằng không, không cần bảng database. Nếu không, khối đăng ký lùi Phase 2 và CTA chính của Home tạm là "Làm việc cùng tôi"/Liên hệ.
+- Home CTA chính = **"Làm việc cùng tôi" / Liên hệ** (không phải đăng ký nhận bài).
+- `NewsletterForm` chuyển khỏi 20 component MVP → MVP còn **19 component**.
+- Footer MVP: bỏ khối đăng ký; giữ Social + RSS.
+
+**Lý do chọn B:** giữ MVP gọn, sạch script bên thứ ba, đơn giản privacy/consent (nhất quán D9 "chỉ GA4"). Đánh đổi đã ghi nhận: MVP thiếu cơ chế giữ chân người đọc — rủi ro A1 (D28) chưa được giảm bằng newsletter; RSS là kênh thay thế duy nhất ở MVP.
+
+**Ảnh hưởng D28:** giả định A1 nay **không** được giảm bằng newsletter ở MVP; cần theo dõi tỷ lệ quay lại sau ra mắt và cân nhắc bật newsletter sớm ở Phase 2 nếu cần.
 
 ## D28 — Giả định chưa kiểm chứng
 
@@ -566,7 +580,7 @@ Ghi lại để đo về sau, không phải quyết định:
 
 **Trạng thái:** Approved — 2026-07-24
 
-**Quyết định:** **20 component** cho MVP (từ 38 sau tối giản hóa). `SearchDialog`, `Pagination`, `FilterBar` hoãn **Phase 2** theo bản khóa. Chi tiết và danh sách gộp/bỏ ở `COMPONENT_INVENTORY.md`.
+**Quyết định:** **19 component** cho MVP (từ 38 sau tối giản hóa). `SearchDialog`, `Pagination`, `FilterBar` hoãn **Phase 2**. **`NewsletterForm` hoãn Phase 2 theo D27** (từ 20 → 19). Chi tiết và danh sách gộp/bỏ ở `COMPONENT_INVENTORY.md`.
 
 ## D34 — Design Constraints
 
@@ -627,7 +641,7 @@ Ghi lại để đo về sau, không phải quyết định:
 - Chất lượng: nhỏ, rất ngắn, sạch, tối giản, không chói/mechanical/sci-fi/game.
 - Spam protection: debounce/throttle, không phát chồng.
 - **Motion và Sound là hai hệ thống độc lập:** `prefers-reduced-motion` chỉ áp dụng cho Motion; Sound có preference riêng (Mute). Sound không phải kênh trạng thái duy nhất — site vẫn dùng được khi mute/không loa.
-- Cần một component điều khiển âm thanh ở Phase triển khai, **không** nằm trong 20 component MVP.
+- Cần một component điều khiển âm thanh ở Phase triển khai, **không** nằm trong 19 component MVP.
 
 **Tu chỉnh D32 — hai điểm:**
 

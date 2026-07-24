@@ -205,4 +205,4 @@ Hạn chế: không chặn được kẻ đổi IP liên tục. Chấp nhận đ
 
 ## Ghi chú cần Review sau (không tự sửa)
 
-- **D11 (media storage)** trở nên đơn giản hơn nhiều với D35: ảnh case study giờ nằm cạnh file MDX hoặc trong `public/`, không còn bảng `project_media`. Phương án `public/` gần như là mặc định. Vẫn để D11 ở trạng thái Open để chủ dự án chốt chính thức ở Milestone 0.5.
+- **D11 (media storage) — Approved (2026-07-25):** ảnh case study để trong **`public/`**, tối ưu bằng `next/image`. Không còn bảng `project_media`; không kéo Supabase/Cloudinary vào đường đọc. Xem lại nếu ảnh phình lớn (Future).

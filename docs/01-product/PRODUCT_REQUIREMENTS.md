@@ -24,7 +24,7 @@ Sáu nhóm có xếp ưu tiên **bắt buộc**. Chi tiết đầy đủ tại `
 | 3 | Người làm marketing chuyên nghiệp | Viết |
 | 4 | Chủ doanh nghiệp vừa và nhỏ | Viết, Case study, Làm việc cùng tôi |
 | 5 | Sinh viên marketing | Viết |
-| 6 | Nhà tuyển dụng | Experience, About |
+| 6 | Nhà tuyển dụng | About (section Experience) |
 
 **Quy tắc giải xung đột:** khi hai nhóm mâu thuẫn về một quyết định UX, nhóm có số nhỏ hơn thắng.
 
@@ -60,17 +60,18 @@ Hệ quả với yêu cầu sản phẩm:
 
 ## 4. Kiến trúc thông tin
 
-### MVP — 6 trang
-Chốt theo D4, xác nhận lại theo D18. Tên trang thống nhất với §5 và kiến trúc D35.
+### MVP — trang & điều hướng
+Chốt theo D4, tu chỉnh theo **D26** và D18.
 
+Trang MVP:
 - Home — có khối "Làm việc cùng tôi"
-- About — có khối "Làm việc cùng tôi"
-- Experience
-- Case study — MDX (`content/case-studies/`)
 - Viết / Writing — MDX (`content/writing/`)
+- Case study — MDX (`content/case-studies/`)
+- Chủ đề — hub `/topics/[pillar]` (5 trụ)
+- About — gồm **section Experience (timeline)** + khối "Làm việc cùng tôi"
 - Contact
 
-*(Nhãn hiển thị trên điều hướng đang chờ R1/D26; tên nội dung và route thì đã cố định theo D35.)*
+**Navigation chính (5 mục, D26):** Viết · Case study · Chủ đề · Giới thiệu · Liên hệ. Home là logo; "Làm việc cùng tôi" là khối, không lên nav (D18). Experience **không còn trang riêng** — là section trong About, có anchor ở footer.
 
 ### Phase 2
 - Resources — framework và template tải về
@@ -85,7 +86,7 @@ Hai mục này bị lùi vì chưa có nội dung thật. Xuất bản trang r�
 - Kiến trúc thông tin chi tiết (sitemap, taxonomy, URL, breadcrumb, liên kết nội bộ) nằm ở `docs/02-design/INFORMATION_ARCHITECTURE.md`, chốt theo D31.
 - MVP giữ thêm hub `/topics/[pillar]` với đúng 5 trụ (D31).
 - **Search, Pagination, Filter hoãn Phase 2** (D33).
-- **Nhãn điều hướng và việc gộp Experience vào About (R1/D26) đang OPEN** — tài liệu này giữ 6 trang theo D4 cho tới khi chủ dự án chốt.
+- **Nhãn điều hướng và Experience đã chốt theo D26 (Approved):** nav 5 mục (Viết · Case study · Chủ đề · Giới thiệu · Liên hệ); Experience là section trong About, không còn route riêng.
 
 ## 5. Yêu cầu chức năng MVP
 
@@ -99,10 +100,10 @@ Nguồn: `profile.config.ts` + MDX (bài viết và case study có `featured: tr
 3. **Case study featured** — `featured: true`, có số liệu kết quả nổi bật
 4. Bản đồ 5 trụ nội dung (dẫn tới `/topics/[pillar]`)
 5. **Khối "Làm việc cùng tôi"** — D18, đứng sau bằng chứng
-6. CTA đăng ký nhận bài *(component `NewsletterForm` đang chờ D27)* hoặc CTA liên hệ
+6. CTA chính = **"Làm việc cùng tôi" / Liên hệ** (newsletter hoãn Phase 2 theo D27)
 7. Footer
 
-Thứ tự phục vụ nhóm khán giả 1 trước: trả lời "người này nghĩ thế nào về tăng trưởng" trước "người này đã làm ở đâu". Experience không nằm ở thân Home (D21) — chỉ ở footer/About.
+Thứ tự phục vụ nhóm khán giả 1 trước: trả lời "người này nghĩ thế nào về tăng trưởng" trước "người này đã làm ở đâu". Experience không nằm ở thân Home (D21) — chỉ ở section About + anchor footer.
 
 ### About
 Nguồn: `profile.config.ts`
@@ -123,8 +124,8 @@ Nguồn: `profile.config.ts` → `servicesOffered`. Xuất hiện trên Home và
 
 Ranh giới bắt buộc theo D18: đây là **khối thông tin**, không phải phễu bán hàng. Không bảng giá, không nút đặt lịch chớp nháy, không lời chứng thực dàn dựng, không đếm ngược, không pop-up chặn màn hình.
 
-### Experience
-Nguồn: `profile.config.ts` → `experiences`. (Trang riêng hay mục trong About phụ thuộc R1/D26 — hiện OPEN.)
+### Experience — section trong About (D26)
+Nguồn: `profile.config.ts` → `experiences`. Là một section (timeline) trong trang About, không phải trang riêng; có anchor ở footer.
 - Company, Role, Period
 - Responsibilities
 - Quantified impact — chỉ số liệu đã được phép công khai, theo D6
@@ -182,7 +183,7 @@ Milestone 1.4 chỉ bắt đầu khi 5 mục trong "Cổng mở khóa Milestone 
 
 ## 8. Success Metrics
 
-- Hoàn thành MVP 6 trang
+- Hoàn thành MVP theo §4 (Home · Viết · Case study · Chủ đề · About · Contact; nav 5 mục theo D26)
 - Index trên Google
 - Form liên hệ hoạt động, email về tới `forwork.chiencd@gmail.com`
 - Tăng số lượt xem portfolio/blog
