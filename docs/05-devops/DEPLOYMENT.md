@@ -6,13 +6,21 @@
 | --- | --- | --- | --- |
 | Domain | `caodacchien.io.vn` | cá nhân, đã sở hữu | |
 | DNS/SSL | Cloudflare Free | cá nhân, `forwork.chiencd@gmail.com` | |
-| Source | GitHub | `caodacchien` | repository private cho tới khi có quyết định khác |
-| Hosting | Vercel Hobby | cá nhân, `forwork.chiencd@gmail.com` | |
-| Database | Supabase Free | cá nhân, `forwork.chiencd@gmail.com` | |
+| Source | GitHub | `caodacchien` | repository **Public** (D40) |
+| Hosting | Vercel Hobby | cá nhân, `forwork.chiencd@gmail.com` | Pro khi bật consulting, gate 1.8 (D19) |
+| Database | Supabase Free | cá nhân, `forwork.chiencd@gmail.com` | region **Singapore**, server-only (D42) |
 | Analytics | Google Analytics 4 | cá nhân | chỉ GA4, xem D9 |
 | Email | Resend | cá nhân | tích hợp ở Milestone 1.7, xem D8 |
 
 Toàn bộ hạ tầng nằm dưới tài khoản cá nhân, không thuộc Roboworld. Xem D5.
+
+### Runtime & Repository contract (D37, D38, D40, D42)
+
+- **Node.js:** `24.18.0` — pin exact ở `.nvmrc`; `package.json.engines.node = ">=24.18.0 <25"`. Không upgrade/downgrade ngoài quyết định. Tương thích Next.js major sẽ xác minh lại ở Milestone 1.1.
+- **pnpm:** `10.15.1` — pin qua `package.json.packageManager` (Corepack). Không cần `engines.pnpm`.
+- **Repository visibility:** **Public** (D40). Secret và `.env*` tuyệt đối không commit; `.env*` đã nằm trong `.gitignore` (trừ `.env.example`).
+- **Supabase:** dùng **server-only** (`SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`); **không** ship credential Supabase xuống client. Không dùng `NEXT_PUBLIC_SUPABASE_*` ở MVP (D42, D35).
+- **Milestone scope:** 0.6 chỉ gồm infrastructure/runtime/env contract + DNS/deploy readiness + freeze; application scaffold + full CI thuộc Milestone 1.1 (D37).
 
 ### Rủi ro giấy phép Vercel Hobby — đã nâng mức
 
@@ -62,8 +70,7 @@ Khai báo tại `.env.example` với giá trị rỗng. Giá trị thật chỉ 
 | --- | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | 1.1 | có | |
 | `NEXT_PUBLIC_DEFAULT_LOCALE` | 1.1 | có | `vi` |
-| `NEXT_PUBLIC_SUPABASE_URL` | 1.7 | có | chỉ dùng cho contact form |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 1.7 | có | **không đọc public data** — theo D35, Supabase chỉ có bảng `contacts` insert-only qua service role; anon key không đọc được gì |
+| `SUPABASE_URL` | 1.7 | **không** | server-only; chỉ dùng cho contact form (D42) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 1.7 | **không** | chỉ dùng phía server, ghi `contacts` qua Server Action |
 | `RESEND_API_KEY` | 1.7 | **không** | chưa tạo ở Phase 0 |
 | `CONTACT_TO_EMAIL` | 1.7 | **không** | `forwork.chiencd@gmail.com` |
@@ -101,7 +108,7 @@ Không commit API key hoặc bất kỳ secret nào. `.env.local` đã nằm tro
 ### Hạ tầng và bảo mật
 - Env variables đầy đủ ở đúng môi trường
 - `SUPABASE_SERVICE_ROLE_KEY` không lọt vào bundle client
-- Theo D35: nội dung công khai là MDX/config, không đọc từ database. Supabase chỉ có bảng `contacts` với RLS deny-all cho anon (không có đường đọc public); kiểm tra anon key không truy vấn được `contacts`
+- Theo D35: nội dung công khai là MDX/config, không đọc từ database. Supabase dùng **server-only** (D42) — chỉ `SUPABASE_URL` + service role phía server; **không** ship credential Supabase xuống client. Bảng `contacts` bật RLS deny-all cho anon; ghi qua Server Action
 - Contact form rate limit hoạt động
 - Trang Privacy Policy đã có
 - Analytics consent nếu cần

@@ -16,7 +16,11 @@ Chỉ làm tài liệu và hạ tầng. Không viết application code.
 | 0.3 | Design Direction + UX/IA/Architecture | Nghiên cứu website thật, khóa Design Direction (D29), Design Principles (D30), IA (D31), Token (D32), Component (D33), Constraint (D34), Option B MDX-first (D35) | ✅ Xong |
 | 0.4 | Design Tokens (màu) và Wireframe | Điền giá trị màu vào kiến trúc token đã có, kiểm tra tương phản AA hai chế độ, kiểm dấu tiếng Việt ở 15px, wireframe desktop/tablet/mobile | `DESIGN_SYSTEM.md` khóa màu |
 | 0.5 | Foundation research + Decision lock | 0.5A research (Design DNA/Layout/Wireframe/Motion), 0.5B consolidation, 0.5C decision review, **0.5D: đóng D11(public/)·D19(Hobby→Pro)·D26(nav 5 mục)·D27(newsletter Phase 2)** | ✅ Xong (không còn Decision OPEN) |
-| 0.6 | Hạ tầng | Tạo GitHub repo, kết nối Vercel, tạo Supabase project, xác nhận `.io.vn` trỏ được nameserver sang Cloudflare | Ba môi trường sẵn sàng |
+| 0.6 | Hạ tầng (D37) | Infrastructure accounts + runtime/repo contract + env contract + DNS/deploy readiness + freeze. **Application scaffold và full CI vẫn thuộc Milestone 1.1**, phụ thuộc 0.4 | Ba môi trường sẵn sàng + freeze |
+| 0.6A | Research & Readiness Audit | Audit repo/runtime, scope matrix, risk register, quyết định O-1..O-6 | ✅ Xong |
+| 0.6B | Runtime & Repository Baseline | `.nvmrc` (Node 24.18.0, D38), `engines.node`, env contract Supabase server-only (D42), ghi D37–D42, đồng bộ docs hạ tầng | Đang thực hiện |
+| 0.6C | Owner Infrastructure Setup | Owner thao tác dashboard: Vercel · Supabase (region Singapore) · Cloudflare · DNS `.io.vn` · branch protection · env vars | Chờ |
+| 0.6D | Infrastructure Audit & Freeze | Verify env/DNS/branch-protect; tag mốc `v0.6` | Chờ |
 
 Song song, chủ dự án điền `docs/01-product/CONTENT_INVENTORY.md`. Đây là đường găng của Phase 1.
 

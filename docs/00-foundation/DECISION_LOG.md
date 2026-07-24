@@ -63,6 +63,7 @@ Trạng thái: `Approved` | `Open` | `Superseded`
 ## D3 — CMS và Authentication ở MVP
 
 **Trạng thái:** Approved — 2026-07-23
+**Đã tu chỉnh bởi:** D35, D42 — mô hình Supabase chuyển sang server-only, MVP không dùng anon key phía client. Dòng "Anon key … đọc bản đã xuất bản" bên dưới là mô tả D3 gốc, giữ để tra cứu lịch sử.
 
 **Bối cảnh:** `PROJECT_CONSTITUTION.md` §3 xếp "CMS tối thiểu" vào MVP nhưng `ROADMAP.md` xếp CMS ở Phase 2. Đây là mâu thuẫn C2.
 
@@ -642,6 +643,66 @@ Ghi lại để đo về sau, không phải quyết định:
 - Spam protection: debounce/throttle, không phát chồng.
 - **Motion và Sound là hai hệ thống độc lập:** `prefers-reduced-motion` chỉ áp dụng cho Motion; Sound có preference riêng (Mute). Sound không phải kênh trạng thái duy nhất — site vẫn dùng được khi mute/không loa.
 - Cần một component điều khiển âm thanh ở Phase triển khai, **không** nằm trong 19 component MVP.
+
+---
+
+# Nhóm quyết định hạ tầng Milestone 0.6 — khóa ngày 2026-07-25
+
+Các quyết định D37–D42 do chủ dự án chốt cho Milestone 0.6 (O-1..O-6 + ràng buộc Supabase server-only). Không sửa hay đánh số lại D1–D36.
+
+## D37 — Phạm vi Milestone 0.6
+
+**Trạng thái:** Approved — 2026-07-25 (O-1, phương án A)
+
+**Quyết định:** Giữ đúng ranh giới ROADMAP. Milestone 0.6 **chỉ** gồm: infrastructure accounts, runtime/repository contract, environment contract, DNS/deployment readiness, và infrastructure freeze.
+
+**Không thuộc 0.6:** application scaffold, application code, Tailwind, shadcn/ui, full CI pipeline, MDX tooling, test framework. Những mục này **vẫn thuộc Milestone 1.1** và vẫn phụ thuộc Milestone 0.4 nơi tài liệu đã ghi.
+
+**Phân rã:** 0.6A Research & Readiness · 0.6B Runtime & Repository Baseline · 0.6C Owner Infrastructure Setup · 0.6D Infrastructure Audit & Freeze.
+
+## D38 — Runtime Version Contract
+
+**Trạng thái:** Approved — 2026-07-25 (O-2)
+
+**Quyết định:**
+
+- **Node.js `24.18.0`** — pin exact ở `.nvmrc`; `package.json.engines.node = ">=24.18.0 <25"`.
+- **pnpm `10.15.1`** — pin qua `package.json.packageManager` (Corepack). Không thêm `engines.pnpm` (packageManager đã pin chính xác).
+- Không upgrade/downgrade Node ngoài một quyết định mới. Tương thích Next.js major được xác minh lại ở Milestone 1.1 (Next.js version chưa được khóa ở 0.6).
+
+## D39 — Test Framework Direction
+
+**Trạng thái:** Approved — 2026-07-25 (O-3)
+
+**Quyết định:** **Vitest** là định hướng unit-test tương lai. Playwright/E2E chỉ thêm khi tồn tại luồng end-to-end thực tế. **Không cài** test framework nào trong Milestone 0.6.
+
+## D40 — Repository Visibility
+
+**Trạng thái:** Approved — 2026-07-25 (O-4)
+**Tu chỉnh:** ghi chú "repository private" ở D5 và `DEPLOYMENT.md`
+
+**Quyết định:** Repository là **Public**. Không thay đổi visibility. Secret và `.env` tuyệt đối không được commit; `.env*` (trừ `.env.example`) nằm trong `.gitignore`.
+
+## D41 — MDX Pipeline Deferral
+
+**Trạng thái:** Approved — 2026-07-25 (O-5)
+
+**Quyết định:** Hoãn việc chọn MDX pipeline tool (Velite / next-mdx-remote / @next/mdx) đến **Milestone 1.1**. Không chọn hoặc cài MDX tool trong Milestone 0.6.
+
+## D42 — Supabase Infrastructure Contract
+
+**Trạng thái:** Approved — 2026-07-25 (O-6 + ràng buộc bổ sung)
+**Tu chỉnh:** contract env Supabase trong D35, `.env.example`, `DEPLOYMENT.md`
+
+**Quyết định:**
+
+- Supabase project chọn **region Singapore** (khi tạo ở 0.6C).
+- MVP dùng Supabase theo hướng **server-only**: `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` phía server, ghi `contacts` qua Server Action.
+- **Loại** `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY` khỏi contract. Không đưa bất kỳ credential Supabase nào xuống client, trừ khi một feature được phê duyệt sau thực sự cần client-side Supabase.
+
+**Lý do:** đúng D35 (client không đọc DB; contact ghi qua Server Action bằng service role) và giảm bề mặt tấn công (không ship credential Supabase trong bundle client).
+
+**Ghi chú đồng bộ (ngoài phạm vi 0.6B, để vòng docs sau):** `DATABASE.md` §RLS còn giải thích bằng "anon key nằm công khai trong bundle client" — dưới D42 không ship anon key nào; RLS deny-all vẫn đúng. Cần chỉnh diễn giải ở vòng có thẩm quyền sửa `DATABASE.md`.
 
 **Tu chỉnh D32 — hai điểm:**
 
