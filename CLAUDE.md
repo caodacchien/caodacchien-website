@@ -18,13 +18,17 @@ Trước mọi công việc, phải đọc:
 
 1. `README.md`
 2. `docs/00-foundation/PROJECT_CONSTITUTION.md`
-3. `docs/01-product/PRODUCT_REQUIREMENTS.md`
-4. `docs/02-design/DESIGN_SYSTEM.md`
-5. `docs/03-engineering/SYSTEM_ARCHITECTURE.md`
-6. `docs/03-engineering/DATABASE.md`
-7. `docs/04-ai/AI_RULEBOOK.md`
-8. `docs/05-devops/DEPLOYMENT.md`
-9. `docs/06-operations/ROADMAP.md`
+3. `docs/00-foundation/DECISION_LOG.md`
+4. `docs/01-product/BRAND_POSITIONING.md`
+5. `docs/01-product/PRODUCT_REQUIREMENTS.md`
+6. `docs/02-design/DESIGN_SYSTEM.md`
+7. `docs/02-design/INFORMATION_ARCHITECTURE.md`
+8. `docs/02-design/COMPONENT_INVENTORY.md`
+9. `docs/03-engineering/SYSTEM_ARCHITECTURE.md`
+10. `docs/03-engineering/DATABASE.md`
+11. `docs/04-ai/AI_RULEBOOK.md`
+12. `docs/05-devops/DEPLOYMENT.md`
+13. `docs/06-operations/ROADMAP.md`
 
 Nếu tài liệu mâu thuẫn, dừng lại và báo rõ mâu thuẫn. Không tự suy đoán.
 

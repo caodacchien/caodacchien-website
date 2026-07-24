@@ -10,11 +10,15 @@ Cloudflare DNS / SSL
 Vercel
   |
 Next.js Application
-  |---- Nội dung MDX trong repository  (blog)
-  |---- Supabase Database              (profile, experience, project, contact)
-  |---- Resend                         (email thông báo contact form, từ Milestone 1.7)
+  |---- content/writing/*.mdx        (bài viết)
+  |---- content/case-studies/*.mdx   (case study)
+  |---- src/config/profile.config.ts (hồ sơ, kinh nghiệm, "Làm việc cùng tôi")
+  |---- Supabase                     (CHỈ bảng contacts, ghi-một-chiều)
+  |---- Resend                       (email thông báo contact form, từ Milestone 1.7)
   |---- Google Analytics 4
 ```
+
+Kiến trúc MDX-first theo **D35**. Toàn bộ nội dung công khai build tĩnh 100%, không phụ thuộc Supabase uptime. Supabase chỉ tham gia đúng một đường: ghi một bản liên hệ mới.
 
 MVP **không** dùng Supabase Auth và **không** có CMS. Xem D3.
 
@@ -26,9 +30,9 @@ MVP **không** dùng Supabase Auth và **không** có CMS. Xem D3.
 - Ưu tiên server-side rendering và static generation cho content.
 - API routes/server actions chỉ dùng khi cần.
 - Tích hợp bên ngoài thông qua adapter/service layer.
-- Dự án có hai nguồn nội dung theo D2. Bắt buộc có một **content service layer hợp nhất** tại `src/services/content/` để tầng UI không cần biết dữ liệu đến từ MDX hay từ database.
-- Sản phẩm là nền tảng xuất bản theo D12, không phải portfolio. Hệ quả kiến trúc: đường đi từ "viết xong một bài" tới "bài đã lên production" phải ngắn và ít ma sát. Mọi lựa chọn kỹ thuật làm chậm đường đi đó đều phải được cân nhắc lại, kể cả khi nó tối ưu ở khía cạnh khác.
-- Tầng service chịu trách nhiệm thi hành ranh giới D6. Cụ thể, `client_name` chỉ được trả ra ngoài khi `client_is_public = true`. Không để việc này phụ thuộc vào kỷ luật của tầng UI.
+- Theo D35, nội dung đọc từ **MDX + config file**, không từ database. Không cần "content service layer hợp nhất MDX + DB" như thiết kế cũ. Chỉ cần: lớp đọc MDX (bài viết, case study), lớp đọc config (hồ sơ), và một Server Action ghi `contacts`.
+- **Nguyên tắc kiến trúc P6 — Publish Cheap (thay cho design principle cùng tên):** đường đi từ "viết xong một bài" tới "bài đã lên production" chỉ gồm thêm một file `.mdx` và `git push`. Không thao tác thủ công nào bắt buộc cho mỗi bài mới (reading time, mục lục, bài liên quan, OG image đều sinh tự động). Mọi lựa chọn kỹ thuật làm chậm đường đi này phải bị loại.
+- Tầng đọc case study chịu trách nhiệm thi hành ranh giới D6. Cụ thể, tên khách hàng (`client`) chỉ được render khi `clientIsPublic = true`. Không để việc này phụ thuộc vào kỷ luật của tầng UI.
 
 ## 3. Stack đề xuất
 
@@ -53,18 +57,20 @@ src/
   features/
   lib/
   services/
-    content/           # lớp hợp nhất MDX + database
-    supabase/
+    content/           # đọc + parse MDX (bài viết, case study)
+    supabase/          # client + Server Action ghi contacts
     email/
   config/
     i18n/              # chuỗi giao diện, vi.ts
+    profile.config.ts  # hồ sơ, kinh nghiệm, "Làm việc cùng tôi" (D35)
   types/
   styles/
 content/
-  blog/                # bài viết MDX, đặt tên slug.vi.mdx
+  writing/             # bài viết MDX, đặt tên slug.vi.mdx
+  case-studies/        # case study MDX, đặt tên slug.vi.mdx
 public/
 supabase/
-  migrations/
+  migrations/          # chỉ một bảng: contacts
 docs/
 ```
 
@@ -85,12 +91,16 @@ docs/
 | Vấn đề | Quyết định | Tham chiếu |
 | --- | --- | --- |
 | CMS | Không có ở MVP. Không dùng Supabase Auth ở Phase 1. Lùi sang Phase 2. | D3 |
-| Blog | MDX trong repository, build tĩnh | D2 |
-| Dữ liệu có cấu trúc | Supabase | D2 |
+| Bài viết | MDX trong `content/writing/`, build tĩnh | D2, D35 |
+| Case study | MDX trong `content/case-studies/`, build tĩnh | D14, D35 |
+| Hồ sơ + kinh nghiệm | `src/config/profile.config.ts` | D35 |
+| Database | Chỉ bảng `contacts` trên Supabase, ghi-một-chiều | D35 |
 | Email | Resend, tích hợp ở Milestone 1.7, không tạo API key ở Phase 0 | D8 |
 | Analytics | Chỉ Google Analytics 4 ở MVP | D9 |
 | Ngôn ngữ | `vi` ở MVP, kiến trúc sẵn sàng song ngữ | D1 |
 | Theme | Light và dark ngay ở MVP | D10 |
+| Search, Pagination, Filter | Hoãn Phase 2 | D33 |
+| Topics `/topics/[pillar]` | Giữ trong MVP, đúng 5 pillar | D31 |
 
 ## 7. Quyết định còn mở
 
@@ -117,16 +127,17 @@ Theo D1, MVP chỉ xuất bản tiếng Việt nhưng kiến trúc phải sẵn 
 
 ## 9. Content pipeline cho MDX
 
-- Bài viết nằm ở `content/blog/<slug>.<locale>.mdx`.
-- Frontmatter được validate bằng Zod lúc build. Frontmatter sai thì **build fail**, không được im lặng bỏ qua bài viết.
-- Reading time, table of contents và chỉ mục tìm kiếm được sinh lúc build, không tính lại ở runtime.
-- Search của Blog chạy phía client trên chỉ mục tĩnh. Phương án này đủ cho quy mô dưới khoảng 100 bài và không cần thêm dịch vụ tìm kiếm nào.
-- Ảnh trong bài viết đi qua `next/image`.
+- Bài viết ở `content/writing/<slug>.vi.mdx`; case study ở `content/case-studies/<slug>.vi.mdx`.
+- Frontmatter validate bằng Zod lúc build. Sai thì **build fail**, không im lặng bỏ qua.
+- Reading time và table of contents sinh lúc build, không tính lại ở runtime.
+- **Search hoãn Phase 2** theo D33. MVP không có search; ở quy mô ra mắt (<20 bài) duyệt tay là đủ.
+- Ảnh trong bài đi qua `next/image`. Ảnh là tùy chọn theo P3 — bài chỉ có chữ vẫn phải build và hiển thị đẹp.
 
 ## 10. Bảo mật
 
-- Anon key của Supabase chỉ đọc được bản đã xuất bản. Chi tiết policy nằm ở `DATABASE.md`.
+- **Không còn đường đọc database công khai.** Toàn bộ nội dung công khai là file tĩnh; anon key không đọc được gì (không có bảng nội dung nào trên Supabase). Bề mặt tấn công database gần bằng không — lợi ích của D35.
 - Service role key chỉ dùng phía server, không bao giờ xuất hiện trong bundle client, không có tiền tố `NEXT_PUBLIC_`.
 - Contact form không ghi trực tiếp từ client vào Supabase. Client gọi Server Action, Server Action validate bằng Zod rồi mới ghi bằng service role.
 - Contact form có honeypot và rate limit theo IP đã băm. Chi tiết ở `DATABASE.md`.
+- Tên khách hàng trong case study chỉ render khi `clientIsPublic = true`. Thi hành D6 ở tầng đọc nội dung.
 - Mọi dữ liệu đầu vào từ bên ngoài đều được validate ở boundary bằng Zod.

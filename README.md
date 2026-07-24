@@ -14,6 +14,8 @@ Mười vùng năng lực website phải chứng minh: Marketing Strategy · Bra
 
 Cảm giác đích: **tổng hành dinh số của một Marketing Leader**.
 
+Hướng thiết kế đã khóa (D36): **A Strategic Editorial Platform for a Marketing Leader** — *Strategic Editorial with Product-Level Precision*, editorial-first.
+
 ## Mục tiêu
 
 Hệ thống là nền tảng xuất bản cho:
@@ -33,8 +35,9 @@ Roboworld là **một case study trong nhiều case study**, không phải khung
 
 - Next.js + React + TypeScript
 - Tailwind CSS + shadcn/ui
-- MDX cho bài viết blog
-- Supabase cho Database
+- **MDX cho bài viết và case study** (D35)
+- **`profile.config.ts` cho hồ sơ và kinh nghiệm** (D35)
+- **Supabase chỉ giữ bảng `contacts`** (D35)
 - Vercel cho triển khai ứng dụng
 - Cloudflare cho DNS, SSL và bảo vệ tên miền
 - GitHub cho source control
@@ -47,7 +50,7 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | ID | Quyết định |
 | --- | --- |
 | D1 | MVP chỉ tiếng Việt, kiến trúc sẵn sàng song ngữ |
-| D2 | Blog dùng MDX, dữ liệu có cấu trúc dùng Supabase |
+| D2 | Blog dùng MDX, dữ liệu có cấu trúc dùng Supabase *(amended by D35: toàn bộ nội dung sang MDX/config, Supabase chỉ còn `contacts`)* |
 | D3 | MVP không có CMS và không có Authentication |
 | D4 | MVP gồm 6 trang: Home, About, Experience, Projects, Blog, Contact |
 | D5 | Toàn bộ hạ tầng thuộc tài khoản cá nhân, không thuộc Roboworld |
@@ -66,11 +69,24 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | **D20** | **Định vị đầy đủ: Marketing Leader / Brand & Marketing Strategist** |
 | D21 | Thứ tự khán giả: CEO/Founder trước, nhà tuyển dụng cuối |
 | **D22** | **Triết lý thiết kế: khả năng đọc → xuất bản → mở rộng → thẩm mỹ** |
+| D23 | Chuyển đổi hai tầng (newsletter → tư vấn lọc); trần 2 CTA/trang |
+| D24 | Thứ tự cảm giác: Editorial trước; loại Academic, hạ Friendly |
+| D25 | Luồng Home; Home lấy nội dung nổi bật qua `featured: true` |
+| D29 | **Design Direction: Tòa soạn + Thư viện + khối dữ liệu** |
+| D30 | 8 Design Principle là tầng quyết định cao nhất |
+| D31 | Information Architecture; giữ `/topics/[pillar]` 5 trụ |
+| D32 | Kiến trúc Design Token (màu điền ở 0.4) |
+| D33 | 20 component; Search/Pagination/Filter → Phase 2 |
+| D34 | 12 Design Constraint |
+| **D35** | **Option B — MDX-first; Supabase chỉ còn bảng `contacts`** |
+| **D36** | **Design Direction: Strategic Editorial with Product-Level Precision** — editorial-first + interaction-first; tham khảo resend.com + recent.design; thêm P11–P13; Sound & Interaction (mặc định ON, future); tu chỉnh typography + container của D32 |
 
 Còn mở:
 
-- **D11** — media storage, chốt trước Milestone 1.3
+- **D11** — media storage (đã đơn giản hóa nhờ D35), chốt ở Milestone 0.5
 - **D19** — gói Vercel khi bật nội dung consulting, chốt trước Milestone 1.8
+- **D26** — nhãn nav / gộp Experience vào About (R1), chờ chủ dự án
+- **D27** — Newsletter trong MVP (R6), chờ chủ dự án
 
 ## Nguyên tắc bắt buộc
 
@@ -85,11 +101,13 @@ Còn mở:
 
 - `CLAUDE.md`: hướng dẫn Claude Code
 - `docs/00-foundation/PROJECT_CONSTITUTION.md`: hiến pháp dự án
-- `docs/00-foundation/DECISION_LOG.md`: nhật ký quyết định D1–D11
+- `docs/00-foundation/DECISION_LOG.md`: nhật ký quyết định D1–D35
 - `docs/01-product/BRAND_POSITIONING.md`: **nguồn sự thật về định vị**
 - `docs/01-product/PRODUCT_REQUIREMENTS.md`: yêu cầu sản phẩm
 - `docs/01-product/CONTENT_INVENTORY.md`: danh mục nội dung thật cần cung cấp
-- `docs/02-design/DESIGN_SYSTEM.md`: hệ thống thiết kế
+- `docs/02-design/DESIGN_SYSTEM.md`: hệ thống thiết kế, Design Principles và Constraints
+- `docs/02-design/INFORMATION_ARCHITECTURE.md`: sitemap, taxonomy, URL, điều hướng
+- `docs/02-design/COMPONENT_INVENTORY.md`: 20 component MVP và kiến trúc Design Token
 - `docs/03-engineering/SYSTEM_ARCHITECTURE.md`: kiến trúc hệ thống
 - `docs/03-engineering/DATABASE.md`: mô hình dữ liệu
 - `docs/04-ai/AI_RULEBOOK.md`: quy tắc AI
@@ -100,7 +118,8 @@ Còn mở:
 ## Trạng thái
 
 **Phase hiện tại:** Phase 0 — Foundation
-**Milestone hiện tại:** 0.1, 0.2 và 0.2b hoàn tất. Đang làm 0.3 Design Direction, làm lại từ đầu theo định vị mới.
-**Chặn Phase 1:** Design Direction chưa chọn, và `CONTENT_INVENTORY.md` chưa có nội dung thật.
+**Milestone hiện tại:** 0.1, 0.2, 0.2b, 0.3 hoàn tất. Tiếp theo là 0.4 (điền màu vào token, wireframe).
+**Chặn Phase 1:** màu Design chưa chốt (0.4), và `CONTENT_INVENTORY.md` chưa có nội dung thật.
+**Open cần chủ dự án quyết:** R1/D26 (nav, Experience) và R6/D27 (newsletter MVP).
 
-**Không được viết production code trước khi Design System được khóa.**
+**Không được viết production code trước khi Design System được khóa màu ở 0.4.**

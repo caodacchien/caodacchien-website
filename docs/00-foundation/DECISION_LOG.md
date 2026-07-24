@@ -39,11 +39,13 @@ Trạng thái: `Approved` | `Open` | `Superseded`
 
 **Quyết định:** Hybrid. Blog dùng MDX trong repository. Dữ liệu có cấu trúc dùng Supabase.
 
-| Loại nội dung | Nguồn |
+> **Đã tu chỉnh bởi D35 (2026-07-24):** case study và hồ sơ cũng chuyển sang MDX/config; Supabase chỉ còn `contacts`. Đường dẫn bài viết đổi thành `content/writing/`. Bảng dưới đây là trạng thái D2 gốc, giữ để tra cứu lịch sử.
+
+| Loại nội dung | Nguồn (D2 gốc) |
 | --- | --- |
-| Bài viết blog | MDX trong `content/blog/` |
+| Bài viết blog | MDX (nay `content/writing/`) |
 | Category, tag, reading time, TOC | Frontmatter và xử lý lúc build |
-| Profile, Experience, Project, Project media | Supabase |
+| Profile, Experience, Project, Project media | Supabase → **nay MDX/config theo D35** |
 | Contact submissions | Supabase |
 
 **Lý do:** Blog là tài sản SEO quan trọng nhất, để trong Git thì build tĩnh hoàn toàn, không phụ thuộc uptime của Supabase Free (project bị pause sau 7 ngày không hoạt động). Dữ liệu có cấu trúc để trong database thì sẵn sàng cho CMS ở Phase 2.
@@ -262,6 +264,7 @@ Nguồn sự thật về định vị đặt tại `docs/01-product/BRAND_POSITI
 ## D14 — Mô hình dữ liệu của Projects
 
 **Trạng thái:** Approved — 2026-07-23
+**Đã tu chỉnh bởi:** D35 — mô hình chuyển từ bảng Supabase sang frontmatter MDX. Ranh giới nội dung dưới đây (case study marketing, có services/industry/metrics, không tech stack) giữ nguyên hiệu lực.
 **Tu chỉnh:** thiết kế `projects` trong `DATABASE.md`
 
 **Bối cảnh:** Thiết kế bảng `projects` mang archetype portfolio lập trình viên: `tech_stack`, `repository_url`, `demo_url`, và index GIN phục vụ "filter theo công nghệ". Với một chiến lược gia marketing, đây là mô hình sai. Case study marketing cần khách hàng, ngành, dịch vụ đã cung cấp, kênh triển khai và số liệu kết quả.
@@ -472,3 +475,165 @@ Một trang mời gọi tư vấn trả phí, hoặc về sau bán sản phẩm 
 **Khuyến nghị:** phương án 1 cho tới hết Phase 1, rồi phương án 2 ngay khi bật nội dung consulting. Hai mươi USD mỗi tháng là chi phí nhỏ so với rủi ro bị gỡ site đúng lúc đang có khách hàng xem.
 
 **Cần chốt trước:** Milestone 1.8, hoặc sớm hơn nếu D18 chọn phương án 2 hoặc 3.
+
+---
+
+# Nhóm quyết định vòng UX/IA/Kiến trúc — khóa ngày 2026-07-24
+
+Các quyết định D23–D35 được chủ dự án khóa chính thức ngày 2026-07-24 sau ba vòng: Research, Architecture Simplification Review, Decision Review. Trạng thái ghi dưới đây phản ánh bản khóa của chủ dự án, kể cả những chỗ chủ dự án **override** khuyến nghị của agent.
+
+## D23 — Mô hình chuyển đổi
+
+**Trạng thái:** Approved — 2026-07-24
+
+**Quyết định:** Chuyển đổi hai tầng. Tầng 1: người đăng ký nhận bài (tài sản cộng dồn). Tầng 2: cuộc trao đổi tư vấn đã được lọc. **Cơ hội nghề nghiệp không phải mục tiêu chuyển đổi** — không có CTA hướng tuyển dụng.
+
+CTA được phép: đăng ký nhận bài, "Làm việc cùng tôi", đọc tiếp theo trụ, liên hệ. CTA bị cấm: pop-up chặn màn hình, thanh dính "đặt lịch", bảng giá, đếm ngược, chat widget, CTA tuyển dụng, chứng thực dàn dựng.
+
+**Trần mật độ:** tối đa 2 CTA mỗi trang, không bao giờ 2 CTA khác loại trong cùng một khung nhìn.
+
+## D24 — Thứ tự cảm giác thương hiệu
+
+**Trạng thái:** Approved — 2026-07-24
+
+**Quyết định:** Xếp hạng: 1 Editorial · 2 Strategic · 3 Authority · 4 Executive · 5 Thoughtful · 6 Premium · 7 Minimal. **Loại *Academic*.** **Hạ *Friendly*** xuống tầng giọng viết, không thể hiện ở hình thức. Sự ấm áp đến từ chữ, sự tiết chế đến từ hình.
+
+## D25 — Homepage information flow
+
+**Trạng thái:** Approved — 2026-07-24
+
+**Quyết định:** Thứ tự khối Home: (1) định vị dạng phát biểu vấn đề → (2) **bài viết featured** → (3) case study featured có số liệu → (4) bản đồ 5 trụ → (5) khối "Làm việc cùng tôi" → (6) đăng ký nhận bài → footer.
+
+**Chốt theo bản khóa:** Home lấy bài viết và case study nổi bật bằng cờ **`featured: true`** trong frontmatter, không phải "bài mới nhất". Experience không xuất hiện ở phần thân Home; nó nằm ở footer/About theo D21.
+
+## D26 — Nhãn điều hướng và gộp Experience vào About
+
+**Trạng thái:** **OPEN** — chưa nằm trong bản khóa 2026-07-24
+
+**Vấn đề:** Đề xuất R1 (đổi nhãn nav theo loại nội dung, gộp Experience vào About, nav còn 4–5 mục) **không có trong danh sách khóa của chủ dự án**. Vì cấm tự tạo/đổi quyết định, D4 (6 trang, Experience là trang riêng) vẫn là trạng thái có hiệu lực.
+
+**Ghi chú để Review sau:** nếu duyệt R1, Experience thành một mục trong About và nav gọn hơn. Nếu không, Experience giữ trang riêng. Tài liệu hiện đồng bộ theo D4 (Experience tách riêng) và đánh dấu chỗ này là TODO.
+
+## D27 — Newsletter trong MVP
+
+**Trạng thái:** **OPEN** — chưa nằm trong bản khóa 2026-07-24
+
+**Vấn đề:** Nghiên cứu kết luận newsletter là chuyển đổi quan trọng nhất (D23 tầng 1). Nhưng bản khóa không nhắc newsletter, và `ROADMAP.md` đang đặt Newsletter ở Phase 2. Không tự quyết.
+
+**Ghi chú để Review sau:** component `NewsletterForm` và khối đăng ký ở Home/cuối bài đang ở trạng thái **chờ R6**. Nếu duyệt phương án (a) — nhúng form dịch vụ ngoài (Substack/Beehiiv) — thì đưa vào MVP với chi phí gần bằng không, không cần bảng database. Nếu không, khối đăng ký lùi Phase 2 và CTA chính của Home tạm là "Làm việc cùng tôi"/Liên hệ.
+
+## D28 — Giả định chưa kiểm chứng
+
+**Trạng thái:** Ghi nhận — 2026-07-24
+
+Ghi lại để đo về sau, không phải quyết định:
+
+- **A1/A5 (rủi ro cao):** chưa có tiền lệ một website cá nhân của marketing leader thành công tại Việt Nam. Toàn bộ dự án đặt cược vào giả định này. Giảm rủi ro bằng cách đặt newsletter làm CTA số một (phụ thuộc D27).
+- **A2:** dấu tiếng Việt của font thân bài ở 15px cần kiểm bằng mắt ở Milestone 0.4. Vùng phủ ký tự đã xác nhận qua Google Fonts metadata; chất lượng dựng dấu thì chưa.
+- **A3:** năm trụ là cách chia đúng — kiểm sau 20 bài.
+- **A4:** tỷ lệ thiết bị của nhóm khán giả 1 chưa có dữ liệu.
+
+## D29 — Chốt Design Direction
+
+**Trạng thái:** Approved — 2026-07-24 (bản khóa: "Design Direction: giữ nguyên")
+
+**Quyết định:** Khóa hướng **Tòa soạn (Editorial) làm nền · cấu trúc Thư viện (Library) · khối dữ liệu Hồ sơ Chiến lược**. Đóng D17 (kết quả 0.3 cũ đã hủy, không tái sử dụng).
+
+## D30 — Design Principles
+
+**Trạng thái:** Approved — 2026-07-24
+
+**Quyết định:** 8 Design Principle là tầng quyết định cao nhất cho UI/UX/nội dung/kiến trúc: P1 Evidence over Claims · P2 Reading before Selling · P3 Text First · P4 Structure over Stream · P5 Framework as First-Class Object · P8 One Door per Screen · P9 Minimal Motion · P10 Warmth in Words, Restraint in Form.
+
+**Từ 10 rút còn 8:** P6 (Publish Cheap) chuyển thành nguyên tắc **kiến trúc** trong `SYSTEM_ARCHITECTURE.md`; P7 (Design for Article 200) giải thể — phần bền vững giữ ở constraint URL bất biến và taxonomy-là-dữ-liệu, bỏ phần mời gọi over-engineering.
+
+## D31 — Information Architecture
+
+**Trạng thái:** Approved — 2026-07-24, với một override của chủ dự án
+
+**Quyết định:** Sitemap, taxonomy 2 tầng (trụ đóng + tag), URL đoạn tiếng Anh / slug tiếng Việt không dấu, URL bất biến (đổi thì 301), chiến lược liên kết nội bộ topic-cluster, breadcrumb cho bài và case study. Chi tiết ở `INFORMATION_ARCHITECTURE.md`.
+
+**Override của chủ dự án:** agent đề xuất **defer** `/topics/[pillar]`; chủ dự án **giữ** `/topics/[pillar]` trong MVP với đúng 5 pillar. Bản khóa thắng. Tag page vẫn hoãn Phase 2.
+
+## D32 — Design Tokens
+
+**Trạng thái:** Approved — 2026-07-24
+**Đã tu chỉnh bởi:** D36 — body chuyển sang sans (serif dồn lên tiêu đề); khôi phục `--container-wide` (nay 4 container). Các phần khác giữ nguyên.
+
+**Quyết định:** Khóa **kiến trúc** token, **để trống giá trị màu** tới Milestone 0.4 (tôn trọng D10). Thang chữ 8 bậc (đã bỏ `--text-display`), spacing cơ sở 4px, container 3 mức (đã bỏ `--container-wide`), trần radius 8px, elevation 2 mức (đã bỏ `--elevation-2`), trần motion 200ms, màu semantic 2 tầng. Chi tiết ở `COMPONENT_INVENTORY.md`.
+
+## D33 — Component Inventory
+
+**Trạng thái:** Approved — 2026-07-24
+
+**Quyết định:** **20 component** cho MVP (từ 38 sau tối giản hóa). `SearchDialog`, `Pagination`, `FilterBar` hoãn **Phase 2** theo bản khóa. Chi tiết và danh sách gộp/bỏ ở `COMPONENT_INVENTORY.md`.
+
+## D34 — Design Constraints
+
+**Trạng thái:** Approved — 2026-07-24
+
+**Quyết định:** 12 constraint bảo vệ chất lượng (từ 16, đã bỏ những cái enforce ở nơi khác). Danh sách ở `COMPONENT_INVENTORY.md`.
+
+## D35 — Option B: MDX-first
+
+**Trạng thái:** Approved — 2026-07-24 (bản khóa)
+**Tu chỉnh:** D2, D14
+
+**Quyết định:** Kiến trúc nội dung MDX-first.
+
+- Bài viết và case study lưu bằng **MDX**.
+- Hồ sơ và kinh nghiệm lưu ở **`src/config/profile.config.ts`**.
+- Supabase **chỉ giữ bảng `contacts`**.
+
+**Tu chỉnh D2:** D2 định nghĩa hybrid với dữ liệu có cấu trúc nằm ở Supabase. D35 chuyển dữ liệu đó sang MDX + config; Supabase còn đúng một bảng ghi-một-chiều.
+
+**Tu chỉnh D14:** ranh giới nội dung của D14 (case study là marketing, có services/industry/metrics, không có tech stack) **giữ nguyên hiệu lực**, chỉ chuyển từ cột database sang frontmatter MDX.
+
+**Lợi ích:** ít code, ít schema, nội dung build tĩnh 100%, không phụ thuộc Supabase uptime, bề mặt tấn công database gần bằng không. Chi tiết ở `DATABASE.md` v2.0.
+
+---
+
+## D36 — Design Direction: Strategic Editorial with Product-Level Precision
+
+**Trạng thái:** Approved — 2026-07-24 (chủ dự án khóa)
+**Mở rộng:** D29 · **Tu chỉnh:** D32 (typography, container)
+
+**Quyết định:** Khóa câu định danh sản phẩm là **"A Strategic Editorial Platform for a Marketing Leader"**, hướng thiết kế **Strategic Editorial with Product-Level Precision** — ấn phẩm biên tập cao cấp với độ hoàn thiện interaction như một digital product hiện đại. Editorial-first, không phải visual-first.
+
+**Triết lý:** editorial-first và **interaction-first**, không phải visual-first.
+
+**Tham khảo craft:** `resend.com` (layout, grid, whitespace, typography, surface, card, responsive, motion, refinement) và `recent.design` (interaction quality, craftsmanship, sound-as-feedback). **Không copy** hero, 3D, dashboard, code editor, developer visual, **SaaS information architecture**, **SaaS copywriting**.
+
+**Nội dung khóa** (chi tiết ở `DESIGN_SYSTEM.md`):
+
+- **Layout:** 4 container (`prose`, `content`, `wide`, `full`), mỗi loại một mục đích. Không dùng một container duy nhất.
+- **Section rhythm:** spacing ngữ nghĩa Major / Standard / Compact.
+- **Responsive là composition:** section được đổi thứ tự/alignment/layout/tỷ lệ ảnh theo breakpoint; CTA full-width trên mobile.
+- **Typography:** serif cho Hero/Display/Major Heading; sans cho Body/Nav/UI/Metadata; mono chỉ cho metadata.
+- **Surface:** 3 lớp (Page/Raised/Sunken), không hơn.
+- **Card:** giống ấn phẩm — subtle border, subtle contrast, content-first; không gradient/glassmorphism/heavy shadow.
+- **Visual:** framework/sơ đồ/diagram/illustration/editorial/real asset; cấm dashboard/analytics/terminal/code editor/3D giả.
+- **CTA:** tối đa 2 cạnh tranh/viewport (P8).
+- **Motion:** subtle, purposeful, 120–200ms, không decorative.
+- **Color mode:** light và dark đều first-class, cùng hierarchy; light không phải bản đảo màu.
+
+**Bổ sung Design Principle:** P11 Product-Level Precision · P12 Responsive as Composition · **P13 Interaction Before Decoration** (mọi effect/animation/motion/sound/hover/micro-interaction phải phục vụ usability/feedback/hiểu nội dung; trang trí chỉ được phép khi không cạnh tranh nội dung; "Sound is feedback, not decoration").
+
+**Future Enhancement (không MVP) — Sound & Interaction:**
+
+- **Sound mặc định ON** *(sửa từ bản nháp D36 đầu ghi OFF)*; user chủ động Mute; trạng thái Mute được lưu.
+- Luôn có nút Sound/Mute, icon rõ, không ẩn trong menu, không cần mở Settings.
+- Chỉ phát khi user chủ đích click (navigation, header/mobile menu, CTA, theme toggle, pillar filter). **Cấm** phát khi hover/scroll/page-load/animation/card-appear/carousel/background.
+- Chất lượng: nhỏ, rất ngắn, sạch, tối giản, không chói/mechanical/sci-fi/game.
+- Spam protection: debounce/throttle, không phát chồng.
+- **Motion và Sound là hai hệ thống độc lập:** `prefers-reduced-motion` chỉ áp dụng cho Motion; Sound có preference riêng (Mute). Sound không phải kênh trạng thái duy nhất — site vẫn dùng được khi mute/không loa.
+- Cần một component điều khiển âm thanh ở Phase triển khai, **không** nằm trong 20 component MVP.
+
+**Tu chỉnh D32 — hai điểm:**
+
+1. **Typography:** D32 gốc để body là serif (PA-A). D36 đổi body sang **sans**, serif dồn lên tiêu đề. Editorial thể hiện ở heading, body tối ưu đọc dài.
+2. **Container:** D32 gốc bỏ `--container-wide` (gộp vào content). D36 **khôi phục** `--container-wide`, nay có đủ 4 container.
+
+Các phần khác của D32 (thang chữ 8 bậc, spacing 4px, radius ≤8px, motion ≤200ms, màu để trống tới 0.4) **giữ nguyên**.
+
+**Không xung đột với:** D22 (Editorial là cảm giác #1), D24 (thứ tự cảm giác), D10 (hai chế độ), D23/P8 (CTA), C7/C8 (cấm dashboard/visual giả). D36 làm rõ và cụ thể hóa chúng, không đảo ngược.

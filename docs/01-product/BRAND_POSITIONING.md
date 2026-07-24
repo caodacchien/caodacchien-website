@@ -27,7 +27,11 @@ Website `caodacchien.io.vn` là **nền tảng xuất bản** của người đ�
 
 Sản phẩm là một **Publishing Platform**. Chốt theo D22.
 
-Nó **không phải** portfolio, **không phải** gallery, **không phải** personal homepage, **không phải** consulting landing page, **không phải** freelancer portfolio, và **không phải** website công ty.
+Câu định danh khóa theo D36: **A Strategic Editorial Platform for a Marketing Leader** — một ấn phẩm biên tập chiến lược cao cấp, có độ hoàn thiện interaction như một digital product hiện đại. Hướng thiết kế tương ứng: *Strategic Editorial with Product-Level Precision* (chi tiết ở `DESIGN_SYSTEM.md`).
+
+Nó **không phải** portfolio, **không phải** gallery, **không phải** personal homepage, **không phải** consulting landing page, **không phải** freelancer portfolio, **không phải** website công ty, và **không phải** SaaS website hay startup landing page.
+
+Thứ tự ưu tiên là **editorial-first và interaction-first, không phải visual-first**: Editorial → Case study → Writing → Knowledge → Framework → Interaction. Sound và micro-interaction là một phần của Brand Experience, theo nguyên tắc "Sound is feedback, not decoration" (chi tiết ở `DESIGN_SYSTEM.md`).
 
 Sự khác biệt này chi phối mọi quyết định về sau:
 
@@ -75,11 +79,11 @@ Website là nền tảng xuất bản cho:
 
 | Dạng | Trạng thái | Ghi chú |
 | --- | --- | --- |
-| Bài viết chuyên sâu dạng dài | MVP | MDX, theo D2 |
-| Case study | MVP | Bảng `projects` |
+| Bài viết chuyên sâu dạng dài | MVP | MDX trong `content/writing/`, theo D2 và D35 |
+| Case study | MVP | MDX trong `content/case-studies/`, theo D35 |
 | Quan điểm về ngành | MVP | Là một dạng bài viết, thuộc trụ 5 |
 | Hướng dẫn marketing thực chiến | MVP | Là một dạng bài viết |
-| Trưng bày dự án | MVP | Cùng bảng `projects`, khác cách hiển thị |
+| Trưng bày dự án | MVP | Cùng nguồn MDX case study, khác cách hiển thị |
 | **Khối "Làm việc cùng tôi"** | **MVP** | **Trên Home và About. Chốt theo D18 phương án 2. Không phải trang riêng, không phải landing page bán dịch vụ.** |
 | Framework | Phase 2 | Thuộc trang Resources |
 | Template tải về | Phase 2 | Thuộc trang Resources. Cần lưu trữ file và có thể cần thu thập email |
@@ -96,16 +100,16 @@ Thứ tự ưu tiên dưới đây là bắt buộc. Chốt theo D21. **Mọi qu
 | # | Nhóm | Họ đến để làm gì | Trang phục vụ chính |
 | --- | --- | --- | --- |
 | 1 | **CEO và Founder cần chiến lược marketing và thương hiệu** | Đánh giá xem người này có tư duy giải được bài toán tăng trưởng của họ không | Home, Case study, Làm việc cùng tôi |
-| 2 | **CMO, Marketing Director, Marketing Manager** | Tìm khung tư duy dùng được ở tầng quản lý, kiểm chứng chiều sâu | Blog, Case study |
-| 3 | Người làm marketing chuyên nghiệp | Học và tham chiếu khung tư duy, áp dụng vào việc hằng ngày | Blog |
-| 4 | Chủ doanh nghiệp vừa và nhỏ | Tìm cách làm marketing hiệu quả với nguồn lực hạn chế | Blog, Case study, Làm việc cùng tôi |
-| 5 | Sinh viên marketing | Học nền tảng, tìm hướng dẫn thực chiến | Blog, Resources ở Phase 2 |
+| 2 | **CMO, Marketing Director, Marketing Manager** | Tìm khung tư duy dùng được ở tầng quản lý, kiểm chứng chiều sâu | Viết, Case study |
+| 3 | Người làm marketing chuyên nghiệp | Học và tham chiếu khung tư duy, áp dụng vào việc hằng ngày | Viết |
+| 4 | Chủ doanh nghiệp vừa và nhỏ | Tìm cách làm marketing hiệu quả với nguồn lực hạn chế | Viết, Case study, Làm việc cùng tôi |
+| 5 | Sinh viên marketing | Học nền tảng, tìm hướng dẫn thực chiến | Viết, Resources ở Phase 2 |
 | 6 | Nhà tuyển dụng | Kiểm chứng kinh nghiệm và kết quả thật | Experience, About |
 
 **Cách đọc thứ tự này:**
 
 - Nhóm 1 và 2 quyết định thiết kế của **Home**, **Case study** và khối **Làm việc cùng tôi**.
-- Nhóm 2, 3 và 5 quyết định thiết kế của **Blog**, tức là trải nghiệm đọc dài.
+- Nhóm 2, 3 và 5 quyết định thiết kế của trang **Viết (Writing)**, tức là trải nghiệm đọc dài.
 - Nhóm 6 đứng cuối. Đây là thay đổi có chủ đích so với bản trước: **website này không phải công cụ tìm việc.** Trang Experience vẫn phải đầy đủ và chính xác, nhưng nó không được chiếm vị trí ưu tiên trong kiến trúc thông tin hay trong thiết kế Home.
 - Khi hai nhóm mâu thuẫn về một quyết định UX, nhóm có số nhỏ hơn thắng.
 
@@ -143,6 +147,8 @@ Mọi hướng thiết kế phải phục vụ được: viết, đọc, xuất 
 **Không tối ưu cho xu hướng thị giác.** Tối ưu cho thẩm quyền, độ tin cậy, năng lực xuất bản, sự tin tưởng, tính vượt thời gian, khả năng đọc và xây dựng thương hiệu dài hạn.
 
 Cảm giác đích cần đạt: **tổng hành dinh số của một Marketing Leader**, không phải một portfolio và cũng không phải một màn trình diễn thiết kế.
+
+Triết lý này được cụ thể hóa thành 8 Design Principle và 12 Design Constraint tại `docs/02-design/DESIGN_SYSTEM.md` (D30, D34), kiến trúc thông tin tại `docs/02-design/INFORMATION_ARCHITECTURE.md` (D31), và Design Direction đã khóa là Tòa soạn + Thư viện (D29).
 
 ## 7. Giọng và cách viết
 

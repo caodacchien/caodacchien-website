@@ -2,175 +2,128 @@
 
 ## Trạng thái
 
-Bản thiết kế v1.0 — 2026-07-23. **Chưa tạo migration.** Migration đầu tiên được viết ở Milestone 1.3.
+Bản thiết kế v2.0 — 2026-07-24. **Chưa tạo migration.** Migration đầu tiên được viết ở Milestone 1.3.
 
-Thiết kế này phản ánh D2: blog nằm trong MDX, chỉ dữ liệu có cấu trúc nằm trong Supabase. Các bảng `posts`, `categories`, `tags` trong bản thiết kế trước đã bị **loại bỏ**.
+Bản này phản ánh **D35 (Option B — MDX-first)**. So với v1.0:
 
-## Phạm vi
+- Bài viết và case study nằm trong **MDX**, không nằm trong database.
+- Hồ sơ và kinh nghiệm nằm trong **`src/config/profile.config.ts`**, không nằm trong database.
+- Supabase chỉ còn **một bảng: `contacts`**, ghi-một-chiều qua Server Action.
+- Các bảng `profiles`, `experiences`, `projects`, `project_media` của v1.0 đã bị **loại bỏ khỏi MVP**.
 
-### Bảng thuộc MVP
-- `profiles`
-- `experiences`
-- `projects`
-- `project_media`
-- `contacts`
-
-### Bảng thuộc Phase 2, chưa tạo migration
-- `resources` — đi cùng trang Resources, lùi theo D4
-- `newsletter_subscribers` — đi cùng Newsletter ở Phase 2
-
-## Quy ước chung
-
-- Khóa chính: `id uuid primary key default gen_random_uuid()`.
-- Mọi bảng có `created_at timestamptz not null default now()` và `updated_at timestamptz not null default now()`, cập nhật `updated_at` bằng trigger.
-- Trạng thái xuất bản dùng `status text not null default 'draft'` kèm `check (status in ('draft','published','archived'))`. Dùng CHECK thay vì enum của Postgres để dễ tiến hóa mà không cần migration kiểu.
-- Cột i18n theo D1:
-  - `locale text not null default 'vi'` kèm `check (locale in ('vi','en'))`
-  - `translation_key text not null` — định danh ổn định dùng chung giữa các bản dịch của cùng một nội dung
-  - `unique (translation_key, locale)`
-  - `unique (slug, locale)` với các bảng có slug
-- Slug dùng kebab-case, chỉ chữ thường, số và dấu gạch nối.
-
-Hai cột i18n được thêm ngay từ migration đầu tiên dù MVP chỉ dùng `vi`. Đây là chủ đích theo D1: thêm hai cột lúc này tốn gần như không có gì, còn thêm sau khi đã có dữ liệu production thì phải backfill và đổi ràng buộc unique.
+D35 tu chỉnh D2 và D14. Ranh giới nội dung của D14 (case study là marketing, không phải phần mềm) **giữ nguyên hiệu lực** — nó chỉ chuyển từ cột database sang frontmatter MDX.
 
 ---
 
-## profiles
+## 1. Nguồn dữ liệu của toàn bộ nội dung
 
-Hồ sơ của chủ dự án. Mỗi locale đúng một bản ghi.
-
-| Cột | Kiểu | Ràng buộc |
+| Loại nội dung | Nơi lưu | Định dạng |
 | --- | --- | --- |
-| `id` | uuid | PK |
-| `translation_key` | text | not null |
-| `locale` | text | not null, default `'vi'` |
-| `full_name` | text | not null |
-| `headline` | text | not null |
-| `short_bio` | text | not null |
-| `long_bio` | text | |
-| `avatar_url` | text | |
-| `og_image_url` | text | |
-| `location` | text | |
-| `email` | text | |
-| `social_links` | jsonb | not null, default `'[]'` |
-| `skills` | jsonb | not null, default `'[]'` |
-| `education` | jsonb | not null, default `'[]'` |
-| `certifications` | jsonb | not null, default `'[]'` |
-| `core_values` | jsonb | not null, default `'[]'` |
-| `services_offered` | jsonb | not null, default `'[]'` |
-| `status` | text | not null, default `'draft'` |
+| Bài viết | `content/writing/<slug>.vi.mdx` | MDX + frontmatter |
+| Case study | `content/case-studies/<slug>.vi.mdx` | MDX + frontmatter |
+| Hồ sơ, kinh nghiệm, kỹ năng, học vấn, chứng chỉ, giá trị, social, "Làm việc cùng tôi" | `src/config/profile.config.ts` | TypeScript typed object |
+| Liên hệ gửi từ form | Supabase, bảng `contacts` | Postgres |
 
-Ràng buộc: `unique (translation_key, locale)`
-
-Ghi chú về `services_offered`: nguồn dữ liệu cho khối "Làm việc cùng tôi" trên Home và About, chốt theo D18. Mỗi phần tử gồm `{ title, description, fit, not_fit }`, trong đó `fit` và `not_fit` mô tả loại bài toán phù hợp và không phù hợp. **Không có trường giá.** Đây là khối thông tin, không phải phễu bán hàng.
-
-Ghi chú: `skills`, `education`, `certifications`, `core_values`, `social_links`, `services_offered` dùng `jsonb` thay vì tách bảng riêng. Đây là dữ liệu chỉ đọc, chỉ thuộc về một chủ thể duy nhất và không cần truy vấn chéo. Tách thành 5 bảng con là over-engineering, vi phạm `PROJECT_CONSTITUTION.md` §4. Cấu trúc bên trong `jsonb` được validate bằng Zod ở tầng service.
+Toàn bộ nội dung công khai build tĩnh 100%. Website không phụ thuộc uptime Supabase để hiển thị bất kỳ trang nội dung nào. Supabase chỉ tham gia đúng một đường: **ghi** một bản liên hệ mới.
 
 ---
 
-## experiences
+## 2. `src/config/profile.config.ts`
 
-| Cột | Kiểu | Ràng buộc |
-| --- | --- | --- |
-| `id` | uuid | PK |
-| `translation_key` | text | not null |
-| `locale` | text | not null, default `'vi'` |
-| `company` | text | not null |
-| `role` | text | not null |
-| `location` | text | |
-| `start_date` | date | not null |
-| `end_date` | date | null nghĩa là đang làm |
-| `description` | text | |
-| `responsibilities` | jsonb | not null, default `'[]'` |
-| `achievements` | jsonb | not null, default `'[]'` |
-| `sort_order` | integer | not null, default 0 |
-| `status` | text | not null, default `'draft'` |
+Một người, một hồ sơ. Đây là dữ liệu chỉ đọc, chỉ thuộc một chủ thể duy nhất — đúng loại dữ liệu mà việc dựng bảng database là over-engineering (`PROJECT_CONSTITUTION.md` §4).
 
-Ràng buộc:
-- `unique (translation_key, locale)`
-- `check (end_date is null or end_date >= start_date)`
+Cấu trúc (validate bằng Zod lúc build):
 
-Index: `(status, locale, sort_order desc, start_date desc)`
-
-Ghi chú theo D6: `achievements` chỉ được chứa số liệu đã được phép công khai.
-
----
-
-## projects
-
-| Cột | Kiểu | Ràng buộc |
-| --- | --- | --- |
-| `id` | uuid | PK |
-| `translation_key` | text | not null |
-| `locale` | text | not null, default `'vi'` |
-| `experience_id` | uuid | FK tới `experiences(id)` on delete set null, nullable |
-| `title` | text | not null |
-| `slug` | text | not null |
-| `summary` | text | not null |
-| `problem` | text | |
-| `solution` | text | |
-| `result` | text | |
-| `my_role` | text | |
-| `engagement_type` | text | not null, check in (`'in_house'`,`'consulting'`,`'advisory'`,`'personal'`) |
-| `services` | text[] | not null, default `'{}'` — dịch vụ đã cung cấp, trục filter chính |
-| `industry` | text | ngành của khách hàng, chỉ dùng để phân loại |
-| `client_name` | text | nullable, chịu ràng buộc kiểm duyệt của D6 |
-| `client_is_public` | boolean | not null, default false |
-| `outcome_metrics` | jsonb | not null, default `'[]'` |
-| `cover_image_url` | text | |
-| `reference_url` | text | trỏ tới chiến dịch hoặc sản phẩm thật |
-| `is_featured` | boolean | not null, default false |
-| `sort_order` | integer | not null, default 0 |
-| `published_at` | timestamptz | |
-| `status` | text | not null, default `'draft'` |
-
-Ràng buộc:
-- `unique (slug, locale)`
-- `unique (translation_key, locale)`
-
-Index:
-- `(status, locale, published_at desc)`
-- `(is_featured) where status = 'published'`
-- GIN trên `services` để phục vụ filter theo dịch vụ ở trang Projects
-- `(industry)` để phục vụ filter theo ngành
+```ts
+{
+  fullName, headline, shortBio, longBio,
+  avatarUrl, ogImageUrl, location, email,
+  socialLinks:   [{ platform, url }],
+  skills:        [{ group, items[] }],
+  coreValues:    [{ title, description }],
+  education:     [{ school, degree, field, from, to }],
+  certifications:[{ name, issuer, issuedAt, url }],
+  experiences:   [{ company, role, location, startDate, endDate,
+                   description, responsibilities[], achievements[] }],
+  servicesOffered:[{ title, description, fit[], notFit[] }],  // khối "Làm việc cùng tôi", D18
+}
+```
 
 Ghi chú:
-- Bảng này mô hình hóa **case study marketing**, không phải dự án phần mềm. Chốt theo D14. Thiết kế trước đó có `tech_stack` và `repository_url` là sai archetype và đã bị loại bỏ.
-- `services` là trục phân loại chính, chứa các giá trị như `Brand Strategy`, `Content Marketing`, `Marketing Automation`. Nên rút từ mười vùng năng lực ở `BRAND_POSITIONING.md` §2 để giữ nhất quán với ngôn ngữ toàn site.
-- `industry` chỉ để phân loại và lọc. **Không được dùng để suy ra tệp khách hàng mục tiêu của website.** Xem D13.
-- `client_name` và `client_is_public` tách riêng có chủ đích: nhiều case study có tên khách hàng trong database phục vụ quản lý nội bộ, nhưng chưa được phép công khai. Tầng service chỉ trả `client_name` ra ngoài khi `client_is_public = true`. Đây là ràng buộc D6 được thi hành ở tầng dữ liệu thay vì trông chờ vào kỷ luật của người biên tập.
-- `outcome_metrics` là mảng các đối tượng `{ label, value, note }`, ví dụ `{ "label": "Tăng trưởng lead", "value": "+180%", "note": "6 tháng, so với cùng kỳ" }`. Dùng `jsonb` vì số lượng và loại chỉ số khác nhau ở từng dự án. Validate bằng Zod ở tầng service. Chỉ ghi số liệu đã được phép công khai theo D6.
-- `experience_id` giải quyết yêu cầu "Related projects" của `PRODUCT_REQUIREMENTS.md` §5. Một experience có nhiều project. Dùng khóa ngoại một chiều thay vì bảng nối vì quan hệ thực tế là một-nhiều.
-- `my_role` bắt buộc có nội dung với các dự án tập thể, để không gây hiểu nhầm về phần đóng góp cá nhân.
+
+- `experiences` chuyển từ bảng Supabase (v1.0) sang đây vì D35 chỉ giữ `contacts` trên Supabase. Kinh nghiệm là dữ liệu hồ sơ của một người, thuộc về file config.
+- `servicesOffered` **không có trường giá**. Khối thông tin, không phải phễu. D18.
+- `achievements` và số liệu trong experiences chỉ chứa thông tin đã được phép công khai. D6.
+- Sẵn sàng song ngữ theo D1: khi bật `en`, tách thành `profile.vi.ts` / `profile.en.ts` hoặc thêm khóa locale. Không cần migration database.
 
 ---
 
-## project_media
+## 3. Frontmatter — Bài viết
 
-Gallery ảnh của case study.
+`content/writing/<slug>.vi.mdx`. Validate bằng Zod lúc build; sai thì **build fail**.
 
-| Cột | Kiểu | Ràng buộc |
-| --- | --- | --- |
-| `id` | uuid | PK |
-| `project_id` | uuid | FK tới `projects(id)` on delete cascade, not null |
-| `url` | text | not null |
-| `alt_text` | text | not null |
-| `caption` | text | |
-| `width` | integer | |
-| `height` | integer | |
-| `sort_order` | integer | not null, default 0 |
+```yaml
+title:        string           # bắt buộc
+excerpt:      string           # bắt buộc — dùng cho thẻ danh sách VÀ meta description
+publishedAt:  YYYY-MM-DD        # bắt buộc
+status:       draft | published # bắt buộc, chỉ 'published' mới build ra trang
+category:     <1 trong 5 trụ>   # bắt buộc, Zod enum theo D16
+featured:     boolean           # tùy chọn, default false — Home lấy featured=true (D25)
+updatedAt:    YYYY-MM-DD         # tùy chọn
+coverImage:   string            # tùy chọn — KHÔNG bắt buộc, theo P3
+```
 
-Index: `(project_id, sort_order)`
+`category` bị ràng buộc Zod enum vào đúng năm trụ của D16:
 
-Ghi chú: `alt_text` là `not null` vì yêu cầu WCAG AA. Vị trí lưu file thực tế phụ thuộc D11, hiện còn mở.
+```
+'Chiến lược' | 'Tăng trưởng số' | 'Nội dung và Truyền thông' | 'AI cho Marketing' | 'Lãnh đạo và Quan điểm'
+```
+
+Đã loại khỏi frontmatter so với v1.0, vì derive được hoặc chưa cần ở MVP:
+
+- `slug` → derive từ tên file.
+- `seoTitle` → mặc định lấy `title`.
+- `seoDescription` → mặc định lấy `excerpt`.
+- `tags` → hoãn Phase 2 (tag page thuộc Phase 2).
+- `relatedCaseStudies` → bỏ; liên kết bài ↔ case study làm bằng link inline trong thân MDX.
+
+`readingTime`, `tableOfContents` được sinh lúc build, không lưu trong frontmatter để tránh lệch dữ liệu.
 
 ---
 
-## contacts
+## 4. Frontmatter — Case study
+
+`content/case-studies/<slug>.vi.mdx`. Phần tường thuật (Bối cảnh / Vấn đề / Cách tiếp cận / Kết quả) nằm ở **thân MDX**, không phải frontmatter.
+
+```yaml
+title:          string          # bắt buộc
+excerpt:        string          # bắt buộc
+publishedAt:    YYYY-MM-DD       # bắt buộc
+status:         draft | published # bắt buộc
+featured:       boolean          # tùy chọn, default false — Home lấy featured=true
+engagementType: in_house | consulting | advisory | personal   # bắt buộc
+services:       string[]         # bắt buộc — dịch vụ đã cung cấp, rút từ 10 vùng năng lực (§BRAND_POSITIONING §2)
+industry:       string           # tùy chọn — chỉ để phân loại, KHÔNG suy ra tệp khách hàng (D13)
+client:         string           # tùy chọn
+clientIsPublic: boolean          # bắt buộc nếu có client — chỉ render tên khi true (D6)
+metrics:        [{ label, value, note }]   # số liệu kết quả, chỉ số đã được phép công khai (D6)
+coverImage:     string           # tùy chọn
+reference:      string           # tùy chọn — link chiến dịch/sản phẩm thật
+```
+
+Ghi chú D14 (giữ nguyên hiệu lực):
+
+- Đây là **case study marketing**, không phải dự án phần mềm. Không có `techStack`, không có `repositoryUrl`.
+- `services` là trục phân loại. Bộ lọc theo dịch vụ/ngành là **Phase 2** (D33), nên MVP chỉ hiển thị, chưa lọc.
+- `client` + `clientIsPublic`: tầng render chỉ hiển thị tên khách khi `clientIsPublic = true`. Thi hành D6 ở tầng dữ liệu, không trông chờ kỷ luật biên tập.
+
+---
+
+## 5. `contacts` — bảng Supabase duy nhất
 
 | Cột | Kiểu | Ràng buộc |
 | --- | --- | --- |
-| `id` | uuid | PK |
+| `id` | uuid | PK, default `gen_random_uuid()` |
 | `name` | text | not null |
 | `email` | text | not null |
 | `subject` | text | |
@@ -180,135 +133,76 @@ Ghi chú: `alt_text` là `not null` vì yêu cầu WCAG AA. Vị trí lưu file 
 | `status` | text | not null, default `'new'`, check in (`'new'`,`'read'`,`'replied'`,`'spam'`) |
 | `created_at` | timestamptz | not null, default now() |
 
-Index: `(ip_hash, created_at desc)` phục vụ rate limit
+Index: `(ip_hash, created_at desc)` phục vụ rate limit.
 
 Ghi chú bảo mật:
-- `ip_hash` là SHA-256 của địa chỉ IP nối với một salt lấy từ biến môi trường `CONTACT_IP_HASH_SALT`. **Không lưu IP thô** để giảm phạm vi dữ liệu cá nhân phải bảo vệ.
-- Bảng này chứa dữ liệu cá nhân. Không bao giờ được để anon key đọc.
+
+- `ip_hash` là SHA-256 của IP nối salt từ `CONTACT_IP_HASH_SALT`. **Không lưu IP thô.**
+- Bảng chứa dữ liệu cá nhân. Không bao giờ để anon key đọc.
 
 ---
 
-## Row Level Security
+## 6. Row Level Security
 
-RLS bật cho **tất cả** các bảng. Đây là ràng buộc bắt buộc của `PROJECT_CONSTITUTION.md` §2.4.
-
-Mô hình quyền của MVP rất hẹp vì không có Authentication theo D3:
+RLS bật cho `contacts`. Vì đây là bảng duy nhất, mô hình quyền cực kỳ hẹp:
 
 | Bảng | `anon` | `service_role` |
 | --- | --- | --- |
-| `profiles` | SELECT khi `status = 'published'` | toàn quyền |
-| `experiences` | SELECT khi `status = 'published'` | toàn quyền |
-| `projects` | SELECT khi `status = 'published'` | toàn quyền |
-| `project_media` | SELECT khi project cha đã published | toàn quyền |
-| `contacts` | **không có policy nào** — deny all | toàn quyền |
-
-Policy mẫu:
+| `contacts` | **không có policy nào** — deny all | toàn quyền (chỉ dùng phía server) |
 
 ```sql
-alter table public.projects enable row level security;
-
-create policy "public_read_published_projects"
-  on public.projects
-  for select
-  to anon, authenticated
-  using (status = 'published');
-
-alter table public.project_media enable row level security;
-
-create policy "public_read_media_of_published_projects"
-  on public.project_media
-  for select
-  to anon, authenticated
-  using (
-    exists (
-      select 1 from public.projects p
-      where p.id = project_media.project_id
-        and p.status = 'published'
-    )
-  );
-
--- contacts: bật RLS và không tạo policy nào cho anon.
--- Kết quả là anon bị từ chối mọi thao tác. Ghi dữ liệu chỉ đi qua
--- Server Action phía server dùng service role.
+-- contacts: bật RLS, không tạo policy nào cho anon.
+-- anon bị từ chối mọi thao tác. Ghi chỉ qua Server Action dùng service role.
 alter table public.contacts enable row level security;
 ```
 
-Lý do `contacts` không cho anon insert trực tiếp: nếu mở INSERT cho anon thì bất kỳ ai có anon key, vốn nằm công khai trong bundle client, đều có thể bơm dữ liệu rác thẳng vào database mà bỏ qua toàn bộ validation, honeypot và rate limit. Đi qua Server Action là bắt buộc.
+Lý do không cho anon insert trực tiếp: anon key nằm công khai trong bundle client; nếu mở INSERT thì ai cũng bơm rác thẳng vào DB, bỏ qua validation, honeypot và rate limit. Ghi qua Server Action là bắt buộc.
 
-`service_role` bỏ qua RLS theo thiết kế của Postgres. Key này chỉ dùng phía server.
+**Không còn policy đọc nào** vì không còn bảng nội dung nào trong Supabase. Đây là hệ quả trực tiếp và là lợi ích bảo mật của D35: bề mặt tấn công của database gần như bằng không.
 
 ---
 
-## Rate limit cho Contact Form
+## 7. Rate limit cho Contact Form
 
-`PROJECT_CONSTITUTION.md` §2.4 và `DEPLOYMENT.md` đều bắt buộc có rate limit. Stack hiện tại không có Redis và không được thêm dịch vụ trả phí.
-
-Phương án cho MVP, thực hiện hoàn toàn bằng Postgres:
+Không đổi so với v1.0. Thực hiện hoàn toàn bằng Postgres, không cần Redis:
 
 1. Server Action băm IP thành `ip_hash`.
-2. Đếm số bản ghi cùng `ip_hash` trong 60 phút gần nhất. Quá 3 thì từ chối.
-3. Đếm tổng số bản ghi trong 60 phút gần nhất. Quá 30 thì từ chối, đây là van an toàn toàn cục.
-4. Trường `website` dạng honeypot trong form. Có giá trị nghĩa là bot, ghi với `status = 'spam'` nhưng vẫn trả về màn hình thành công để không lộ cơ chế.
-5. Có index `(ip_hash, created_at desc)` nên hai truy vấn đếm ở trên đều rẻ.
+2. Đếm bản ghi cùng `ip_hash` trong 60 phút gần nhất; quá 3 thì từ chối.
+3. Đếm tổng bản ghi trong 60 phút gần nhất; quá 30 thì từ chối (van toàn cục).
+4. Trường `website` honeypot: có giá trị nghĩa là bot → ghi `status = 'spam'` nhưng vẫn trả màn hình thành công.
+5. Index `(ip_hash, created_at desc)` khiến hai truy vấn đếm đều rẻ.
 
-Hạn chế đã ghi nhận: cách này không chặn được kẻ tấn công đổi IP liên tục. Chấp nhận được ở quy mô website cá nhân. Nếu bị lạm dụng thực tế thì cân nhắc Cloudflare Turnstile ở Phase 2, gói free.
-
----
-
-## Migration plan
-
-- Toàn bộ migration nằm ở `supabase/migrations/`, đặt tên theo dấu thời gian.
-- Migration đầu tiên tạo 5 bảng của MVP, trigger `updated_at`, toàn bộ index và toàn bộ policy RLS trong cùng một transaction.
-- Áp dụng theo thứ tự: local, rồi preview, rồi production.
-- **Không** chạy migration production tự động. Phải có phê duyệt của chủ dự án theo `AI_RULEBOOK.md` §5.
-
-## Rollback plan
-
-- Mỗi migration đi kèm một script `down` tương ứng, được kiểm thử ở local trước.
-- Trước bất kỳ migration production nào: xuất bản sao bằng `pg_dump` và lưu ngoài Supabase.
-- Supabase Free chỉ giữ backup tự động 7 ngày. Với thay đổi có phá vỡ dữ liệu, bản sao thủ công là bắt buộc, không phải tùy chọn.
+Hạn chế: không chặn được kẻ đổi IP liên tục. Chấp nhận được ở quy mô cá nhân. Nếu bị lạm dụng, cân nhắc Cloudflare Turnstile ở Phase 2.
 
 ---
 
-## Nguồn nội dung không nằm trong database
+## 8. Migration plan
 
-Theo D2, bài viết blog nằm trong `content/blog/<slug>.<locale>.mdx`. Frontmatter được validate bằng Zod lúc build, sai thì build fail.
+- Migration nằm ở `supabase/migrations/`, đặt tên theo dấu thời gian.
+- **Migration đầu tiên chỉ tạo một bảng `contacts`**, trigger `updated_at` (nếu cần), index và policy RLS, trong một transaction.
+- Áp dụng theo thứ tự: local → preview → production.
+- **Không** chạy migration production tự động. Cần phê duyệt chủ dự án (`AI_RULEBOOK.md` §5).
 
-Schema frontmatter:
+## 9. Rollback plan
 
-```yaml
-title: string                 # bắt buộc
-slug: string                  # bắt buộc, kebab-case, khớp tên file
-excerpt: string               # bắt buộc, dùng cho meta description và thẻ danh sách
-publishedAt: YYYY-MM-DD       # bắt buộc
-updatedAt: YYYY-MM-DD         # tùy chọn
-status: draft | published     # bắt buộc, chỉ 'published' mới được build ra trang
-category: string              # bắt buộc, PHẢI là một trong năm trụ nội dung của D16
-tags: string[]                # tùy chọn, tự do
-coverImage: string            # tùy chọn
-seoTitle: string              # tùy chọn, mặc định lấy title
-seoDescription: string        # tùy chọn, mặc định lấy excerpt
-```
-
-`category` bị ràng buộc bằng Zod enum vào đúng năm giá trị của D16:
-
-```
-'Chiến lược' | 'Tăng trưởng số' | 'Nội dung và Truyền thông' | 'AI cho Marketing' | 'Lãnh đạo và Quan điểm'
-```
-
-Danh mục nằm ngoài năm giá trị này làm build fail. Đây là cách thi hành D16 ở tầng kỹ thuật thay vì trông chờ vào kỷ luật khi viết bài.
-
-`readingTime`, `tableOfContents` và chỉ mục tìm kiếm được sinh lúc build, không lưu trong frontmatter để tránh lệch dữ liệu.
+- Vì chỉ có một bảng ghi-một-chiều, rủi ro migration gần như bằng không.
+- Mỗi migration vẫn kèm script `down` kiểm thử ở local.
+- `contacts` chứa dữ liệu cá nhân người dùng gửi: trước thay đổi phá vỡ dữ liệu, `pg_dump` sao lưu ngoài Supabase. Supabase Free chỉ giữ backup tự động 7 ngày.
 
 ---
 
-## Quy tắc
+## 10. Quy tắc
 
-- Mọi bảng có timestamp phù hợp.
-- Slug phải unique trong phạm vi từng locale.
-- Public content có status.
-- Contact form phải có rate limit và spam protection.
-- Row Level Security bắt buộc cho mọi bảng.
-- Không lưu secret trong database public schema.
-- Không lưu IP thô, chỉ lưu bản băm có salt.
-- Không tách bảng cho dữ liệu chỉ đọc và chỉ thuộc một chủ thể duy nhất.
+- Nội dung công khai không nằm trong database. Chỉ dữ liệu người dùng gửi (`contacts`) nằm trong Supabase.
+- Slug bài viết và case study derive từ tên file, unique trong phạm vi từng locale.
+- Frontmatter sai làm build fail — không im lặng bỏ qua.
+- `category` bài viết phải thuộc đúng 5 trụ (Zod enum).
+- Tên khách hàng chỉ render khi `clientIsPublic = true` (D6).
+- Row Level Security bắt buộc cho `contacts`.
+- Không lưu secret trong database. Không lưu IP thô, chỉ băm có salt.
+
+---
+
+## Ghi chú cần Review sau (không tự sửa)
+
+- **D11 (media storage)** trở nên đơn giản hơn nhiều với D35: ảnh case study giờ nằm cạnh file MDX hoặc trong `public/`, không còn bảng `project_media`. Phương án `public/` gần như là mặc định. Vẫn để D11 ở trạng thái Open để chủ dự án chốt chính thức ở Milestone 0.5.

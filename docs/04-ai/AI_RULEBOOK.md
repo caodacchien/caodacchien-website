@@ -56,11 +56,13 @@ AI **không được tự phán đoán** một thông tin là công khai hay kh�
 
 ## 5. Khi thay đổi UI
 
-- Bám Design System.
+- Bám Design System. Hướng đã khóa là **Strategic Editorial with Product-Level Precision** (D36) — editorial-first và interaction-first, không phải visual-first, không phải SaaS/dashboard.
+- Mọi quyết định UI phải nhất quán với 11 Design Principle và 12 Design Constraint trong `DESIGN_SYSTEM.md`.
+- **P13 — Interaction Before Decoration:** mọi effect, animation, motion, sound, hover, micro-interaction phải phục vụ usability/feedback/hiểu nội dung. Hiệu ứng trang trí chỉ được phép khi không cạnh tranh với nội dung. **"Sound is feedback, not decoration."**
 - Không tự sáng tạo direction mới.
 - Không đổi font, màu hoặc radius tùy hứng.
 - Chỉ dùng semantic design token. Không hard-code giá trị màu trong component.
-- Mọi thay đổi UI phải kiểm tra ở cả light mode và dark mode.
+- Mọi thay đổi UI phải kiểm tra ở cả light mode và dark mode (hai chế độ đều first-class, D10/D36).
 - Chụp hoặc mô tả before/after khi thay đổi lớn.
 
 ## 6. Khi làm database

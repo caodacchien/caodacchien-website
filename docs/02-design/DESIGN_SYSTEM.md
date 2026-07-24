@@ -2,11 +2,92 @@
 
 ## Trạng thái
 
-**Chưa khóa. Không được viết UI production trước khi chủ dự án chọn Design Direction.**
+**Design Direction đã khóa theo D29 (2026-07-24):** hướng **Tòa soạn (Editorial) làm nền · cấu trúc Thư viện (Library) · khối dữ liệu Hồ sơ Chiến lược**.
 
-Bảng màu cụ thể chưa được quyết định. Chỉ được chốt sau Milestone 0.3.
+**Bảng màu cụ thể vẫn chưa chốt** — điền ở Milestone 0.4 (D10, D32). Kiến trúc token và danh sách component nằm ở `COMPONENT_INVENTORY.md`. Kiến trúc thông tin nằm ở `INFORMATION_ARCHITECTURE.md`.
 
-**Kết quả Milestone 0.3 lần một đã bị hủy theo D17.** Năm hướng thiết kế đề xuất khi đó được xây trên định vị sai, lấy cảm hứng từ ngành nghề của công ty hiện tại thay vì từ định vị của chủ dự án. Milestone 0.3 phải làm lại sau khi `BRAND_POSITIONING.md` được duyệt.
+Kết quả Milestone 0.3 lần một đã bị hủy theo D17 và không được tái sử dụng.
+
+## Design Direction đã khóa — Strategic Editorial with Product-Level Precision
+
+Chốt theo **D36** (2026-07-24), mở rộng D29. Tu chỉnh một phần token của D32 (xem §Typography và §Layout dưới đây).
+
+**Câu định danh sản phẩm:** *A Strategic Editorial Platform for a Marketing Leader.*
+
+- Website **không phải:** SaaS website · startup landing page · developer portfolio · agency landing page.
+- Website **là:** một ấn phẩm biên tập cao cấp, nhưng có độ hoàn thiện interaction và chi tiết như một digital product hiện đại.
+
+**Thứ tự ưu tiên — không phải visual-first:** Editorial-first · Case-study-first · Writing-first · Knowledge-first · Framework-first · **Interaction-first**.
+
+### Tham khảo craft
+
+**resend.com** — học: layout rhythm, grid system, whitespace, typography hierarchy, surface system, card system, responsive composition, motion philosophy, tổng thể refinement.
+
+**recent.design** — học: interaction quality, craftsmanship, sound-as-feedback.
+
+**Không copy** từ bất kỳ tham khảo nào: hero, 3D object, dashboard, code editor, developer visual, **SaaS information architecture**, **SaaS copywriting**.
+
+Nguyên tắc tách bạch: mượn **độ chỉn chu và chất lượng interaction của một digital product** rồi đặt lên một **ấn phẩm biên tập**, không mượn ngôn ngữ, IA hay copywriting của SaaS.
+
+### Layout — bốn container, mỗi loại một mục đích
+
+Cấm dùng một container duy nhất cho toàn site. *(Tu chỉnh D32: khôi phục `--container-wide`, nay có 4 container.)*
+
+| Container | Bề rộng chỉ định | Mục đích |
+| --- | --- | --- |
+| `container-prose` | ~68ch | Cột đọc bài viết và case study — trục quan trọng nhất |
+| `container-content` | ~1080px | Danh sách, hub trụ, section chuẩn của trang |
+| `container-wide` | ~1280px | Bản đồ trụ, gallery case study, section cần thở rộng hơn |
+| `container-full` | 100% | Ảnh hoặc khối tràn viền có chủ đích |
+
+### Section rhythm — spacing ngữ nghĩa
+
+Không dùng cùng một khoảng cách cho toàn site. Ba cấp map vào thang spacing của `COMPONENT_INVENTORY.md` §B.2:
+
+| Cấp | Khoảng cách dọc (desktop) | Khi nào dùng |
+| --- | --- | --- |
+| **Major Section** | `space-9..10` (96–128px) | Ranh giới giữa các khối lớn khác mục đích (vd hết "bài viết featured" sang "case study featured") |
+| **Standard Section** | `space-7..8` (48–64px) | Giữa các khối cùng nhóm |
+| **Compact Section** | `space-5..6` (24–32px) | Trong một khối, giữa tiêu đề và nội dung |
+
+### Responsive là composition, không chỉ resize
+
+Mỗi section được quyền, khi xuống breakpoint nhỏ hơn: đổi thứ tự khối · đổi alignment · đổi layout (cột → hàng) · đổi tỷ lệ ảnh · CTA full-width trên mobile. Wireframe ở Milestone 0.4 phải mô tả **composition cho từng breakpoint**, không chỉ ghi "desktop → mobile stack".
+
+### Typography — vai trò theo họ chữ
+
+*(Tu chỉnh D32: đổi body từ serif sang sans; serif dồn lên tiêu đề.)*
+
+- **Serif:** Hero · Display · Major Heading.
+- **Sans-serif:** Body · Navigation · UI · Metadata.
+- **Mono:** chỉ metadata hoặc technical information khi cần. Không dùng mono làm phong cách chính.
+
+Tinh thần editorial thể hiện qua **heading serif + nhịp đọc**, còn body dùng sans để tối ưu khả năng đọc dài và cảm giác product-level. Font cụ thể và kiểm dấu tiếng Việt ở 15px vẫn chốt ở Milestone 0.4.
+
+### Surface — ba lớp, không hơn
+
+`Surface Page` · `Surface Raised` · `Surface Sunken`, map vào `--color-surface` / `--color-surface-raised` / `--color-surface-sunken`. Không tạo thêm lớp bề mặt.
+
+### Card — giống ấn phẩm, không giống dashboard
+
+Không gradient · không glassmorphism · không heavy shadow. Ưu tiên: **subtle border · subtle contrast · content-first**. Phân tầng bằng viền (light) và độ sáng bề mặt (dark).
+
+### Visual — nguồn hình ảnh hợp lệ
+
+- **Được:** framework · sơ đồ · diagram · illustration biên tập · editorial composition · real project asset.
+- **Cấm:** dashboard screenshot · fake analytics · fake terminal · fake code editor · 3D object vô nghĩa. Đồng bộ C7/C8 trong Design Constraints.
+
+### CTA
+
+Không quá 2 CTA cạnh tranh trong cùng một viewport (P8, D23). CTA chính: **Đọc bài · Xem Case study · Đăng ký nhận bài**. CTA phụ: Chủ đề · Framework · Liên hệ.
+
+### Motion
+
+Subtle · purposeful · product-quality · **không decorative**. Thời lượng 120–200ms (D32). **Animation chỉ tồn tại khi phục vụ usability hoặc feedback** — không có animation thuần trang trí cạnh tranh với nội dung. Tôn trọng `prefers-reduced-motion`.
+
+### Color mode — hai chế độ đều first-class
+
+Light **không phải** bản đảo màu của dark. Hai chế độ dùng cùng hierarchy, cùng semantic token, đo tương phản AA **riêng từng chế độ** (D10).
 
 ## Ràng buộc đã chốt trước khi thiết kế
 
@@ -22,9 +103,10 @@ Các quyết định sau đã được duyệt và mọi Design Direction đề 
 | **D12** | **Cấm lấy cảm hứng thẩm mỹ từ ngành nghề của công ty hiện tại hoặc từ bất kỳ ngành dọc nào.** |
 | **D12** | **Bản thân thiết kế là bằng chứng năng lực thương hiệu, không phải lớp trang trí. Xem `BRAND_POSITIONING.md` §6.** |
 | **D21** | **Thứ tự ưu tiên khán giả quyết định UX. Nhóm 1 là CEO và Founder, nhóm 6 là nhà tuyển dụng. Khi xung đột, nhóm số nhỏ hơn thắng.** |
-| D16 | Hệ thống phải hiển thị được năm trụ nội dung như một trục điều hướng có ý nghĩa, không phải danh sách tag phẳng |
-| D4, D18 | Navigation MVP có 6 mục. **Nhưng hệ thống điều hướng phải được chứng minh là chịu được 8 mục** khi Phase 2 thêm Resources và Speaking, mà không cần thiết kế lại |
-| D18 | Phải có mẫu cho khối "Làm việc cùng tôi" trên Home và About. Đây là khối thông tin, không phải phễu bán hàng |
+| D16, D31 | Năm trụ là trục điều hướng có ý nghĩa, có hub `/topics/[pillar]`, không phải danh sách tag phẳng |
+| D4, D18 | Navigation MVP tối đa 6 mục. **Hệ thống điều hướng phải chịu được 8 mục** khi Phase 2 thêm Resources và Speaking, không thiết kế lại |
+| D33 | Search, Pagination, Filter hoãn Phase 2 — thiết kế MVP không phụ thuộc chúng |
+| D18 | Phải có mẫu cho khối "Làm việc cùng tôi" trên Home và About. Khối thông tin, không phải phễu bán hàng |
 | D10 | Bắt buộc có cả light mode và dark mode ngay ở MVP |
 | D1 | Bố cục phải chịu được text tiếng Việt có dấu, và sau này chịu được text tiếng Anh dài hơn khoảng 20–30% khi bật locale `en` |
 | D7 | Mọi thành phần hiển thị số liệu phải có trạng thái "chưa có dữ liệu" tử tế, vì nội dung thật chưa sẵn sàng |
@@ -106,3 +188,80 @@ Yêu cầu riêng cho theme, theo D10:
 - Mọi màu phải đạt độ tương phản hợp lý. Kiểm tra tương phản **riêng cho từng chế độ sáng và tối**, không suy diễn kết quả từ chế độ này sang chế độ kia.
 - Component phải nhất quán toàn site.
 - Tôn trọng `prefers-reduced-motion`.
+
+## Design Principles
+
+Tám nguyên tắc thiết kế là **tầng quyết định cao nhất** cho UI/UX/nội dung. Chốt theo D30. Khi một quyết định mâu thuẫn với chúng, quyết định đó sai.
+
+| # | Nguyên tắc | Ý nghĩa |
+| --- | --- | --- |
+| P1 | **Evidence over Claims** | Mọi khẳng định năng lực đi kèm số liệu/ví dụ/cơ chế. Không bằng chứng thì không viết. |
+| P2 | **Reading before Selling** | Người đọc nhận giá trị trước khi gặp lời mời. "Làm việc cùng tôi" luôn đứng sau bằng chứng. |
+| P3 | **Text First** | Một bài chỉ có chữ phải đẹp và hoàn chỉnh. Ảnh bìa là tùy chọn, không bao giờ bắt buộc. |
+| P4 | **Structure over Stream** | Tìm theo chủ đề trước, theo thời gian sau. Năm trụ là trục điều hướng thật, có hub. |
+| P5 | **Framework as First-Class Object** | Khung tư duy có component, anchor và cách trích dẫn riêng. |
+| P8 | **One Door per Screen** | Tối đa 2 CTA mỗi trang; không 2 CTA khác loại trong cùng khung nhìn. |
+| P9 | **Minimal Motion** | Chuyển động chỉ để làm rõ quan hệ. Trần 200ms. Không reveal khi cuộn. |
+| P10 | **Warmth in Words, Restraint in Form** | Sự ấm áp đến từ giọng viết; hình thức giữ tiết chế. |
+| P11 | **Product-Level Precision** | Nội dung là biên tập, nhưng interaction và chi tiết phải hoàn thiện như một digital product hiện đại — nhịp layout, khoảng trắng, viền, trạng thái, focus đều chỉn chu. Bài học craft từ resend.com. |
+| P12 | **Responsive as Composition** | Responsive là bố cục lại, không chỉ resize. Section được đổi thứ tự/alignment/layout/tỷ lệ ảnh theo breakpoint; CTA full-width trên mobile. |
+| P13 | **Interaction Before Decoration** | Mọi visual effect, animation, motion, sound, hover state và micro-interaction phải phục vụ usability, feedback hoặc khả năng hiểu nội dung. Hiệu ứng trang trí chỉ được phép khi không cạnh tranh với nội dung và không làm giảm sự rõ ràng. Website phải cho cảm giác precise, calm, intentional — không flashy. |
+
+Ghi chú: P6 (Publish Cheap) và P7 (Design for Article 200) từ bản 10 nguyên tắc đã chuyển: P6 thành nguyên tắc kiến trúc ở `SYSTEM_ARCHITECTURE.md`; P7 giải thể, phần bền vững giữ ở constraint URL bất biến. P11–P12 bổ sung theo D36; **P13 bổ sung theo D36 (Interaction Before Decoration)**.
+
+## Design Constraints
+
+Mười hai điều cấm bảo vệ chất lượng. Chốt theo D34. Những cái enforce bằng token hoặc Zod (radius, category enum) không lặp ở đây.
+
+| # | Cấm | Lý do / bằng chứng |
+| --- | --- | --- |
+| C1 | Carousel hoặc autoplay cho nội dung chính | Ẩn nội dung, hại đọc và index. 17 site khảo sát không dùng |
+| C2 | Pop-up chặn màn hình | Lenny đạt 1,2 triệu người đăng ký không dùng |
+| C3 | Thanh CTA dính "đặt lịch tư vấn" | Dấu hiệu consulting landing page (D18) |
+| C4 | Bảng giá dịch vụ | D18 |
+| C5 | Dark pattern trong CTA/form | Phá cảm giác Authority/Thoughtful (D24) |
+| C6 | Hiệu ứng bề mặt trang trí: glassmorphism, gradient vô cớ | Hại tương phản hai chế độ |
+| C7 | Dashboard / SaaS UI | Đã loại ở vòng Design Direction |
+| C8 | Ảnh stock doanh nhân | Tín hiệu ngược với nhóm khán giả 1 |
+| C9 | Icon minh họa cho mọi mục (trần <12 icon) | Icon cho chức năng, không trang trí (P10) |
+| C10 | Animation reveal khi cuộn | Cản trở khả năng đọc (P9, D22 #1) |
+| C11 | Bắt buộc ảnh bìa cho mỗi bài | Thuế xuất bản — nguyên nhân số một khiến nhịp viết chết (P3) |
+| C12 | Đổi URL đã xuất bản mà không redirect 301 | Phá tài sản SEO nhiều năm |
+
+## Future Enhancement — Sound & Interaction
+
+**Không thuộc MVP. Không implement ở milestone hiện tại.** Ghi vào Design Direction để thiết kế và kiến trúc sau này chừa chỗ. Chốt theo D36 và P13.
+
+Sound là một phần của **Brand Experience**, không phải hiệu ứng thêm thắt. Nguyên tắc cốt lõi:
+
+> **Sound is feedback, not decoration.**
+
+Mục tiêu: subtle · premium · intentional · precision · craft · editorial. Website phải cho cảm giác một digital product cao cấp, không phải một website trình diễn hiệu ứng. Tham khảo chất lượng: `recent.design`.
+
+### Default và điều khiển
+
+- **Sound mặc định ON.**
+- Người dùng có thể chủ động **Mute**; trạng thái Mute được lưu lại.
+- **Luôn có nút Sound / Mute** với icon rõ ràng, dễ tìm, **không ẩn trong menu**, không cần mở Settings để tắt.
+- Cần một component điều khiển âm thanh riêng ở Phase triển khai — chưa nằm trong 20 component MVP.
+
+### Interaction được phép phát Sound — chỉ khi user chủ đích
+
+Được: click Navigation · click Header Menu · click Mobile Menu · click CTA Button · click Theme Toggle · click Pillar Filter (nếu sau này có).
+
+**Cấm phát** khi: hover · scroll · page load · animation · card xuất hiện · auto carousel · background effect.
+
+### Chất lượng âm
+
+Âm lượng nhỏ · rất ngắn · sạch · tối giản · không chói tai · không mechanical · không sci-fi quá mức · không mang cảm giác game.
+
+### Spam protection
+
+Không phát chồng. Khi user click liên tục: debounce hoặc throttle, chỉ phát một âm trong một khoảng rất ngắn, không tạo hiệu ứng machine-gun.
+
+### Accessibility — Motion và Sound là hai hệ thống độc lập
+
+- Sound **không** phải phương thức duy nhất truyền đạt trạng thái. Website vẫn phải dùng được khi mute, không có loa, hoặc user tắt sound.
+- `prefers-reduced-motion` **chỉ** áp dụng cho Motion.
+- Sound có preference **riêng** (Mute), tách khỏi Motion.
+- Không tự động phát bất kỳ âm nào khi tải trang.

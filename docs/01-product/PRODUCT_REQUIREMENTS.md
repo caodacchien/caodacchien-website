@@ -1,6 +1,6 @@
 # Product Requirements Document
 
-Phiên bản: 1.2 — 2026-07-23
+Phiên bản: 1.3 — 2026-07-24 (đồng bộ bản khóa D23–D35)
 Trạng thái: Đã duyệt cho Phase 1. Mọi thay đổi phải đi qua `docs/00-foundation/DECISION_LOG.md`.
 
 Định vị sản phẩm nằm ở `docs/01-product/BRAND_POSITIONING.md`. Tài liệu này diễn giải định vị đó thành yêu cầu sản phẩm. Khi hai bên mâu thuẫn, `BRAND_POSITIONING.md` là bên đúng.
@@ -20,15 +20,15 @@ Sáu nhóm có xếp ưu tiên **bắt buộc**. Chi tiết đầy đủ tại `
 | # | Nhóm | Trang phục vụ chính |
 | --- | --- | --- |
 | 1 | CEO và Founder cần chiến lược marketing và thương hiệu | Home, Case study, Làm việc cùng tôi |
-| 2 | CMO, Marketing Director, Marketing Manager | Blog, Case study |
-| 3 | Người làm marketing chuyên nghiệp | Blog |
-| 4 | Chủ doanh nghiệp vừa và nhỏ | Blog, Case study, Làm việc cùng tôi |
-| 5 | Sinh viên marketing | Blog |
+| 2 | CMO, Marketing Director, Marketing Manager | Viết, Case study |
+| 3 | Người làm marketing chuyên nghiệp | Viết |
+| 4 | Chủ doanh nghiệp vừa và nhỏ | Viết, Case study, Làm việc cùng tôi |
+| 5 | Sinh viên marketing | Viết |
 | 6 | Nhà tuyển dụng | Experience, About |
 
 **Quy tắc giải xung đột:** khi hai nhóm mâu thuẫn về một quyết định UX, nhóm có số nhỏ hơn thắng.
 
-Nhóm 1 và 2 quyết định thiết kế của Home, Case study và khối Làm việc cùng tôi. Nhóm 2, 3 và 5 quyết định trải nghiệm đọc dài ở Blog.
+Nhóm 1 và 2 quyết định thiết kế của Home, Case study và khối Làm việc cùng tôi. Nhóm 2, 3 và 5 quyết định trải nghiệm đọc dài ở trang Viết (bài viết).
 
 Ghi chú về nhóm 6: nhà tuyển dụng đứng cuối có chủ đích. Website này không phải công cụ tìm việc. Trang Experience vẫn phải đầy đủ và chính xác nhưng không chiếm ưu tiên trong kiến trúc thông tin.
 
@@ -61,14 +61,16 @@ Hệ quả với yêu cầu sản phẩm:
 ## 4. Kiến trúc thông tin
 
 ### MVP — 6 trang
-Chốt theo D4, xác nhận lại theo D18.
+Chốt theo D4, xác nhận lại theo D18. Tên trang thống nhất với §5 và kiến trúc D35.
 
 - Home — có khối "Làm việc cùng tôi"
 - About — có khối "Làm việc cùng tôi"
 - Experience
-- Projects
-- Blog
+- Case study — MDX (`content/case-studies/`)
+- Viết / Writing — MDX (`content/writing/`)
 - Contact
+
+*(Nhãn hiển thị trên điều hướng đang chờ R1/D26; tên nội dung và route thì đã cố định theo D35.)*
 
 ### Phase 2
 - Resources — framework và template tải về
@@ -78,23 +80,32 @@ Hai mục này bị lùi vì chưa có nội dung thật. Xuất bản trang r�
 
 **Ràng buộc bắt buộc theo D18:** kiến trúc thông tin của MVP phải chứa được hai mục Phase 2 **mà không cần thiết kế lại**. Hệ thống điều hướng phải được chứng minh là chịu được 8 mục, dù MVP chỉ hiển thị 6. Đây là tiêu chí đánh giá ở Milestone 0.3 và 0.4.
 
+**Ghi chú đồng bộ theo bản khóa 2026-07-24:**
+
+- Kiến trúc thông tin chi tiết (sitemap, taxonomy, URL, breadcrumb, liên kết nội bộ) nằm ở `docs/02-design/INFORMATION_ARCHITECTURE.md`, chốt theo D31.
+- MVP giữ thêm hub `/topics/[pillar]` với đúng 5 trụ (D31).
+- **Search, Pagination, Filter hoãn Phase 2** (D33).
+- **Nhãn điều hướng và việc gộp Experience vào About (R1/D26) đang OPEN** — tài liệu này giữ 6 trang theo D4 cho tới khi chủ dự án chốt.
+
 ## 5. Yêu cầu chức năng MVP
 
-Nguồn dữ liệu của từng trang được chốt theo D2.
+Nguồn dữ liệu chốt theo **D35 (MDX-first)**: bài viết và case study là MDX; hồ sơ và kinh nghiệm ở `src/config/profile.config.ts`; chỉ `contacts` nằm trên Supabase.
 
 ### Home
-Nguồn: Supabase (profile, featured projects) + MDX (latest posts)
-- Hero rõ định vị Marketing Leader / Brand & Marketing Strategist
-- Latest posts — đặt cao, vì đây là nền tảng xuất bản
-- Featured case studies
-- Career highlights
-- **Khối "Làm việc cùng tôi"** — chốt theo D18
-- CTA liên hệ
+Nguồn: `profile.config.ts` + MDX (bài viết và case study có `featured: true`). Thứ tự khối chốt theo **D25**:
 
-Thứ tự các khối phải phục vụ nhóm khán giả 1 trước tiên: trả lời "người này nghĩ thế nào về tăng trưởng" trước "người này đã làm ở đâu".
+1. Hero — định vị dạng phát biểu vấn đề (Marketing Leader / Brand & Marketing Strategist)
+2. **Bài viết featured** — lấy theo cờ `featured: true`, không phải "mới nhất"
+3. **Case study featured** — `featured: true`, có số liệu kết quả nổi bật
+4. Bản đồ 5 trụ nội dung (dẫn tới `/topics/[pillar]`)
+5. **Khối "Làm việc cùng tôi"** — D18, đứng sau bằng chứng
+6. CTA đăng ký nhận bài *(component `NewsletterForm` đang chờ D27)* hoặc CTA liên hệ
+7. Footer
+
+Thứ tự phục vụ nhóm khán giả 1 trước: trả lời "người này nghĩ thế nào về tăng trưởng" trước "người này đã làm ở đâu". Experience không nằm ở thân Home (D21) — chỉ ở footer/About.
 
 ### About
-Nguồn: Supabase (`profiles`)
+Nguồn: `profile.config.ts`
 - Biography
 - Core values
 - Skills
@@ -104,7 +115,7 @@ Nguồn: Supabase (`profiles`)
 - **Khối "Làm việc cùng tôi"** — chốt theo D18
 
 ### Khối "Làm việc cùng tôi"
-Nguồn: Supabase (`profiles.services_offered`). Xuất hiện trên Home và About.
+Nguồn: `profile.config.ts` → `servicesOffered`. Xuất hiện trên Home và About.
 
 - Các hình thức hợp tác đang nhận
 - Loại bài toán phù hợp và loại bài toán không phù hợp
@@ -113,36 +124,33 @@ Nguồn: Supabase (`profiles.services_offered`). Xuất hiện trên Home và Ab
 Ranh giới bắt buộc theo D18: đây là **khối thông tin**, không phải phễu bán hàng. Không bảng giá, không nút đặt lịch chớp nháy, không lời chứng thực dàn dựng, không đếm ngược, không pop-up chặn màn hình.
 
 ### Experience
-Nguồn: Supabase (`experiences`)
-- Company
-- Role
-- Period
+Nguồn: `profile.config.ts` → `experiences`. (Trang riêng hay mục trong About phụ thuộc R1/D26 — hiện OPEN.)
+- Company, Role, Period
 - Responsibilities
 - Quantified impact — chỉ số liệu đã được phép công khai, theo D6
-- Related projects — liên kết tới `projects` qua khóa ngoại
+- Related case studies — làm bằng link inline trong nội dung, không qua schema
 
-### Projects — Case study
-Nguồn: Supabase (`projects`, `project_media`). Mô hình dữ liệu chốt theo D14.
-- List và filter theo **dịch vụ** và **ngành**, không theo công nghệ
-- Case study đầy đủ: Bối cảnh / Vấn đề / Cách tiếp cận / Kết quả
-- Số liệu kết quả có cấu trúc, hiển thị nổi bật
+### Case study
+Nguồn: **MDX** trong `content/case-studies/`. Mô hình nội dung chốt theo D14, chuyển sang MDX theo D35.
+- Danh sách hiển thị hết (**filter theo dịch vụ/ngành hoãn Phase 2**, D33)
+- Case study đầy đủ: Bối cảnh / Vấn đề / Cách tiếp cận / Kết quả — viết trong thân MDX
+- Số liệu kết quả có cấu trúc (`metrics`), hiển thị nổi bật
 - Vai trò cụ thể của chủ dự án trong dự án tập thể
 - Hình thức tham gia: in-house, consulting, advisory hay dự án cá nhân
-- Tên khách hàng nếu được phép công khai, tuân thủ D6
-- Gallery
+- Tên khách hàng chỉ hiển thị khi `clientIsPublic = true`, tuân thủ D6
+- Gallery ảnh (tùy chọn)
 - Liên kết tới chiến dịch hoặc sản phẩm thật nếu có
 
 Không có tech stack, không có link repository. Xem `BRAND_POSITIONING.md` §8.
 
-### Blog
-Nguồn: MDX trong `content/blog/`
-- Phân loại theo đúng **năm trụ nội dung** của D16, không tạo danh mục ngoài năm trụ
-- Tags tự do từ frontmatter
-- Search phía client trên chỉ mục tĩnh sinh lúc build
+### Writing (bài viết)
+Nguồn: **MDX** trong `content/writing/`
+- Phân loại theo đúng **năm trụ nội dung** của D16, hub tại `/topics/[pillar]`
 - Reading time tính lúc build
 - Table of contents sinh từ heading
-- Related posts theo category và tag chung
-- SEO metadata cho từng bài
+- Related posts theo cùng trụ, gần ngày nhất
+- SEO metadata sinh từ `title`/`excerpt`
+- **Search hoãn Phase 2** (D33). **Tags hoãn Phase 2.**
 
 ### Contact
 Nguồn: Supabase (`contacts`) + Resend

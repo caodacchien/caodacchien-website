@@ -62,9 +62,9 @@ Khai báo tại `.env.example` với giá trị rỗng. Giá trị thật chỉ 
 | --- | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | 1.1 | có | |
 | `NEXT_PUBLIC_DEFAULT_LOCALE` | 1.1 | có | `vi` |
-| `NEXT_PUBLIC_SUPABASE_URL` | 1.3 | có | |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 1.3 | có | chỉ đọc bản đã xuất bản |
-| `SUPABASE_SERVICE_ROLE_KEY` | 1.3 | **không** | chỉ dùng phía server |
+| `NEXT_PUBLIC_SUPABASE_URL` | 1.7 | có | chỉ dùng cho contact form |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 1.7 | có | **không đọc public data** — theo D35, Supabase chỉ có bảng `contacts` insert-only qua service role; anon key không đọc được gì |
+| `SUPABASE_SERVICE_ROLE_KEY` | 1.7 | **không** | chỉ dùng phía server, ghi `contacts` qua Server Action |
 | `RESEND_API_KEY` | 1.7 | **không** | chưa tạo ở Phase 0 |
 | `CONTACT_TO_EMAIL` | 1.7 | **không** | `forwork.chiencd@gmail.com` |
 | `CONTACT_IP_HASH_SALT` | 1.7 | **không** | salt cho băm IP |
@@ -101,7 +101,7 @@ Không commit API key hoặc bất kỳ secret nào. `.env.local` đã nằm tro
 ### Hạ tầng và bảo mật
 - Env variables đầy đủ ở đúng môi trường
 - `SUPABASE_SERVICE_ROLE_KEY` không lọt vào bundle client
-- Database RLS bật cho mọi bảng và đã kiểm tra bằng anon key
+- Theo D35: nội dung công khai là MDX/config, không đọc từ database. Supabase chỉ có bảng `contacts` với RLS deny-all cho anon (không có đường đọc public); kiểm tra anon key không truy vấn được `contacts`
 - Contact form rate limit hoạt động
 - Trang Privacy Policy đã có
 - Analytics consent nếu cần
