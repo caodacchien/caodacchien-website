@@ -1,6 +1,6 @@
 # Roadmap
 
-Cập nhật 2026-07-24 theo Decision Log D1–D35.
+Cập nhật 2026-07-25 theo Decision Log D1–D36 (D26/D27/D11/D19 đã đóng ở Milestone 0.5D).
 
 Định vị sản phẩm nằm ở `docs/01-product/BRAND_POSITIONING.md`. Sản phẩm là nền tảng xuất bản, không phải portfolio. Mọi milestone phải phục vụ định vị đó.
 
@@ -15,7 +15,7 @@ Chỉ làm tài liệu và hạ tầng. Không viết application code.
 | **0.2b** | **Reset định vị sản phẩm** | Tạo `BRAND_POSITIONING.md`, ghi D12–D22, gỡ archetype portfolio lập trình viên khỏi toàn bộ tài liệu | ✅ Xong |
 | 0.3 | Design Direction + UX/IA/Architecture | Nghiên cứu website thật, khóa Design Direction (D29), Design Principles (D30), IA (D31), Token (D32), Component (D33), Constraint (D34), Option B MDX-first (D35) | ✅ Xong |
 | 0.4 | Design Tokens (màu) và Wireframe | Điền giá trị màu vào kiến trúc token đã có, kiểm tra tương phản AA hai chế độ, kiểm dấu tiếng Việt ở 15px, wireframe desktop/tablet/mobile | `DESIGN_SYSTEM.md` khóa màu |
-| 0.5 | Khóa hạ tầng nội dung | Chốt D11 media storage (nay chỉ còn ảnh case study), xác nhận schema `contacts`, migration plan + rollback plan | Chủ dự án duyệt `SYSTEM_ARCHITECTURE.md` và `DATABASE.md` |
+| 0.5 | Foundation research + Decision lock | 0.5A research (Design DNA/Layout/Wireframe/Motion), 0.5B consolidation, 0.5C decision review, **0.5D: đóng D11(public/)·D19(Hobby→Pro)·D26(nav 5 mục)·D27(newsletter Phase 2)** | ✅ Xong (không còn Decision OPEN) |
 | 0.6 | Hạ tầng | Tạo GitHub repo, kết nối Vercel, tạo Supabase project, xác nhận `.io.vn` trỏ được nameserver sang Cloudflare | Ba môi trường sẵn sàng |
 
 Song song, chủ dự án điền `docs/01-product/CONTENT_INVENTORY.md`. Đây là đường găng của Phase 1.
@@ -27,7 +27,7 @@ Mỗi milestone là một pull request riêng. Không gộp.
 | # | Milestone | Phạm vi | Điều kiện mở khóa |
 | --- | --- | --- | --- |
 | 1.1 | Project setup | Next.js App Router, TS strict, Tailwind với token từ 0.4, shadcn/ui, ESLint, Prettier, Zod, cấu trúc `src/` theo kiến trúc, `[locale]` routing, **MDX pipeline (writing + case-studies)**, `profile.config.ts`, `.nvmrc`, CI GitHub Actions | 0.4 và 0.6 xong |
-| 1.2 | Global layout | Header, footer, theme provider system/light/dark, skip link, focus ring, container, 404/500. 20 component nền theo D33 | 1.1 xong |
+| 1.2 | Global layout | Header (nav 5 mục, D26), footer, theme provider system/light/dark, skip link, focus ring, container, 404/500. 19 component MVP theo D33/D27 | 1.1 xong |
 | 1.3 | Content layer | Lớp đọc MDX (writing, case-studies), đọc `profile.config.ts`, Zod schema frontmatter, `/topics/[pillar]`, seed nội dung DRAFT. **Không có migration nội dung — chỉ dữ liệu tĩnh** | 1.2 xong |
 | 1.4 | Home và About | Home theo luồng D25 (featured articles + featured case study + bản đồ trụ + Làm việc cùng tôi); About với bio, values, skills, education, certifications, experience timeline, Làm việc cùng tôi | **Cổng mở khóa nội dung** trong `CONTENT_INVENTORY.md` đạt `READY` |
 | 1.5 | Case study | Danh sách (hiển thị hết — **filter Phase 2**), trang case study Bối cảnh/Vấn đề/Cách tiếp cận/Kết quả, `MetricGroup`, gallery | 1.4 xong |

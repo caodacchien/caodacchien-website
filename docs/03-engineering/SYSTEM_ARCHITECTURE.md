@@ -99,15 +99,15 @@ docs/
 | Analytics | Chỉ Google Analytics 4 ở MVP | D9 |
 | Ngôn ngữ | `vi` ở MVP, kiến trúc sẵn sàng song ngữ | D1 |
 | Theme | Light và dark ngay ở MVP | D10 |
-| Search, Pagination, Filter | Hoãn Phase 2 | D33 |
+| Search, Pagination, Filter, Newsletter | Hoãn Phase 2 | D33, D27 |
 | Topics `/topics/[pillar]` | Giữ trong MVP, đúng 5 pillar | D31 |
+| Media storage | `public/` + `next/image` | D11 |
+| Navigation | 5 mục; Experience là section trong About | D26 |
+| Gói Vercel | Hobby → Pro khi bật consulting (gate 1.8) | D19 |
 
 ## 7. Quyết định còn mở
 
-| Vấn đề | Hạn chót | Tham chiếu |
-| --- | --- | --- |
-| Media storage: `public/` hay Supabase Storage hay Cloudinary | trước Milestone 1.3 | D11 |
-| Gói Vercel khi bật nội dung consulting | trước Milestone 1.8 | D19 |
+**Không còn Decision OPEN trong Foundation** (D26/D27/D11/D19 đã đóng ở Milestone 0.5D, 2026-07-25). Các mục Future Enhancement (Sound, View Transitions, header collapse, offline/PWA) nằm ở `DESIGN_SYSTEM.md`, không phải Decision OPEN.
 
 **D18 đã chốt:** MVP giữ sáu trang, bổ sung khối "Làm việc cùng tôi" trên Home và About, Resources lùi sang Phase 2.
 

@@ -52,7 +52,7 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | D1 | MVP chỉ tiếng Việt, kiến trúc sẵn sàng song ngữ |
 | D2 | Blog dùng MDX, dữ liệu có cấu trúc dùng Supabase *(amended by D35: toàn bộ nội dung sang MDX/config, Supabase chỉ còn `contacts`)* |
 | D3 | MVP không có CMS và không có Authentication |
-| D4 | MVP gồm 6 trang: Home, About, Experience, Projects, Blog, Contact |
+| D4 | MVP scope trang *(tu chỉnh bởi D26: Home · Viết · Case study · Chủ đề · About+Experience · Contact)* |
 | D5 | Toàn bộ hạ tầng thuộc tài khoản cá nhân, không thuộc Roboworld |
 | D6 | Ranh giới thông tin với Roboworld, nội dung liên quan phải được kiểm duyệt |
 | D7 | Cấm bịa nội dung, placeholder phải đánh dấu rõ |
@@ -65,7 +65,7 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | D15 | Tệp khán giả định nghĩa lại, có xếp ưu tiên |
 | D16 | Năm trụ nội dung cố định |
 | D17 | Hủy kết quả Milestone 0.3, làm lại theo định vị mới |
-| D18 | MVP giữ 6 trang, thêm khối "Làm việc cùng tôi" trên Home và About, Resources sang Phase 2 |
+| D18 | MVP giữ khối "Làm việc cùng tôi" trên Home và About, Resources sang Phase 2 *(nav sau đó chốt 5 mục theo D26)* |
 | **D20** | **Định vị đầy đủ: Marketing Leader / Brand & Marketing Strategist** |
 | D21 | Thứ tự khán giả: CEO/Founder trước, nhà tuyển dụng cuối |
 | **D22** | **Triết lý thiết kế: khả năng đọc → xuất bản → mở rộng → thẩm mỹ** |
@@ -76,17 +76,16 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | D30 | 8 Design Principle là tầng quyết định cao nhất |
 | D31 | Information Architecture; giữ `/topics/[pillar]` 5 trụ |
 | D32 | Kiến trúc Design Token (màu điền ở 0.4) |
-| D33 | 20 component; Search/Pagination/Filter → Phase 2 |
+| D33 | 19 component; Search/Pagination/Filter/Newsletter → Phase 2 |
 | D34 | 12 Design Constraint |
 | **D35** | **Option B — MDX-first; Supabase chỉ còn bảng `contacts`** |
 | **D36** | **Design Direction: Strategic Editorial with Product-Level Precision** — editorial-first + interaction-first; tham khảo resend.com + recent.design; thêm P11–P13; Sound & Interaction (mặc định ON, future); tu chỉnh typography + container của D32 |
+| D11 | Media storage = `public/` + `next/image` |
+| D19 | Vercel Hobby → Pro khi bật consulting (gate 1.8) |
+| **D26** | **Nav 5 mục theo loại nội dung; Experience là section trong About** (tu chỉnh D4) |
+| D27 | Newsletter hoãn Phase 2; MVP còn 19 component |
 
-Còn mở:
-
-- **D11** — media storage (đã đơn giản hóa nhờ D35), chốt ở Milestone 0.5
-- **D19** — gói Vercel khi bật nội dung consulting, chốt trước Milestone 1.8
-- **D26** — nhãn nav / gộp Experience vào About (R1), chờ chủ dự án
-- **D27** — Newsletter trong MVP (R6), chờ chủ dự án
+**Không còn Decision OPEN trong Foundation** (đóng ở Milestone 0.5D — 2026-07-25). Future Enhancement (Sound, View Transitions, header collapse, PWA) ở `DESIGN_SYSTEM.md`.
 
 ## Nguyên tắc bắt buộc
 
@@ -107,7 +106,7 @@ Còn mở:
 - `docs/01-product/CONTENT_INVENTORY.md`: danh mục nội dung thật cần cung cấp
 - `docs/02-design/DESIGN_SYSTEM.md`: hệ thống thiết kế, Design Principles và Constraints
 - `docs/02-design/INFORMATION_ARCHITECTURE.md`: sitemap, taxonomy, URL, điều hướng
-- `docs/02-design/COMPONENT_INVENTORY.md`: 20 component MVP và kiến trúc Design Token
+- `docs/02-design/COMPONENT_INVENTORY.md`: 19 component MVP và kiến trúc Design Token
 - `docs/03-engineering/SYSTEM_ARCHITECTURE.md`: kiến trúc hệ thống
 - `docs/03-engineering/DATABASE.md`: mô hình dữ liệu
 - `docs/04-ai/AI_RULEBOOK.md`: quy tắc AI
@@ -118,8 +117,7 @@ Còn mở:
 ## Trạng thái
 
 **Phase hiện tại:** Phase 0 — Foundation
-**Milestone hiện tại:** 0.1, 0.2, 0.2b, 0.3 hoàn tất. Tiếp theo là 0.4 (điền màu vào token, wireframe).
-**Chặn Phase 1:** màu Design chưa chốt (0.4), và `CONTENT_INVENTORY.md` chưa có nội dung thật.
-**Open cần chủ dự án quyết:** R1/D26 (nav, Experience) và R6/D27 (newsletter MVP).
+**Milestone hiện tại:** 0.1, 0.2, 0.2b, 0.3, 0.5 (A–D) hoàn tất. **Không còn Decision OPEN.**
+**Chặn Phase 1:** Milestone 0.4 (giá trị màu + font + wireframe) chưa xong; và `CONTENT_INVENTORY.md` chưa có nội dung thật.
 
 **Không được viết production code trước khi Design System được khóa màu ở 0.4.**

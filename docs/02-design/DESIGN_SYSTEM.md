@@ -104,7 +104,7 @@ Các quyết định sau đã được duyệt và mọi Design Direction đề 
 | **D12** | **Bản thân thiết kế là bằng chứng năng lực thương hiệu, không phải lớp trang trí. Xem `BRAND_POSITIONING.md` §6.** |
 | **D21** | **Thứ tự ưu tiên khán giả quyết định UX. Nhóm 1 là CEO và Founder, nhóm 6 là nhà tuyển dụng. Khi xung đột, nhóm số nhỏ hơn thắng.** |
 | D16, D31 | Năm trụ là trục điều hướng có ý nghĩa, có hub `/topics/[pillar]`, không phải danh sách tag phẳng |
-| D4, D18 | Navigation MVP tối đa 6 mục. **Hệ thống điều hướng phải chịu được 8 mục** khi Phase 2 thêm Resources và Speaking, không thiết kế lại |
+| **D26** | **Nav 5 mục: Viết · Case study · Chủ đề · Giới thiệu · Liên hệ. Experience là section trong About. Chịu được 8 mục Phase 2 (D18)** |
 | D33 | Search, Pagination, Filter hoãn Phase 2 — thiết kế MVP không phụ thuộc chúng |
 | D18 | Phải có mẫu cho khối "Làm việc cùng tôi" trên Home và About. Khối thông tin, không phải phễu bán hàng |
 | D10 | Bắt buộc có cả light mode và dark mode ngay ở MVP |
@@ -243,7 +243,7 @@ Mục tiêu: subtle · premium · intentional · precision · craft · editorial
 - **Sound mặc định ON.**
 - Người dùng có thể chủ động **Mute**; trạng thái Mute được lưu lại.
 - **Luôn có nút Sound / Mute** với icon rõ ràng, dễ tìm, **không ẩn trong menu**, không cần mở Settings để tắt.
-- Cần một component điều khiển âm thanh riêng ở Phase triển khai — chưa nằm trong 20 component MVP.
+- Cần một component điều khiển âm thanh riêng ở Phase triển khai — chưa nằm trong 19 component MVP.
 
 ### Interaction được phép phát Sound — chỉ khi user chủ đích
 
