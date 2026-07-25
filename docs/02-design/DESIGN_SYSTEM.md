@@ -54,15 +54,15 @@ Không dùng cùng một khoảng cách cho toàn site. Ba cấp map vào thang 
 
 Mỗi section được quyền, khi xuống breakpoint nhỏ hơn: đổi thứ tự khối · đổi alignment · đổi layout (cột → hàng) · đổi tỷ lệ ảnh · CTA full-width trên mobile. Wireframe ở Milestone 0.4 phải mô tả **composition cho từng breakpoint**, không chỉ ghi "desktop → mobile stack".
 
-### Typography — vai trò theo họ chữ
+### Typography — Geist, sans-first, không serif ở MVP
 
-*(Tu chỉnh D32: đổi body từ serif sang sans; serif dồn lên tiêu đề.)*
+*(Tu chỉnh D36/D32 theo **D43** — chủ dự án chọn hệ font **Geist** (Vercel, OFL 1.1). Bỏ serif ở MVP.)*
 
-- **Serif:** Hero · Display · Major Heading.
-- **Sans-serif:** Body · Navigation · UI · Metadata.
-- **Mono:** chỉ metadata hoặc technical information khi cần. Không dùng mono làm phong cách chính.
+- **Geist Sans** — font chính: Hero · Heading · Body · Navigation · UI · Button · Form · Label.
+- **Geist Mono** — chỉ metadata/technical: ngày, thời gian đọc, category/tag, số liệu case study, nội dung kỹ thuật/code. Không làm phong cách chính.
+- **Không dùng serif** trong MVP.
 
-Tinh thần editorial thể hiện qua **heading serif + nhịp đọc**, còn body dùng sans để tối ưu khả năng đọc dài và cảm giác product-level. Font cụ thể và kiểm dấu tiếng Việt ở 15px vẫn chốt ở Milestone 0.4.
+Tinh thần editorial nay đến từ **khoảng trắng rộng · measure 68ch · line-height 1.7 · sự tiết chế** (Geist là grotesque kiểu Swiss-minimal), không còn từ serif. Font, weight, letter-spacing và **kiểm dấu tiếng Việt** chi tiết ở `COMPONENT_INVENTORY.md` §B.1; breakpoints ở §B.9.
 
 ### Surface — ba lớp, không hơn
 
