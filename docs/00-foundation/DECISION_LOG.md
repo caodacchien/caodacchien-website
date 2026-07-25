@@ -573,7 +573,7 @@ Ghi lại để đo về sau, không phải quyết định:
 ## D32 — Design Tokens
 
 **Trạng thái:** Approved — 2026-07-24
-**Đã tu chỉnh bởi:** D36 — body chuyển sang sans (serif dồn lên tiêu đề); khôi phục `--container-wide` (nay 4 container). Các phần khác giữ nguyên.
+**Đã tu chỉnh bởi:** D36 — body chuyển sang sans (serif dồn lên tiêu đề); khôi phục `--container-wide` (nay 4 container). **D43** — bỏ serif hoàn toàn ở MVP, dùng hệ font Geist. Thang chữ 8 bậc và các token khác giữ nguyên.
 
 **Quyết định:** Khóa **kiến trúc** token, **để trống giá trị màu** tới Milestone 0.4 (tôn trọng D10). Thang chữ 8 bậc (đã bỏ `--text-display`), spacing cơ sở 4px, container 3 mức (đã bỏ `--container-wide`), trần radius 8px, elevation 2 mức (đã bỏ `--elevation-2`), trần motion 200ms, màu semantic 2 tầng. Chi tiết ở `COMPONENT_INVENTORY.md`.
 
@@ -612,6 +612,7 @@ Ghi lại để đo về sau, không phải quyết định:
 
 **Trạng thái:** Approved — 2026-07-24 (chủ dự án khóa)
 **Mở rộng:** D29 · **Tu chỉnh:** D32 (typography, container)
+**Đã tu chỉnh bởi:** D43 — typography chuyển sang hệ font **Geist (sans-first, bỏ serif ở MVP)**. Phần "serif cho Hero/Display/Major Heading" bên dưới là mô tả D36 gốc, giữ để tra cứu lịch sử.
 
 **Quyết định:** Khóa câu định danh sản phẩm là **"A Strategic Editorial Platform for a Marketing Leader"**, hướng thiết kế **Strategic Editorial with Product-Level Precision** — ấn phẩm biên tập cao cấp với độ hoàn thiện interaction như một digital product hiện đại. Editorial-first, không phải visual-first.
 
@@ -712,3 +713,57 @@ Các quyết định D37–D42 do chủ dự án chốt cho Milestone 0.6 (O-1..
 Các phần khác của D32 (thang chữ 8 bậc, spacing 4px, radius ≤8px, motion ≤200ms, màu để trống tới 0.4) **giữ nguyên**.
 
 **Không xung đột với:** D22 (Editorial là cảm giác #1), D24 (thứ tự cảm giác), D10 (hai chế độ), D23/P8 (CTA), C7/C8 (cấm dashboard/visual giả). D36 làm rõ và cụ thể hóa chúng, không đảo ngược.
+
+---
+
+# Nhóm quyết định Milestone 0.4 — Design Tokens & Wireframe (2026-07-25)
+
+Chủ dự án chốt OD-1..OD-5 cho Milestone 0.4. D43–D45 tiếp nối số, không sửa D1–D42.
+
+## D43 — Typography system: Geist (OD-1)
+
+**Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn hệ font Geist)
+**Tu chỉnh:** D36, D32 (typography — bỏ serif)
+
+**Quyết định:** Dùng hệ font **Geist** (Vercel, SIL Open Font License 1.1).
+
+- **Geist Sans** là font chính: Hero · Heading · Body · Navigation · Button · Form · UI label.
+- **Geist Mono** chỉ dùng có chọn lọc cho metadata/technical: ngày, thời gian đọc, category/tag, số liệu case study, code/kỹ thuật.
+- **Không bổ sung serif ở MVP** — đây là tu chỉnh D36/D32 (vốn dùng serif cho heading). Tinh thần editorial nay đến từ khoảng trắng, measure 68ch, line-height, sự tiết chế (Geist là grotesque Swiss-minimal).
+
+**Đã xác minh (OD-1):**
+- Nguồn chính thức: `github.com/vercel/geist-font` (Vercel), gói npm `geist`; không lấy/sao chép từ aside.com.
+- License OFL 1.1 — cho phép dùng thương mại (website cá nhân có consulting).
+- Tiếng Việt: Geist Sans và Geist Mono đều có subset `vietnamese` + `vi_Latn` (Google Fonts metadata) — **coverage đầy đủ**.
+
+**Ràng buộc validation:** **Vietnamese typography specimen là bắt buộc** — render Geist ở 14/15/16px và body 19px với bộ chuỗi tiếng Việt (ghi ở `COMPONENT_INVENTORY.md` §B.1) để kiểm chất lượng dựng dấu thị giác.
+
+**Validation — ĐẠT (chủ dự án duyệt trực quan 2026-07-25):** specimen render thật, Geist Sans/Mono loaded, dấu tiếng Việt ở mọi cỡ (14→45px) không cắt/chồng/lệch, light & dark đọc tốt. Typography 0.4B được phê duyệt. Lưu ý non-blocking (14px chỉ metadata ngắn · AA muted-text kiểm ở 0.4C · heading wrapping kiểm ở 0.4D · không làm dark metadata nhạt hơn) ghi ở `COMPONENT_INVENTORY.md` §B.1.
+
+**Không cài package/font ở 0.4.** Tích hợp `geist` + `next/font` thuộc Milestone 1.1.
+
+**Thang chữ và token khác giữ nguyên** (D32): 8 bậc, spacing, container, radius, motion.
+
+## D44 — Breakpoints (OD-1 / Phase 2)
+
+**Trạng thái:** Approved — 2026-07-25
+
+**Quyết định:** Breakpoint **mobile-first** (min-width), bốn ngưỡng chính:
+
+- Mobile (base, 0) · Tablet `--bp-md` 768px · Desktop `--bp-lg` 1024px · Wide `--bp-xl` 1280px.
+- Phụ (triển khai 1.1): `--bp-sm` 640px, `--bp-2xl` 1536px.
+
+Chi tiết container/nav/grid/typography-response ở `COMPONENT_INVENTORY.md` §B.9. Không tạo Tailwind config ở 0.4.
+
+## D45 — Hướng màu, dark mode & quy trình wireframe (OD-2/3/4/5)
+
+**Trạng thái:** Approved — 2026-07-25 (hướng và quy trình; giá trị HEX chưa khóa)
+
+**Quyết định:**
+
+- **OD-2 Hướng màu:** Editorial light-mode tối giản, ưu tiên nội dung. Nền paper/off-white (không trắng tuyệt đối), chữ ink/near-black (không đen tuyệt đối cho body), hệ neutral gray đầy đủ, **một accent chính dùng tiết chế**. **Light mode là mặc định, thiết kế trước.** `aside.com` **chỉ là tài liệu tham khảo thị giác** (cảm giác, tương phản, khoảng trắng, hierarchy) — **cấm** sao chép mã màu, bố cục, component, animation, asset, source code, nhận diện Aside.
+- **OD-5 Dark mode:** phải **hand-tuned riêng** — cấm đảo màu/invert tự động/sao chép máy móc token light. Giữ cùng hierarchy nhưng surface/border/text/accent/elevation/contrast/interaction-state **riêng**, có validation contrast riêng.
+- **OD-3 Wireframe fidelity:** **Markdown wireframe là SSoT** (version bằng Git) **+ HTML artifact** để chủ dự án xem trực quan. HTML artifact chỉ là prototype review, **không phải application scaffold/production code**.
+- **OD-4 Quy trình chọn màu:** Claude đề xuất hệ màu + HEX; **chủ dự án duyệt trước khi khóa**. **Không tuyên bố "màu đã khóa" khi chưa có phê duyệt rõ ràng.**
+
+**Thực thi:** 0.4C đề xuất 2–3 phương án accent (tên hướng · ý nghĩa thương hiệu · primitive scale · semantic tokens · ví dụ · contrast light + dark · khuyến nghị), chủ dự án duyệt trước khi khóa HEX.

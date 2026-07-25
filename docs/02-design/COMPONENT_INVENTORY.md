@@ -70,31 +70,45 @@ Phiên bản 1.0 — 2026-07-24. Chốt theo **D32** (token) và **D33** (compon
 
 Chốt **kiến trúc** token; **giá trị màu để trống** tới Milestone 0.4 (tôn trọng D10). D32.
 
-### B.1 Typography
+### B.1 Typography — Geist (chốt theo D43)
 
-**Vai trò theo họ chữ, chốt theo D36 (tu chỉnh D32):**
+**Font family (D43):**
 
-- **Serif** — Hero, Display, Major Heading.
-- **Sans-serif** — Body, Navigation, UI, Metadata.
-- **Mono** — chỉ metadata/technical khi cần; không làm phong cách chính.
+- **Geist Sans** — font chính (Vercel, OFL 1.1): Hero · Heading · Body · Navigation · UI · Button · Form · Label.
+- **Geist Mono** — chỉ metadata/technical: ngày · thời gian đọc · category/tag · số liệu case study · code/kỹ thuật.
+- **Không serif ở MVP.** Đây là tu chỉnh so với D36/D32 (vốn dùng serif cho heading) — xem D43.
 
-Đây là thay đổi so với bản D32 gốc (body serif). Editorial thể hiện ở heading serif; body dùng sans cho khả năng đọc dài và cảm giác product-level (xem `DESIGN_SYSTEM.md` §Typography).
+Tiếng Việt: cả Geist Sans và Geist Mono đã xác nhận vùng phủ `vietnamese` + `vi_Latn` qua Google Fonts metadata (gồm dải 7840–7929 và combining diacritics). **Chất lượng dựng dấu thị giác** ở 14/15/16px là **validation bắt buộc bằng render thật** (specimen, xem cuối §B.1) — chưa được coi là đạt cho tới khi chủ dự án xem specimen.
 
-Phương án font khuyến nghị: **serif heading** Newsreader (hoặc Source Serif 4) · **sans body/UI** Inter (hoặc Be Vietnam Pro) · **mono metadata** IBM Plex Mono. Cả các font ứng viên đã xác nhận vùng phủ tiếng Việt qua Google Fonts metadata; **chất lượng dựng dấu ở 15px kiểm bằng mắt ở 0.4** (giả định A2).
+**Thang chữ 8 bậc — GIỮ NGUYÊN theo D32** (không đổi con số; chỉ đổi họ font sang Geist Sans). Tỷ lệ 1.250 desktop / 1.200 mobile qua `clamp()`:
 
-Thang chữ 8 bậc (đã bỏ `--text-display`), tỷ lệ 1.250 desktop / 1.200 mobile qua `clamp()`:
+| Token | Desktop | Mobile (≈) | Vai trò | Weight |
+| --- | --- | --- | --- | --- |
+| `--text-h1` | 45px | 34px | tiêu đề trang/bài (hero dùng bậc này) | 600 |
+| `--text-h2` | 36px | 28px | mục lớn | 600 |
+| `--text-h3` | 28px | 24px | mục nhỏ | 600 |
+| `--text-lg` | 22px | 19px | sapo, dẫn nhập | 400–500 |
+| `--text-body` | 19px | 17px | thân bài | 400 |
+| `--text-sm` | 16px | 16px | giao diện, chú thích | 400–500 |
+| `--text-xs` | 14px | 14px | metadata, nhãn mono | 400–500 |
 
-| Token | Desktop | Vai trò |
-| --- | --- | --- |
-| `--text-h1` | 45px | tiêu đề trang/bài (hero dùng bậc này) |
-| `--text-h2` | 36px | mục lớn |
-| `--text-h3` | 28px | mục nhỏ |
-| `--text-lg` | 22px | sapo, dẫn nhập |
-| `--text-body` | 19px | thân bài |
-| `--text-sm` | 16px | giao diện, chú thích |
-| `--text-xs` | 14px | metadata, nhãn mono |
+- **Dòng cao:** thân bài `1.7` (rộng hơn chuẩn tiếng Anh vì dấu chồng), tiêu đề `1.15`, giao diện `1.5`.
+- **Độ dài dòng:** `--measure-prose: 68ch`.
+- **Weight:** heading 600 · body 400 · nav/UI 500–600 · **hạn chế 300** (không dùng cho body/nav).
+- **Letter-spacing:** body & mọi text tiếng Việt = **0** (cấm tracking âm — dấu cần khoảng thở). Heading lớn (h1/h2) có thể `-0.01em` rất nhẹ, **nhưng phải kiểm dấu trên chữ hoa** (Ế/Ữ) trước khi áp.
+- **Text-transform:** không uppercase dài. Uppercase chỉ cho eyebrow/nhãn **ngắn** (mono), kèm `letter-spacing` dương nhẹ; phải kiểm dấu trên chữ hoa.
+- **Responsive:** body 19px→17px, heading co qua `clamp()`; measure 68ch bất biến (chỉ padding co).
+- **Fallback stack (dùng khi Geist chưa tải):** Geist Sans → `system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`; Geist Mono → `ui-monospace, "SF Mono", "Cascadia Code", monospace`. `system-ui` phủ tiếng Việt trên đa số OS.
+- **Font loading (dự kiến Milestone 1.1, KHÔNG làm ở 0.4):** self-host qua gói `geist` chính thức của Vercel (`geist/font/sans`, `geist/font/mono`) với `next/font`; `display: swap`; subset `latin` + `vietnamese`; preload font above-the-fold. **Không cài package ở 0.4.**
 
-Dòng cao: thân bài `1.7` (rộng hơn chuẩn tiếng Anh vì dấu chồng), tiêu đề `1.15`, giao diện `1.5`. Độ dài dòng: `--measure-prose: 68ch`.
+**Vietnamese specimen — validation bắt buộc (D43):** phải render Geist Sans + Geist Mono ở **14px, 15px, 16px và body 19px** với các chuỗi: `Cao Đắc Chiến` · `Chiến lược thương hiệu bền vững` · `Marketing và truyền thông trong kỷ nguyên số` · `Nguyễn, Truyền thông, Thương hiệu, Đổi mới` · `Hiệu quả, Dữ liệu, Quỹ đạo, Tăng trưởng` · `Ă Â Đ Ê Ô Ơ Ư` / `ă â đ ê ô ơ ư` · `Ắ Ằ Ẳ Ẵ Ặ` · `Ế Ề Ể Ễ Ệ` · `Ố Ồ Ổ Ỗ Ộ` · `Ớ Ờ Ở Ỡ Ợ` · `Ứ Ừ Ử Ữ Ự`. Kiểm: lỗi dấu, dấu chồng, khoảng cách, khả năng đọc. Vehicle: HTML specimen artifact (OD-3). Chủ dự án duyệt trước khi coi typography là đạt.
+
+**Kết quả validation — ĐẠT (chủ dự án duyệt trực quan 2026-07-25):** render specimen thật; Geist Sans và Geist Mono **loaded: true** (không fallback); dấu tiếng Việt ở 14/15/16/17/19/28/36/45px hiển thị đúng, **không** cắt/chồng/lệch dấu; light mode đọc tốt, dark mode giữ hierarchy. Body 19px/1.7/68ch được duyệt; Geist Mono được duyệt cho metadata/ngày/thời gian đọc/tag/số liệu/technical. (Chuỗi 45px xuống dòng là hành vi mong đợi, không phải defect.)
+
+**Lưu ý non-blocking (chủ dự án):**
+- `14px/400` chỉ dùng cho **metadata ngắn**, không dùng cho body dài.
+- **0.4C:** phải kiểm AA contrast cho **muted text** ở cả light và dark. **Không** làm chữ dark-mode metadata nhạt hơn mức trong specimen hiện tại.
+- **0.4D:** kiểm wrapping thực tế của heading ở mobile 390px, tablet 768px, desktop.
 
 ### B.2 Spacing
 
@@ -138,3 +152,20 @@ Tầng nguyên thủy (chỉ ở nơi định nghĩa): `--ink-*`, `--paper-*`, `
 Tầng semantic: `--color-surface`, `--color-surface-raised`, `--color-surface-sunken`, `--color-text-primary`, `--color-text-secondary`, `--color-text-muted`, `--color-text-on-accent`, `--color-border`, `--color-border-strong`, `--color-accent`, `--color-accent-hover`, `--color-focus-ring`, `--color-success`, `--color-warning`, `--color-danger`, `--color-pillar-1..5`.
 
 Mỗi token semantic có giá trị cho **cả hai chế độ**; mỗi cặp chữ-trên-nền đo tương phản AA **riêng từng chế độ**.
+
+### B.9 Breakpoints (chốt theo D44)
+
+**Mobile-first** (min-width). Bốn ngưỡng chính khớp 4 container (§B.3) và hai grid theo hành vi:
+
+| Tên | Token | Min-width | Thiết bị | Container | Nav | Grid |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mobile | *(base)* | 0 | điện thoại | `prose` full-bleed padding | menu trượt (hamburger) | 1 cột |
+| Tablet | `--bp-md` | 768px | máy tính bảng | `content` (≤1080) | menu trượt hoặc rút gọn | 2 cột |
+| Desktop | `--bp-lg` | 1024px | laptop | `content`/`wide` | nav ngang 5 mục | 12 cột |
+| Wide | `--bp-xl` | 1280px | desktop rộng | `wide` (≤1280) | nav ngang | 12 cột |
+
+- Ngưỡng phụ (tùy chọn triển khai 1.1): `--bp-sm: 640px` (large mobile), `--bp-2xl: 1536px` (chỉ tăng lề, không giãn measure).
+- **Gutter:** 24px (`--space-5`) mọi breakpoint; lề ngoài `--space-5` mobile / `--space-7` desktop.
+- **Typography response:** body 19→17px, heading co qua `clamp()`; `--measure-prose: 68ch` **bất biến** xuyên breakpoint.
+- **Wireframe mapping:** wireframe 0.4D mô tả composition ở **Mobile · Tablet · Desktop** (Wide dùng chung layout Desktop, chỉ đổi lề).
+- **Lý do chọn ngưỡng:** 768/1024/1280 là ranh giới nội dung tự nhiên — 768 nơi 2 cột đọc được, 1024 nơi nav ngang + cột-lề-phải TOC vừa, 1280 nơi `wide` thở đủ. Chọn theo nội dung, không theo model thiết bị cứng. **Không tạo Tailwind config ở 0.4** (thuộc 1.1).
