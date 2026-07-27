@@ -881,3 +881,87 @@ Decision Log → Design Bible → Design System → Component Inventory → AI R
 | **Source Code** | Thi hành. **Không bao giờ là nguồn sự thật** | Quyết định/nguyên tắc |
 
 **Ràng buộc chống trùng lặp:** giá trị (số) chỉ sống ở Component Inventory; Design Bible và Design System **trỏ tới**, không lặp lại. Khi Design Bible cần một con số, nó dẫn chiếu Component Inventory.
+
+---
+
+# Nhóm quyết định Homepage Semantic IA & Content Readiness (2026-07-27)
+
+Chủ dự án chốt D51–D55 sau Checkpoint 0.5A/0.5B (Semantic HTML homepage + audit). Tiếp nối số, không sửa/đánh số lại D1–D50.
+
+## D51 — `/topics/` là content hub độc lập
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** D31 (IA — thêm route hub), D26 (nav "Chủ đề")
+
+**Bối cảnh:** Semantic HTML homepage trỏ nav "Chủ đề" tới `/topics/`, nhưng IA (D31) mới chỉ khóa `/topics/[pillar]/`, chưa có index — bị đánh dấu assumption ở 0.5B.
+
+**Quyết định:**
+- `/topics/` là **trang index tổng hợp 5 trụ** (hub độc lập), không phải anchor `#pillar-map` trên Home.
+- Nav label "Chủ đề" trỏ về `/topics/`.
+- 5 route con (slug tiếng Việt không dấu, chốt cứng): `/topics/chien-luoc/` · `/topics/tang-truong-so/` · `/topics/noi-dung-truyen-thong/` · `/topics/ai-cho-marketing/` · `/topics/lanh-dao-quan-diem/`.
+- Homepage Pillar Map (S4) trỏ tới **từng route con**; hub index và Pillar Map là hai thứ khác nhau.
+
+**Rationale:** hub độc lập nhất quán với publishing platform, có giá trị SEO/độc lập; anchor on-page yếu.
+**Consequences:** không triển khai trang `/topics/` ở checkpoint này — chỉ khóa **route contract** trong IA; trang thực thuộc Milestone 1.x. Slug con là canonical cho mọi tài liệu/HTML.
+
+## D52 — GitHub là deferred evidence asset
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** `CONTENT_INVENTORY.md` §9
+
+**Bối cảnh:** GitHub `DRAFT` trong Content Inventory, xuất hiện như social link ở footer semantic HTML. Định vị là Marketing Leader, không phải kỹ sư (BRAND §8).
+
+**Quyết định:**
+- **Không** hiển thị GitHub như social channel ở Footer MVP (và không ở homepage/contact).
+- Phân loại GitHub là **`evidence_asset` (deferred)**, không phải `social_primary`. Không xóa GitHub khỏi Content Inventory.
+- Chỉ cân nhắc hiển thị tương lai khi repository có README rõ, có nội dung Marketing systems / AI workflow / automation / personal operating system, và củng cố định vị Marketing Leader.
+
+**Rationale:** tránh tín hiệu "hồ sơ kỹ sư" ngược định vị (D12/D20/§8).
+**Consequences:** footer MVP bỏ GitHub; giữ dữ liệu trong Inventory dưới nhãn evidence deferred.
+
+## D53 — Kênh xuất bản MVP: Email · LinkedIn · RSS
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** `CONTENT_INVENTORY.md` §9, `INFORMATION_ARCHITECTURE.md` §9 (footer)
+
+**Bối cảnh:** chỉ Email `READY`; LinkedIn/Facebook/X/YouTube = TODO. Cần khóa danh sách kênh để không render link giả.
+
+**Quyết định:**
+- **Primary:** Email `forwork.chiencd@gmail.com` (READY) · LinkedIn (`OWNER ASSET REQUIRED`) · RSS `/rss.xml` (route contract).
+- **Deferred:** Facebook · X · YouTube · Instagram · Behance.
+- **Quy tắc render:** chỉ render một social link khi **URL thật đã có trong Content Inventory**; không render icon/link placeholder; không dùng `#`; không suy đoán username/URL. Nếu LinkedIn chưa có URL lúc production, footer chỉ hiển thị **Email + RSS**. Footer/nav phải cân bằng ngay cả khi chỉ 2 link.
+
+**Rationale:** trung thực (D7), footer tiết chế (IA §9).
+**Consequences:** MVP footer render Email + RSS (+ LinkedIn khi có URL thật).
+
+## D54 — "Làm việc cùng tôi" conditional cho tới khi có dịch vụ được duyệt
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** D18 (khối "Làm việc cùng tôi"), `PRODUCT_REQUIREMENTS.md`
+
+**Bối cảnh:** `servicesOffered` (CONTENT_INVENTORY §8b) = TODO. D18 giữ khối này trên Home/About nhưng chưa quy định hành vi khi thiếu nội dung.
+
+**Quyết định:**
+- Giữ section S5 trong IA và semantic structure. Trạng thái MVP: **`conditional_hidden_until_content_ready`**.
+- **Không render công khai** nếu `servicesOffered` chưa được Owner cung cấp + phê duyệt.
+- **Không** tự viết dịch vụ chung chung (tư vấn chiến lược / quản lý thương hiệu / performance marketing / xây dựng hệ thống…) khi Owner chưa xác nhận cụ thể.
+- Khi chưa có content: S5 **omit** trên production; **S6 Contact CTA nối trực tiếp sau S4 Pillar Map**; transition vẫn tự nhiên. Không placeholder public, không bảng giá/lịch hẹn/package/scarcity.
+
+**Rationale:** D7 (không ship placeholder) + D18 (khối thông tin, không phễu).
+**Consequences:** graceful omission cho S5; cần Owner cung cấp §8b để bật.
+
+## D55 — Featured content cần ngưỡng xuất bản thật
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** D25 (Home flow), `PRODUCT_REQUIREMENTS.md`
+
+**Bối cảnh:** Bài viết (§10) và case study (§5) = TODO. D25 khóa Home có bài featured + case featured, nhưng chưa quy định hành vi khi thiếu nội dung.
+
+**Quyết định (Option A):**
+- Giữ cấu trúc homepage + component mapping. Khi chưa có nội dung thật: dùng **empty-state narrative trung thực** trong review; **không** render placeholder card production; **không** tạo title/excerpt/date/reading-time/metric/case giả.
+- **Bật Featured Writing** khi: ≥3 bài thật, có title/slug/published-date/excerpt/reading-time hợp lệ, Owner xác nhận bài featured.
+- **Bật Featured Case Study** khi: ≥1 case thật, có context/problem/approach/result, mọi metric được phép công khai (D6); case liên quan Roboworld giữ `REVIEW-REQUIRED` trước publish (D13).
+- Khi cả hai chưa đủ: homepage production **graceful omission**; không khoảng trống vô nghĩa; **không** thay bằng testimonial/logo wall/fake metric/generic feature grid.
+
+**Rationale:** D7/P1/§6 (bằng chứng thật hoặc omit, không giả).
+**Consequences:** S2/S3 conditional; cần cổng nội dung (CONTENT_INVENTORY §1) trước khi bật.

@@ -55,6 +55,14 @@ Không đưa lên website: dữ liệu mật, tài liệu nội bộ, thông tin
 
 AI **không được tự phán đoán** một thông tin là công khai hay không. Mọi nội dung nhắc tới Roboworld hoặc khách hàng của Roboworld phải được đánh dấu `REVIEW-REQUIRED` trong `docs/01-product/CONTENT_INVENTORY.md` và chờ chủ dự án kiểm duyệt.
 
+### 4.4 Content readiness & omit-not-fabricate (D51–D55)
+
+- **Không tự tạo social URL / username.** Chỉ render một kênh khi URL thật đã có trong `CONTENT_INVENTORY.md` (D53). Không link/icon placeholder, không `#`. GitHub là `evidence_asset` deferred — không hiển thị như social MVP (D52).
+- **Không tự viết service offering.** `servicesOffered` chưa được Owner duyệt thì section "Làm việc cùng tôi" **omit** (D54); không bịa danh sách dịch vụ chung chung.
+- **Không tự tạo bài viết / case study / metric để lấp component.** Chưa đạt ngưỡng nội dung thật (D55) thì **omit có chủ đích** (graceful omission), không placeholder card production, không testimonial/logo wall/fake metric/feature grid thay thế.
+- **Omit chứ không fabricate.** Khi content chưa ready, bỏ khối một cách có chủ đích và giữ narrative liền mạch; tuyệt đối không dựng dữ liệu giả.
+- **Route assumption phải được Owner quyết định trước implementation.** Không tự tạo route mới; route chưa khóa phải trình Owner (ví dụ `/topics/` đã khóa ở D51).
+
 ## 5. Khi thay đổi UI
 
 - Bám governance hierarchy (D50): Decision Log → Design Bible → Design System → Component Inventory. Hướng đã khóa là **Strategic Editorial with Product-Level Precision** (D36) — editorial-first và interaction-first, không phải visual-first, không phải SaaS/dashboard.

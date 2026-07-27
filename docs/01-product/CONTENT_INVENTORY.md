@@ -166,6 +166,8 @@ chuc_danh:
 
 Mục tiêu theo `PRODUCT_REQUIREMENTS.md` §8: tối thiểu **3 case study chất lượng**.
 
+> **Ngưỡng bật Featured Case Study trên Home (D55):** ≥1 case **thật** có `context` · `problem` · `approach` · `result`; mọi metric **được phép công khai** (D6); case liên quan Roboworld giữ `REVIEW-REQUIRED` trước publish (D13). Chưa đủ → S3 **graceful omission** (không case/metric/artifact giả).
+
 ### Khối project — template
 
 ```yaml
@@ -272,6 +274,8 @@ Nội dung cho khối "Làm việc cùng tôi" xuất hiện trên Home và Abou
 
 Đây là **khối thông tin**, không phải phễu bán hàng. Không điền bảng giá vào đây.
 
+> **`servicesOffered` = `OWNER ASSET REQUIRED` (D54).** Section S5 trên Home là `conditional_hidden_until_content_ready`: **không render công khai** khi mục này chưa được Owner cung cấp + duyệt. Claude **không** tự viết dịch vụ chung chung (tư vấn chiến lược / quản lý thương hiệu / performance marketing / xây dựng hệ thống…). Khi ẩn, Home nối S6 trực tiếp sau S4 (graceful omission).
+
 ### Template — mỗi hình thức hợp tác một khối
 
 ```yaml
@@ -297,15 +301,22 @@ Nội dung:
 
 ## 9. Liên hệ và mạng xã hội
 
-| Kênh | Giá trị | Hiển thị công khai | Trạng thái |
-| --- | --- | --- | --- |
-| Email liên hệ | `forwork.chiencd@gmail.com` | Có | `READY` |
-| LinkedIn |  |  | `TODO` |
-| GitHub | `https://github.com/caodacchien` |  | `DRAFT` |
-| Facebook |  |  | `TODO` |
-| X / Twitter |  |  | `TODO` |
-| YouTube |  |  | `TODO` |
-| Số điện thoại |  | Cân nhắc kỹ trước khi công khai | `TODO` |
+Kênh xuất bản MVP chốt theo **D53**. Phân loại GitHub theo **D52**.
+
+| Kênh | Giá trị | Phân loại (D52/D53) | Hiển thị công khai | Trạng thái |
+| --- | --- | --- | --- | --- |
+| Email liên hệ | `forwork.chiencd@gmail.com` | `social_primary` | Có | `READY` |
+| LinkedIn |  | `social_primary` | Có (khi có URL) | `OWNER ASSET REQUIRED` |
+| RSS | `/rss.xml` | `social_primary` (route contract) | Có | `READY` |
+| GitHub | `https://github.com/caodacchien` | **`evidence_asset` (deferred, D52)** — KHÔNG social MVP | Không (MVP) | `DRAFT` (giữ, không xóa) |
+| Facebook |  | `deferred` | — | `TODO` |
+| X / Twitter |  | `deferred` | — | `TODO` |
+| YouTube |  | `deferred` | — | `TODO` |
+| Instagram |  | `deferred` | — | `TODO` |
+| Behance |  | `deferred` | — | `TODO` |
+| Số điện thoại |  | cân nhắc kỹ | — | `TODO` |
+
+**Quy tắc render (D53):** chỉ render một social link khi **URL thật đã có ở bảng này**; không icon/link placeholder; không `#`; không suy đoán username/URL. Nếu LinkedIn chưa có URL lúc production → footer chỉ **Email + RSS**. GitHub **không** hiển thị như social ở MVP (D52); chỉ cân nhắc như evidence khi repo củng cố định vị Marketing Leader.
 
 ---
 
@@ -314,6 +325,8 @@ Nội dung:
 Với định vị nền tảng xuất bản theo D12, Blog không còn là phần phụ. **Blog rỗng khi ra mắt là một thất bại về định vị, không chỉ là thiếu nội dung.**
 
 - Số bài mục tiêu khi ra mắt: 3, mỗi bài thuộc một trụ khác nhau.
+
+> **Ngưỡng bật Featured Writing trên Home (D55):** ≥3 bài **thật** với `title` · `slug` · `published date` · `excerpt` · `reading time` hợp lệ, và Owner **xác nhận bài featured**. Chưa đủ → S2 **graceful omission** trên production (không placeholder card, không title/excerpt/date/reading-time giả).
 
 ### Năm trụ nội dung
 

@@ -33,6 +33,8 @@ Trước mọi công việc, phải đọc:
 
 **Governance hierarchy (D50):** Decision Log → Design Bible → Design System → Component Inventory → AI Rulebook → CLAUDE.md → Source. Tầng dưới không mâu thuẫn tầng trên; Decision Log là thẩm quyền tối cao; Source code không bao giờ là nguồn sự thật.
 
+**Owner-approved route & content-readiness decisions:** route contract và điều kiện render nội dung do Decision Log + `CONTENT_INVENTORY.md` chi phối — `/topics/` hub (D51); kênh social render theo D53; "Làm việc cùng tôi" conditional (D54); featured Writing/Case theo ngưỡng thật (D55). Không tự tạo route/social/dịch vụ/bài/case/metric; chưa ready thì omit, không fabricate (AI_RULEBOOK §4.4).
+
 Nếu tài liệu mâu thuẫn, dừng lại và báo rõ mâu thuẫn. Không tự suy đoán.
 
 ## Quy trình bắt buộc

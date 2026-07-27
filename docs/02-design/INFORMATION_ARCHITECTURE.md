@@ -12,7 +12,8 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 ├── /writing/                  Danh sách bài viết (hiển thị hết — pagination Phase 2)
 │   └── /writing/[slug]/        Bài viết
 │
-├── /topics/[pillar]/          Hub của một trụ (đúng 5 trụ, D31)
+├── /topics/                   Hub index tổng hợp 5 trụ (D51)
+│   └── /topics/[pillar]/       Hub của một trụ (đúng 5 trụ, D31)
 │
 ├── /case-studies/             Danh sách case study (hiển thị hết — filter Phase 2)
 │   └── /case-studies/[slug]/   Một case study
@@ -56,8 +57,13 @@ Năm trụ: `Chiến lược` · `Tăng trưởng số` · `Nội dung và Truy�
 | Loại | Mẫu | Ví dụ |
 | --- | --- | --- |
 | Bài viết | `/writing/[slug]/` | `/writing/khung-dinh-vi-thuong-hieu/` |
+| **Hub index chủ đề** | `/topics/` | `/topics/` (D51 — nav "Chủ đề" trỏ về đây) |
 | Hub trụ | `/topics/[pillar]/` | `/topics/ai-cho-marketing/` |
 | Case study | `/case-studies/[slug]/` | `/case-studies/tai-dinh-vi-x/` |
+
+**Slug 5 trụ (canonical, chốt cứng theo D51):** `chien-luoc` · `tang-truong-so` · `noi-dung-truyen-thong` · `ai-cho-marketing` · `lanh-dao-quan-diem`. Đây là giá trị duy nhất; mọi tài liệu/HTML dùng đúng bộ này.
+
+**Phân biệt (D51):** `/topics/` là **hub index** (trang liệt kê 5 trụ, có route riêng, giá trị SEO/độc lập) — **khác** với **Pillar Map trên Home (S4)**, vốn là một khối dẫn tới từng `/topics/[pillar]/`. Không dùng anchor `#pillar-map` thay cho hub index.
 
 **Quy tắc:**
 
@@ -117,6 +123,13 @@ Chốt theo **D25**. Chi tiết ở `PRODUCT_REQUIREMENTS.md` §5.
 7. Footer
 
 Trần 2 CTA mỗi trang (D23/P8).
+
+**Conditional rendering (D54/D55) — spine không đổi, chỉ điều kiện hiển thị production:**
+
+- **S2 Featured Writing / S3 Featured Case Study:** chỉ render khi đạt ngưỡng nội dung thật (D55 — Writing ≥3 bài hợp lệ + Owner xác nhận featured; Case ≥1 case hợp lệ, metric được phép công khai). Chưa đủ → **graceful omission** trên production (không placeholder card, không fake).
+- **S5 Làm việc cùng tôi:** `conditional_hidden_until_content_ready` (D54) — không render nếu `servicesOffered` chưa được Owner cung cấp/duyệt.
+- **Fallback thứ tự khi omit:** nếu S5 ẩn → **S6 Contact CTA nối trực tiếp sau S4 Pillar Map**; nếu S2/S3 ẩn → các khối còn lại dồn liền, transition narrative vẫn tự nhiên, không để khoảng trống vô nghĩa (logic nối ở `homepage-layout-logic.md`).
+- Không thay khối thiếu bằng testimonial / logo wall / fake metric / generic feature grid.
 
 ## 9. Footer structure
 

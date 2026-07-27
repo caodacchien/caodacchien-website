@@ -91,6 +91,11 @@ Không commit API key hoặc bất kỳ secret nào. `.env.local` đã nằm tro
 - Không còn chuỗi `PLACEHOLDER:` hoặc `DRAFT:` trong nội dung công khai
 - Nội dung liên quan Roboworld đã được chủ dự án kiểm duyệt
 - Không có số liệu hoặc thành tích chưa được xác nhận
+- **Content readiness gate (D52–D55):**
+  - **Không render public placeholder** (bài/case/dịch vụ giả) — chưa đủ nội dung thật thì **omit** (D54/D55)
+  - **Không render social URL chưa xác nhận** — chỉ Email + RSS (+ LinkedIn khi có URL thật); GitHub không phải social MVP (D52/D53)
+  - **Không render "Làm việc cùng tôi"** khi `servicesOffered` chưa được Owner duyệt (D54)
+  - **Không render case metric** chưa được phép công khai (D6/D55); không fake/sample metric
 
 ### SEO
 - Sitemap

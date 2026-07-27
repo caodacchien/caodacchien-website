@@ -24,6 +24,18 @@ Chỉ làm tài liệu và hạ tầng. Không viết application code.
 
 Song song, chủ dự án điền `docs/01-product/CONTENT_INVENTORY.md`. Đây là đường găng của Phase 1.
 
+### Homepage design sub-track (mở rộng Milestone 0.4, tài liệu — không phải application code)
+
+Chuỗi checkpoint homepage (khác Milestone 0.5 Foundation ở trên): IA → Editorial Blueprint → Viewport Storyboard → Wireframe Spec → Wireframe Artifact → Layout Logic → Semantic HTML → Review/Audit → Owner decisions.
+
+| Checkpoint | Nội dung | Trạng thái |
+| --- | --- | --- |
+| 0.4B–0.4F | IA/Blueprint/Storyboard/Wireframe/Layout Logic | ✅ Xong |
+| **0.5A** | **Semantic HTML homepage** (`homepage-semantic-html.html`, review artifact) | ✅ Xong |
+| **0.5B** | **Semantic HTML review & content-integrity audit** + Owner decisions D51–D55 | ✅ Xong |
+
+**Next phase: Homepage Visual Implementation Preparation** — chuẩn bị chuyển semantic structure → visual (section-based CSS theo D46/D47, R3 radius D49). **Chưa bắt đầu CSS/React/Tailwind.** Triển khai visual thật thuộc Milestone 1.2 (Global layout) sau khi Milestone 1.1 (setup) xong; nội dung thật (CONTENT_INVENTORY `READY`) chặn 1.4.
+
 ## Phase 1 — MVP
 
 Mỗi milestone là một pull request riêng. Không gộp.
