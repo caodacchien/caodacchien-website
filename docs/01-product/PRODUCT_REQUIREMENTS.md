@@ -170,7 +170,7 @@ Nguồn: Supabase (`contacts`) + Resend
 - Metadata đầy đủ
 - Không phụ thuộc JavaScript cho nội dung SEO chính
 - Có error state, loading state và empty state
-- Light mode và dark mode, mặc định theo `prefers-color-scheme`, có nút chuyển và lưu lựa chọn, không nhấp nháy sai theme khi tải trang. Cả hai chế độ đều phải đạt tương phản AA. Xem D10.
+- **Section-based color composition** (D46 — supersede D10): màu đổi theo section (White/Grey/Black/Orange) phục vụ narrative; **không** global light/dark toggle, **không** `prefers-color-scheme` switching. Tương phản AA đo **theo từng surface**.
 - Kiến trúc sẵn sàng song ngữ: routing theo locale, chuỗi giao diện tách khỏi JSX, dữ liệu có cột `locale`. MVP chỉ xuất bản `vi`. Xem D1.
 
 ## 7. Nội dung
@@ -189,7 +189,7 @@ Milestone 1.4 chỉ bắt đầu khi 5 mục trong "Cổng mở khóa Milestone 
 - Tăng số lượt xem portfolio/blog
 - Có ít nhất 3 case study chất lượng
 - Có quy trình xuất bản nội dung ổn định
-- Lighthouse đạt mục tiêu ở §6 trên cả light mode và dark mode
+- Lighthouse đạt mục tiêu ở §6 (section-based, D46)
 
 ## 9. Chính sách nội dung
 

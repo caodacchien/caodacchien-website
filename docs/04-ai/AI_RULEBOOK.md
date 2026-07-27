@@ -8,6 +8,7 @@ Quy định cách AI agent làm việc để giữ dự án nhất quán, an to�
 
 AI phải:
 - Đọc tài liệu liên quan, bao gồm `docs/00-foundation/DECISION_LOG.md`
+- Với công việc thiết kế/UI: đọc `docs/design-bible/` theo trật tự ở `docs/design-bible/README.md` (governance hierarchy D50)
 - Xác định phạm vi
 - Nêu giả định
 - Liệt kê file thay đổi
@@ -56,13 +57,14 @@ AI **không được tự phán đoán** một thông tin là công khai hay kh�
 
 ## 5. Khi thay đổi UI
 
-- Bám Design System. Hướng đã khóa là **Strategic Editorial with Product-Level Precision** (D36) — editorial-first và interaction-first, không phải visual-first, không phải SaaS/dashboard.
+- Bám governance hierarchy (D50): Decision Log → Design Bible → Design System → Component Inventory. Hướng đã khóa là **Strategic Editorial with Product-Level Precision** (D36) — editorial-first và interaction-first, không phải visual-first, không phải SaaS/dashboard.
 - Mọi quyết định UI phải nhất quán với 11 Design Principle và 12 Design Constraint trong `DESIGN_SYSTEM.md`.
 - **P13 — Interaction Before Decoration:** mọi effect, animation, motion, sound, hover, micro-interaction phải phục vụ usability/feedback/hiểu nội dung. Hiệu ứng trang trí chỉ được phép khi không cạnh tranh với nội dung. **"Sound is feedback, not decoration."**
 - Không tự sáng tạo direction mới.
 - Không đổi font, màu hoặc radius tùy hứng.
 - Chỉ dùng semantic design token. Không hard-code giá trị màu trong component.
-- Mọi thay đổi UI phải kiểm tra ở cả light mode và dark mode (hai chế độ đều first-class, D10/D36).
+- Màu theo **section-based composition** (D46 — không light/dark toggle); kiểm tương phản AA **theo từng surface** (White/Grey/Black/Orange). Danger color giữ `Pending` (D47).
+- Typography: **Geist Sans duy nhất**, không Geist Mono trong visible UI; số dùng `tabular-nums` (D48). Radius theo contract R3 (D49).
 - Chụp hoặc mô tả before/after khi thay đổi lớn.
 
 ## 6. Khi làm database
@@ -99,6 +101,6 @@ Một task chỉ hoàn thành khi:
 - Không có secret
 - Không còn placeholder chưa được đánh dấu
 - Không có nội dung bịa
-- Kiểm tra ở cả light mode và dark mode nếu có thay đổi UI
+- Kiểm tra tương phản AA theo từng surface (section-based, D46) nếu có thay đổi UI
 - Tài liệu được cập nhật, gồm cả Decision Log nếu có quyết định mới
 - Có tóm tắt và commit message đề xuất

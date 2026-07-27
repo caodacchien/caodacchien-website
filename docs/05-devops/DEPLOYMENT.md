@@ -100,9 +100,8 @@ Không commit API key hoặc bất kỳ secret nào. `.env.local` đã nằm tro
 - JSON-LD cho Person và Article
 
 ### Giao diện
-- Kiểm tra ở cả light mode và dark mode
-- Không nhấp nháy sai theme khi tải trang
-- Lighthouse đạt mục tiêu trên cả hai chế độ
+- Kiểm tra tương phản AA **theo từng surface** (section-based, D46 — không light/dark toggle)
+- Lighthouse đạt mục tiêu
 - Kiểm tra bàn phím và focus ring
 
 ### Hạ tầng và bảo mật

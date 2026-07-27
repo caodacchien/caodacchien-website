@@ -34,7 +34,6 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 | Vị trí | Nội dung |
 | --- | --- |
 | Header chính | **Viết · Case study · Chủ đề · Giới thiệu · Liên hệ** (5 mục, D26). Experience là section trong About, không lên nav |
-| Header phụ | Nút chuyển theme (D10) |
 | Không lên header | "Làm việc cùng tôi" — là **khối** trên Home và About, không phải mục nav (D18, P2) |
 | Trong bài | Mục lục dính ở cột lề phải (desktop), thu gọn trên mobile |
 | Cuối bài | 3 bài liên quan cùng trụ + tối đa 1 CTA (P8) |
@@ -127,7 +126,7 @@ Footer nhỏ, **không phải sitemap**. Hai cột + dòng cuối:
 | --- | --- |
 | Viết · Case study · Chủ đề · Giới thiệu · Liên hệ · Kinh nghiệm (anchor About) | Social · RSS |
 
-Dòng cuối: bản quyền · Chính sách riêng tư · nút chuyển theme. Experience nằm ở footer/About (D21).
+Dòng cuối: bản quyền · Chính sách riêng tư. *(Bỏ nút chuyển theme — D46 section-based, không light/dark toggle.)* Experience nằm ở footer/About (D21).
 
 ## 10. Trạng thái quyết định (đã đóng ở 0.5D)
 
