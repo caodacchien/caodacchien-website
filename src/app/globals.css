@@ -1,12 +1,10 @@
 /*
- * Global CSS — Foundation baseline only (Milestone 1.1).
- * Theo homepage-css-architecture-spec.md. CHỈ foundation:
- * layer order + reset có kiểm soát + base + accessibility.
- * KHÔNG: color primitives, semantic tokens, spacing/radius scale,
- * component/section styles, orange accent, responsive composition (thuộc 1.2+).
+ * Global CSS — Visual token foundation (Milestone 1.2B).
+ * Token values canonical từ COMPONENT_INVENTORY §B (§B.1–B.9) + §B.8 (D46/D47).
+ * Chỉ token foundation + base + surface resolution. CHƯA có component/section/homepage.
  */
 
-/* Cascade layer order — LOCKED (OD-CSS-4). Khai báo một lần. */
+/* Cascade layer order — LOCKED (OD-CSS-4, css-architecture-spec §3). */
 @layer reset, tokens, base, layout, surfaces, components, states, utilities, responsive, accessibility;
 
 @layer reset {
@@ -45,27 +43,184 @@
 }
 
 @layer tokens {
-  /* Font hook (semantic). Giá trị var do next/font (geist) cấp ở <html>. */
   :root {
+    /* ---- Brand primitives (khóa, D47/§B.8) ---- */
+    --color-pure-white: #fbfbfb;
+    --color-deep-black: #040404;
+    --color-neutral-grey: #dedede;
+    --color-kinetic-orange: #ff4000;
+
+    /* ---- Orange accent-text shades (§B.8 derived, contrast-safe) ---- */
+    --color-orange-700: #c42f00; /* accent-text trên White (AA 5.41:1) */
+    --color-orange-800: #a62800; /* accent-text trên Grey (AA 5.34:1) */
+
+    /* ---- Neutral ink ramp (§B.8 derived; 40=nhạt → 90=đậm) ---- */
+    --color-ink-40: #b0b0b0;
+    --color-ink-50: #8a8a8a;
+    --color-ink-60: #6e6e6e;
+    --color-ink-70: #555555;
+    --color-ink-90: #3a3a3a;
+    --color-ink-orange-strong: #1a0a05; /* secondary trên Orange surface (§B.8) */
+    --color-ink-orange-muted: #2a1206; /* muted trên Orange surface (§B.8) */
+
+    /* ---- Typography (§B.1). Per-role & fluid = Deferred impl detail (contract §7). ---- */
     --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
       Roboto, Arial, sans-serif;
+    --measure-prose: 68ch;
+    --leading-body: 1.7;
+    --leading-heading: 1.15;
+    --leading-ui: 1.5;
+    --weight-body: 400;
+    --weight-medium: 500;
+    --weight-heading: 600;
+    /* Thang chữ 8 bậc — giá trị desktop canonical §B.1. Mobile step-down/clamp Deferred (section impl). */
+    --text-h1: 45px;
+    --text-h2: 36px;
+    --text-h3: 28px;
+    --text-lg: 22px;
+    --text-body: 19px;
+    --text-sm: 16px;
+    --text-xs: 14px;
+
+    /* ---- Spacing (§B.2, base 4px) ---- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
+    --space-10: 128px;
+    /* Section rhythm anchor (§B.2 ranges: compact 5–6 · standard 7–8 · major 9–10) */
+    --space-compact: var(--space-6);
+    --space-standard: var(--space-8);
+    --space-major: var(--space-10);
+
+    /* ---- Radius (§B.4 / D49 R3; giá trị trong biên archetype) ---- */
+    --radius-control: 10px; /* 8–10 */
+    --radius-card: 14px; /* 12–16 */
+    --radius-panel: 24px; /* 20–28 */
+    --radius-signature: 40px; /* 36–48 */
+    --radius-pill: 999px;
+
+    /* ---- Motion (§B.6; trần 200ms). Easing = Deferred. ---- */
+    --duration-fast: 120ms;
+    --duration-base: 160ms;
+    --duration-slow: 200ms;
+
+    /* ---- Container (§B.3) ---- */
+    --container-prose: 68ch;
+    --container-content: 1080px;
+    --container-wide: 1280px;
+    --container-full: 100%;
+
+    /* ---- Semantic (mặc định = White surface; đổi theo [data-surface], §B.8) ---- */
+    --color-surface: var(--color-pure-white);
+    --color-text-primary: var(--color-deep-black);
+    --color-text-secondary: var(--color-ink-90);
+    --color-text-muted: var(--color-ink-60);
+    --color-border: var(--color-neutral-grey);
+    --color-border-strong: var(--color-ink-40);
+    --color-accent: var(--color-kinetic-orange);
+    --color-accent-text: var(--color-orange-700);
+    --color-on-accent: var(--color-deep-black);
+    --color-focus-ring: var(--color-kinetic-orange);
+    /* Deferred (chưa có nguồn khóa): --color-selected, --color-disabled, danger/success/warning */
   }
 }
 
 @layer base {
-  /* Giá trị canonical đã khóa (D47), chỉ mức tối thiểu để shell render đúng.
-     KHÔNG khai báo semantic token / palette đầy đủ ở 1.1. */
   body {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
     font-family: var(--font-sans);
-    line-height: 1.6;
-    background-color: #fbfbfb;
-    color: #040404;
+    line-height: var(--leading-body);
     -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-accent-text);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
   }
 }
 
+@layer layout {
+  /* Container/layout foundation — token đã ở :root. Helper class thêm khi section cần (checkpoint sau). */
+}
+
+@layer surfaces {
+  /* Section-based surface resolution (D46/§B.8). data-surface trên surface root gán lại semantic.
+     Component bên trong chỉ đọc semantic, không đọc primitive. Không global dark/light mode. */
+  [data-surface="white"] {
+    --color-surface: var(--color-pure-white);
+    --color-text-primary: var(--color-deep-black);
+    --color-text-secondary: var(--color-ink-90);
+    --color-text-muted: var(--color-ink-60);
+    --color-border: var(--color-neutral-grey);
+    --color-border-strong: var(--color-ink-40);
+    --color-accent-text: var(--color-orange-700);
+  }
+
+  [data-surface="grey"] {
+    --color-surface: var(--color-neutral-grey);
+    --color-text-primary: var(--color-deep-black);
+    --color-text-secondary: var(--color-ink-90);
+    --color-text-muted: var(--color-ink-70);
+    --color-border: var(--color-ink-40);
+    --color-border-strong: var(--color-ink-50);
+    --color-accent-text: var(--color-orange-800);
+    /* Kinetic Orange #FF4000 trên Grey = 2.61:1 (< 3:1 non-text). Dùng o-800 (5.34:1) cho focus ring. */
+    --color-focus-ring: var(--color-orange-800);
+  }
+
+  [data-surface="black"] {
+    --color-surface: var(--color-deep-black);
+    --color-text-primary: var(--color-pure-white);
+    --color-text-secondary: var(--color-ink-40);
+    --color-text-muted: var(--color-ink-50);
+    --color-border: var(--color-ink-90);
+    --color-border-strong: var(--color-ink-70);
+    --color-accent-text: var(--color-kinetic-orange);
+  }
+
+  [data-surface="orange"] {
+    --color-surface: var(--color-kinetic-orange);
+    --color-text-primary: var(--color-deep-black);
+    --color-text-secondary: var(--color-ink-orange-strong);
+    --color-text-muted: var(--color-ink-orange-muted);
+    --color-border: var(--color-deep-black);
+    --color-border-strong: var(--color-deep-black);
+    --color-accent-text: var(--color-deep-black);
+    --color-on-accent: var(--color-pure-white);
+    --color-focus-ring: var(--color-deep-black);
+  }
+}
+
+@layer components {
+  /* Chưa có UI component (Milestone 1.2B). Component styles thuộc checkpoint dựng Homepage sau. */
+}
+
+@layer states {
+  /* State semantic foundation. Focus-visible ở accessibility layer.
+     Hover/active transition foundation Deferred (easing chưa khóa). */
+}
+
+@layer utilities {
+  /* utilities-safe (OD-CSS-3). Chưa cần helper nào ở foundation. */
+}
+
+@layer responsive {
+  /* Mobile-first (D57/OD-CSS-2). Breakpoint §B.9 dùng trực tiếp trong media query khi section cần.
+     Fluid type scale (§B.1 mobile) Deferred — chưa có section. */
+}
+
 @layer accessibility {
-  /* Skip link: ẩn cho tới khi focus. */
   .skip-link {
     position: absolute;
     left: -9999px;
@@ -76,13 +231,11 @@
     left: 0;
   }
 
-  /* Focus baseline: không xóa outline. */
   :focus-visible {
-    outline: 2px solid #ff4000;
+    outline: 2px solid var(--color-focus-ring);
     outline-offset: 2px;
   }
 
-  /* Reduced-motion baseline (nguyên tắc; chưa có animation ở foundation). */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
