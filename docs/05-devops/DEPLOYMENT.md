@@ -1,5 +1,7 @@
 # Deployment
 
+> **Tu chỉnh bởi D56 (2026-07-28):** **hosting target MVP = Cloudflare Pages, static-first.** Vercel **không còn** là production target bắt buộc. Foundation deployment-agnostic (không Vercel-specific config). **Cơ chế build/deploy** (static export `output:"export"` hoặc Cloudflare-compatible adapter) là **deferred deployment decision** — quyết ở deployment checkpoint riêng sau khi content/image/runtime rõ. Chưa deploy production. Phân biệt **"hosting target"** (Cloudflare Pages) với **"build/runtime mechanism"** (chưa khóa). Các mục Vercel dưới đây (cost table, rủi ro giấy phép, hạ tầng 0.6C) giữ để tra cứu lịch sử — **posture Vercel đã superseded**.
+
 ## Kiến trúc chi phí thấp
 
 | Hạng mục | Dịch vụ | Tài khoản | Ghi chú |
@@ -7,7 +9,7 @@
 | Domain | `caodacchien.io.vn` | cá nhân, đã sở hữu | |
 | DNS/SSL | Cloudflare Free | cá nhân, `forwork.chiencd@gmail.com` | |
 | Source | GitHub | `caodacchien` | repository **Public** (D40) |
-| Hosting | Vercel Hobby | cá nhân, `forwork.chiencd@gmail.com` | Pro khi bật consulting, gate 1.8 (D19) |
+| Hosting | **Cloudflare Pages** (static-first, D56) | cá nhân, `forwork.chiencd@gmail.com` | ~~Vercel Hobby → Pro (D19)~~ superseded bởi D56; cơ chế build/deploy chưa khóa |
 | Database | Supabase Free | cá nhân, `forwork.chiencd@gmail.com` | region **Singapore**, server-only (D42) |
 | Analytics | Google Analytics 4 | cá nhân | chỉ GA4, xem D9 |
 | Email | Resend | cá nhân | tích hợp ở Milestone 1.7, xem D8 |

@@ -15,6 +15,7 @@ Trạng thái: `Approved` | `Open` | `Superseded`
 ## D1 — Ngôn ngữ website
 
 **Trạng thái:** Approved — 2026-07-23
+**Đã tu chỉnh bởi:** **D57** — MVP dùng route **phẳng** (`/`, `<html lang="vi">`), **không** `[locale]`/middleware/i18n ở MVP. Ràng buộc "route dưới `src/app/[locale]/`" chuyển thành **Phase 2 future-ready**. "Kiến trúc sẵn sàng song ngữ" và `slug.vi.mdx` **giữ nguyên**.
 
 **Bối cảnh:** `PRODUCT_REQUIREMENTS.md` §7 để ngỏ lựa chọn Việt / Anh / song ngữ. Đây là quyết định chặn nặng nhất vì ảnh hưởng routing, mô hình dữ liệu, sitemap và hreflang.
 
@@ -462,6 +463,7 @@ Hai vế có vai trò khác nhau và không được rút gọn còn một:
 ### D19 — Rủi ro giấy phép Vercel Hobby
 
 **Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn phương án A: Hobby → Pro theo điều kiện)
+**Đã tu chỉnh bởi:** **D56** — hosting target MVP chuyển sang **Cloudflare Pages, static-first**; Vercel **không còn** là production target bắt buộc. Rủi ro giấy phép Vercel Hobby (nội dung dưới) trở thành **không áp dụng** cho MVP; giữ để tra cứu lịch sử.
 **Liên quan:** D5, D12
 
 **Vấn đề:** Gói Vercel Hobby cấm sử dụng cho mục đích thương mại. Khi định vị còn là "website thương hiệu cá nhân" chung chung, rủi ro này ở mức lý thuyết. D12 đã đổi tình thế: consulting và sản phẩm số giờ là **mục đích được tuyên bố công khai** của sản phẩm.
@@ -965,3 +967,47 @@ Chủ dự án chốt D51–D55 sau Checkpoint 0.5A/0.5B (Semantic HTML homepage
 
 **Rationale:** D7/P1/§6 (bằng chứng thật hoặc omit, không giả).
 **Consequences:** S2/S3 conditional; cần cổng nội dung (CONTENT_INVENTORY §1) trước khi bật.
+
+---
+
+# Nhóm quyết định Foundation Setup — Deployment & Routing posture (2026-07-28)
+
+Chủ dự án chốt D56–D57 ở Milestone 1.1 (Foundation Setup / 1.1B review). Tiếp nối số, không sửa hay đánh số lại D1–D55.
+
+## D56 — MVP Hosting and Deployment Posture
+
+**Trạng thái:** Approved — 2026-07-28
+**Supersede/Amend:** D19 (Vercel Hobby→Pro — posture Vercel-as-production-target), D5 (tham chiếu Vercel), `DEPLOYMENT.md`, `SYSTEM_ARCHITECTURE.md` §1/§3
+
+**Bối cảnh:** D19/D5/DEPLOYMENT/SYSTEM_ARCH khóa **Vercel** làm hosting, hạ tầng Vercel đã tạo/verify ở Milestone 0.6C. Ở Milestone 1.1, chủ dự án chuyển hosting target sang Cloudflare Pages, static-first.
+
+**Quyết định:**
+- **Production hosting target của MVP là Cloudflare Pages.**
+- Rendering posture là **static-first**.
+- Foundation dùng **Next.js App Router** nhưng **không phụ thuộc Vercel** — không Vercel-specific runtime/service, không server actions, không API routes giả, không middleware, không edge-runtime dependency khi chưa có requirement thật.
+- **Không khóa `output: "export"` tại Checkpoint 1.1.** Static export hoặc Cloudflare-compatible adapter được quyết định ở **deployment checkpoint riêng** sau khi content, image strategy và runtime requirement rõ.
+- **Image optimization strategy defer** đến Image Strategy/Deployment checkpoint.
+- Environment variable mapping cho Cloudflare chỉ thêm khi có biến môi trường thật.
+
+**Rationale:** hạ tầng thực tế chọn Cloudflare Pages; MVP thiên về publishing/content/case study; static-first giảm runtime complexity, chi phí, vendor lock-in; chưa có requirement auth/DB/API/SSR bắt buộc; foundation deployment-agnostic tránh sửa lớn khi khóa pipeline.
+
+**Consequences:** `next.config.ts` tối giản, không Vercel-specific; README không mô tả Vercel là production target; deployment docs phân biệt "hosting target" vs "build/runtime mechanism"; chưa tự thêm adapter/static-export config; ảnh phải review compatibility Cloudflare Pages. **Không đổi** lựa chọn Next.js App Router. Hạ tầng Vercel 0.6C trở thành không dùng cho hosting — DNS/SSL vẫn qua Cloudflare (D5 giữ).
+
+## D57 — MVP Language and Routing Posture
+
+**Trạng thái:** Approved — 2026-07-28
+**Amend:** D1 (route dưới `[locale]` — chuyển thành Phase 2 future-ready), `SYSTEM_ARCHITECTURE.md` §8, `INFORMATION_ARCHITECTURE.md`
+
+**Bối cảnh:** D1/SYSTEM_ARCH §8 khóa `src/app/[locale]/` + middleware rewrite `/`→`/vi` là bắt buộc. MVP chỉ có tiếng Việt; `[locale]` tạo complexity chưa tạo giá trị.
+
+**Quyết định:**
+- Homepage canonical route của MVP là **`/`**; ngôn ngữ mặc định **tiếng Việt**; root document **`<html lang="vi">`**.
+- **Không** `[locale]` segment · **không** route `/vi/` · **không** middleware i18n · **không** i18n package · **không** locale switcher · **không** duplicate `/` ↔ `/vi/`.
+- Route nội dung giữ dạng **phẳng** theo IA đã khóa: `/writing/` · `/case-studies/` · `/topics/` · `/about/` · `/contact/` (và các route đã duyệt).
+- **Đa ngôn ngữ chỉ mở ở Phase 2** khi có content, workflow biên tập, canonical/hreflang và nguồn lực dịch thật.
+
+**Amend D1:** bỏ ràng buộc "route dưới `[locale]`" ở MVP; **giữ** "kiến trúc sẵn sàng song ngữ" như *future-ready* (MDX vẫn `slug.vi.mdx`; bật `en` Phase 2 cần checkpoint migration riêng).
+
+**Rationale:** MVP chỉ nội dung tiếng Việt; `/` ngắn/rõ/phù hợp canonical; tránh middleware, duplicate route, SEO ambiguity, maintenance overhead.
+
+**Consequences:** `src/app/page.tsx` ở `/`; `layout.tsx` giữ `lang="vi"`; không tạo `[locale]`; không cài i18n package; mở song ngữ sau cần checkpoint migration riêng. **Không** đổi sitemap nội dung đã khóa ngoài việc bỏ prefix locale bắt buộc.

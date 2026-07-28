@@ -1,0 +1,95 @@
+/*
+ * Global CSS — Foundation baseline only (Milestone 1.1).
+ * Theo homepage-css-architecture-spec.md. CHỈ foundation:
+ * layer order + reset có kiểm soát + base + accessibility.
+ * KHÔNG: color primitives, semantic tokens, spacing/radius scale,
+ * component/section styles, orange accent, responsive composition (thuộc 1.2+).
+ */
+
+/* Cascade layer order — LOCKED (OD-CSS-4). Khai báo một lần. */
+@layer reset, tokens, base, layout, surfaces, components, states, utilities, responsive, accessibility;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+@layer tokens {
+  /* Font hook (semantic). Giá trị var do next/font (geist) cấp ở <html>. */
+  :root {
+    --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
+      Roboto, Arial, sans-serif;
+  }
+}
+
+@layer base {
+  /* Giá trị canonical đã khóa (D47), chỉ mức tối thiểu để shell render đúng.
+     KHÔNG khai báo semantic token / palette đầy đủ ở 1.1. */
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    background-color: #fbfbfb;
+    color: #040404;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer accessibility {
+  /* Skip link: ẩn cho tới khi focus. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+  }
+
+  .skip-link:focus {
+    left: 0;
+  }
+
+  /* Focus baseline: không xóa outline. */
+  :focus-visible {
+    outline: 2px solid #ff4000;
+    outline-offset: 2px;
+  }
+
+  /* Reduced-motion baseline (nguyên tắc; chưa có animation ở foundation). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

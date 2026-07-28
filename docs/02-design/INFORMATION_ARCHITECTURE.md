@@ -28,6 +28,8 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 
 **Hoãn Phase 2:** `/resources/`, `/speaking/`, `/tags/[tag]/`, `/writing/page/[n]/` (pagination), search. Kiến trúc phải chừa chỗ cho hai mục đầu mà không thiết kế lại (D18).
 
+**Routing posture MVP (D57):** Homepage canonical là **`/`**; mọi route MVP **không có tiền tố locale** (`/writing/`, `/case-studies/`, `/topics/`, `/about/`, `/contact/`…). **Không** `[locale]`/`/vi/`/middleware i18n ở MVP. Đa ngôn ngữ (locale prefix + hreflang) là **Phase 2 future-ready**.
+
 ## 2. Navigation
 
 Điều hướng theo **loại nội dung**, không theo cấu trúc portfolio.

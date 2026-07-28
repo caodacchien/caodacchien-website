@@ -33,15 +33,35 @@ Roboworld là **một case study trong nhiều case study**, không phải khung
 
 ## Stack
 
-- Next.js + React + TypeScript
-- Tailwind CSS + shadcn/ui
+- Next.js + React + TypeScript (App Router, static-first)
+- **Native CSS + CSS Modules** (OD-CSS-1; không Tailwind/shadcn)
 - **MDX cho bài viết và case study** (D35)
 - **`profile.config.ts` cho hồ sơ và kinh nghiệm** (D35)
 - **Supabase chỉ giữ bảng `contacts`** (D35)
-- Vercel cho triển khai ứng dụng
+- **Cloudflare Pages** cho triển khai (hosting target MVP, **static-first** — D56)
 - Cloudflare cho DNS, SSL và bảo vệ tên miền
 - GitHub cho source control
 - Claude Code cho AI-assisted development
+
+Ghi chú posture MVP: route **phẳng `/`**, ngôn ngữ mặc định **tiếng Việt** (`<html lang="vi">`), **không** `[locale]`/i18n ở MVP (D57 — song ngữ là Phase 2). Cơ chế build/deploy (static export/adapter) **chưa khóa** — quyết ở deployment checkpoint (D56).
+
+> CSS approach đã khóa: **Native CSS + CSS Modules** (OD-CSS-1, `homepage-css-architecture-spec.md`) — không Tailwind/shadcn.
+
+## Phát triển cục bộ
+
+Yêu cầu: **Node 24.18.0** (xem `.nvmrc`) · **pnpm 10.15.1** (Corepack, xem `packageManager`).
+
+```bash
+corepack enable          # bật pnpm đúng version
+pnpm install             # cài dependency
+pnpm dev                 # chạy dev server (http://localhost:3000)
+pnpm lint                # ESLint
+pnpm typecheck           # TypeScript (tsc --noEmit)
+pnpm build               # build production
+pnpm check               # lint + typecheck
+```
+
+Milestone 1.1 mới là **nền móng kỹ thuật** (technical shell) — chưa phải homepage production.
 
 ## Quyết định đã chốt
 
@@ -89,6 +109,8 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | **D48** | **Geist Sans-only**; loại Geist Mono khỏi visible UI; số dùng `tabular-nums` |
 | **D49** | **Radius contract R3** (control 8–10 · card 12–16 · panel 20–28 · signature 36–48) — supersede trần 8px D32 |
 | **D50** | **Design Governance hierarchy**; ratify CDC Design Bible làm governance layer |
+| **D56** | **Hosting MVP = Cloudflare Pages, static-first**; foundation deployment-agnostic; không mặc định Vercel (amend D19/D5) |
+| **D57** | **Routing MVP phẳng `/`, `lang="vi"`**; không `[locale]`/i18n ở MVP; song ngữ Phase 2 (amend D1) |
 
 **Không còn Decision OPEN trong Foundation** (đóng ở Milestone 0.5D — 2026-07-25). Future Enhancement (Sound, View Transitions, header collapse, PWA) ở `DESIGN_SYSTEM.md`.
 
