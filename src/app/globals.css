@@ -144,10 +144,7 @@
     color: var(--color-accent-text);
   }
 
-  ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-  }
+  /* Selection styling Deferred: `--color-selected` chưa khóa (§B.8/prep §8). Dùng default trình duyệt cho tới khi có nguồn. */
 }
 
 @layer layout {
