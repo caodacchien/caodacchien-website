@@ -42,7 +42,6 @@ const pillars: Pillar[] = [
 const featuredWriting: FeaturedArticle[] = []; // CONTENT_INVENTORY §10 = TODO → omit S2 (D55)
 const featuredCaseStudy: CaseStudy | null = null; // CONTENT_INVENTORY §5 = TODO → omit S3 (D55/D6)
 const servicesOffered: Services | null = null; // CONTENT_INVENTORY §8b OWNER ASSET → omit S5 (D54)
-const linkedInUrl: string | null = null; // CONTENT_INVENTORY §9 OWNER ASSET → không render tới khi có URL (D53)
 
 export default function HomePage() {
   const showWriting = featuredWriting.length >= FEATURED_WRITING_MIN;
@@ -56,13 +55,11 @@ export default function HomePage() {
         <p className="wordmark">
           <Link href="/">Cao Đắc Chiến</Link>
         </p>
+        {/* Nav item tới route chưa dựng (404) đã omit (link honesty, Owner 1.5D-F). Giữ Liên hệ = email thật.
+           Route link forward-compat: bật lại khi trang thật tồn tại. */}
         <nav className="primary-nav" aria-label="Điều hướng chính">
           <ul>
-            <li><Link href="/writing/">Viết</Link></li>
-            <li><Link href="/case-studies/">Case study</Link></li>
-            <li><Link href="/topics/">Chủ đề</Link></li>
-            <li><Link href="/about/">Giới thiệu</Link></li>
-            <li><Link href="/contact/">Liên hệ</Link></li>
+            <li><a href="mailto:forwork.chiencd@gmail.com">Liên hệ</a></li>
           </ul>
         </nav>
       </header>
@@ -76,10 +73,8 @@ export default function HomePage() {
             Người dẫn dắt marketing và làm chiến lược thương hiệu, viết và xuất bản
             về cách xây dựng tăng trưởng bền vững cho doanh nghiệp.
           </h1>
-          {/* 1 CTA nhẹ → route canonical (page dựng sau; runtime hiện 404). */}
-          <p className="hero-actions">
-            <Link href="/writing/">Đọc bài viết</Link>
-          </p>
+          {/* Hero CTA "Đọc bài viết" → /writing/ (404, <3 bài thật) đã omit (link honesty, Owner 1.5D-F).
+             Không empty wrapper, không thay destination, không placeholder. */}
           {/* Portrait = OWNER ASSET (CONTENT §3): chưa có → không <img> rỗng, omit. */}
         </section>
 
@@ -138,12 +133,13 @@ export default function HomePage() {
         {/* ===== S4 — Pillar Map (bắt buộc; 5 trụ thật D16/D51) ===== */}
         <section className="pillar-map container-content" aria-labelledby="pillar-heading">
           <h2 id="pillar-heading">Chủ đề — năm trụ nội dung</h2>
+          {/* Topic route (/topics/[pillar]/) chưa dựng (404) → row non-interactive (link honesty, Owner 1.5D-F).
+             Giữ 5 trụ + title + scope (content thật, D16); href vẫn ở data để bật lại <Link> khi route thật tồn tại.
+             Không anchor/hover/focus giả, không "sắp ra mắt", không disabled-UI. */}
           <ul className="pillars">
             {pillars.map((pillar) => (
               <li key={pillar.href}>
-                <h3>
-                  <Link href={pillar.href}>{pillar.title}</Link>
-                </h3>
+                <h3>{pillar.title}</h3>
                 <p>{pillar.scope}</p>
               </li>
             ))}
@@ -189,48 +185,25 @@ export default function HomePage() {
         {/* ===== S6 — Contact CTA (bắt buộc; action peak) ===== */}
         <section className="contact-cta container-content" aria-labelledby="contact-heading">
           <h2 id="contact-heading">Liên hệ</h2>
+          {/* CTA → email thật (READY, CONTENT §9); /contact/ chưa dựng (404). Không form/booking (Owner 1.5D-F). */}
           <p className="contact-actions">
-            <Link href="/contact/">Bắt đầu trao đổi</Link>
+            <a href="mailto:forwork.chiencd@gmail.com">Bắt đầu trao đổi</a>
           </p>
         </section>
       </main>
 
       {/* ===== S7 — Site Footer ===== */}
+      {/* Footer nav phụ (route 404), RSS (/rss.xml 404), Privacy (/privacy/ 404), Kinh nghiệm (404) đã omit
+         (link honesty, Owner 1.5D-F). Không empty nav/list container. Giữ email thật + tên + copyright. */}
       <footer className="site-footer container-content">
         <p className="wordmark">Cao Đắc Chiến</p>
-
-        <nav className="footer-nav" aria-label="Điều hướng phụ">
-          <ul>
-            <li><Link href="/writing/">Viết</Link></li>
-            <li><Link href="/case-studies/">Case study</Link></li>
-            <li><Link href="/topics/">Chủ đề</Link></li>
-            <li><Link href="/about/">Giới thiệu</Link></li>
-            <li><Link href="/about/#experience">Kinh nghiệm</Link></li>
-            <li><Link href="/contact/">Liên hệ</Link></li>
-          </ul>
-        </nav>
-
-        <nav className="footer-connect" aria-label="Kết nối">
-          <ul>
-            {/* Chỉ render social khi có URL thật (D53). GitHub không render ở MVP (D52). */}
-            <li><a href="/rss.xml">RSS</a></li>
-            {linkedInUrl && (
-              <li>
-                <a href={linkedInUrl}>LinkedIn</a>
-              </li>
-            )}
-          </ul>
-        </nav>
 
         {/* address chỉ bao thông tin liên hệ của chủ website (email READY, CONTENT §9). */}
         <address className="footer-contact">
           Liên hệ: <a href="mailto:forwork.chiencd@gmail.com">forwork.chiencd@gmail.com</a>
         </address>
 
-        <p className="copyright">
-          © {new Date().getFullYear()} Cao Đắc Chiến ·{" "}
-          <Link href="/privacy/">Chính sách riêng tư</Link>
-        </p>
+        <p className="copyright">© {new Date().getFullYear()} Cao Đắc Chiến</p>
       </footer>
     </>
   );

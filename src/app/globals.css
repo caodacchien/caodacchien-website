@@ -144,11 +144,13 @@
   /* Typography roles — Geist Sans only (D48/§B.1). Per-role pixel qua token;
      h1/h2 fluid clamp trong biên §B.1 (mobile/desktop pair, min ~34/28 → max 45/36). */
   :where(h1) {
-    font-size: clamp(2.125rem, 1.5rem + 3vw, var(--text-h1));
+    /* Mobile lower bound giảm (28px) để statement dài không dồn nhiều dòng lớn; desktop giữ max 45 (§B.1). */
+    font-size: clamp(1.75rem, 1.1rem + 3.2vw, var(--text-h1));
     font-weight: var(--weight-heading);
     line-height: var(--leading-heading);
     letter-spacing: -0.01em;
-    text-wrap: balance;
+    /* pretty: wrapping tự nhiên cho câu dài tiếng Việt (tránh ngắt cụm vụng); balance chỉ hợp heading ngắn. */
+    text-wrap: pretty;
   }
   :where(h2) {
     font-size: clamp(1.75rem, 1.35rem + 2vw, var(--text-h2));
@@ -214,13 +216,15 @@
     list-style: none;
   }
 
-  /* S0 — Header: dải biên tập mảnh, split hai biên (wordmark / nav). */
+  /* S0 — Header: dải biên tập mảnh, split một hàng (wordmark trái / Liên hệ phải) mọi breakpoint.
+     Nav còn 1 item (Liên hệ mailto) sau link-honesty → single row an toàn ở 320px (không overflow), nowrap. */
   .site-header {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--space-3) var(--space-5);
+    gap: var(--space-4);
     padding-block: var(--space-5);
   }
   .site-header .wordmark {
@@ -230,13 +234,14 @@
   .primary-nav ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
+    gap: var(--space-3) var(--space-4);
   }
 
   /* S1 — Hero: statement-led, không cột media rỗng khi thiếu portrait.
-     max-width statement = measure tạm cho line-length; type-scale cuối Deferred (§B.1). */
+     max-width statement = measure tạm cho line-length; type-scale cuối Deferred (§B.1).
+     padding mobile-first gọn (giảm áp lực chiều cao mobile); desktop major ở layer responsive. */
   .hero {
-    padding-block: var(--space-8) var(--space-9);
+    padding-block: var(--space-6);
   }
   .hero .eyebrow {
     margin: 0 0 var(--space-3);
@@ -244,9 +249,6 @@
   .hero h1 {
     max-width: 46ch;
     margin: 0 0 var(--space-5);
-  }
-  .hero .hero-actions {
-    margin: 0;
   }
 
   /* S4 — Pillar Map: index biên tập theo hàng (không card/tile). Hairline = ranh giới hàng. */
@@ -293,9 +295,10 @@
     flex: 1 1 18rem;
   }
 
-  /* S6 — Contact CTA: đỉnh hành động, centered cô lập. */
+  /* S6 — Contact CTA: đỉnh hành động, centered cô lập. padding gọn lại để heading+CTA
+     thành khối hành động có chủ đích (không "placeholder" trong vùng rộng); desktop ở responsive. */
   .contact-cta {
-    padding-block: var(--space-9);
+    padding-block: var(--space-6);
     text-align: center;
   }
   .contact-cta h2 {
@@ -305,18 +308,23 @@
     margin: 0;
   }
 
-  /* S7 — Footer: quiet, giảm cường độ sau S6; stack (mobile-first), two-col ở layer responsive. */
+  /* S7 — Footer: quiet, giảm cường độ sau S6. Ending emphasis (1.5D-G): wordmark = signature ink/600,
+     bottom padding rộng hơn cho cảm giác kết thúc; top giữ tiết chế (không đẩy xa S6). Không thêm content. */
   .site-footer {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-    padding-block: var(--space-7);
+    padding-block: var(--space-6) var(--space-7);
     border-block-start: 1px solid var(--color-border);
     color: var(--color-text-muted);
   }
   .site-footer .wordmark,
   .copyright {
     margin: 0;
+  }
+  .site-footer .wordmark {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-heading);
   }
   .footer-nav ul,
   .footer-connect ul {
@@ -413,28 +421,16 @@
     text-underline-offset: 0.15em;
   }
 
-  /* S1 Hero — eyebrow nhãn muted (sentence, không uppercase dài); CTA phụ subordinate (ink underline). */
+  /* S1 Hero — eyebrow nhãn muted (sentence, không uppercase dài). Hero CTA đã omit (link honesty 1.5D-F). */
   .hero .eyebrow {
     color: var(--color-text-muted);
     font-size: var(--text-xs);
     font-weight: var(--weight-medium);
     letter-spacing: 0.02em;
   }
-  .hero-actions a {
-    font-weight: var(--weight-medium);
-  }
 
-  /* S4 Pillar Map — index biên tập: title ink, scope muted; hover đổi underline (KHÔNG lift/card/shadow). */
-  .pillars > li h3 a {
-    color: var(--color-text-primary);
-    text-decoration: none;
-  }
-  .pillars > li:hover h3 a,
-  .pillars > li h3 a:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
-    text-decoration-color: var(--color-accent);
-  }
+  /* S4 Pillar Map — index biên tập non-interactive (topic route 404, omit anchor 1.5D-F):
+     title ink (base h3), scope muted. KHÔNG anchor/hover/focus/underline giả, không card. */
   .pillars > li p {
     font-size: var(--text-sm);
   }
@@ -443,7 +439,9 @@
      focus ring đổi sang ink để tương phản trên nền cam (a11y). */
   .contact-actions a {
     display: inline-block;
-    padding: var(--space-3) var(--space-5);
+    /* Presence +1 step (1.5D-G): padding ngang space-6 (32), dọc space-4 (16); giữ type/weight/radius/Orange,
+       không giant/full-width/pill. */
+    padding: var(--space-4) var(--space-6);
     background-color: var(--color-accent);
     color: var(--color-on-accent);
     font-size: var(--text-sm);
@@ -491,12 +489,22 @@
   /* Mobile-first (D57/OD-CSS-2): base = composition mobile; breakpoint mở rộng theo content stress.
      Giá trị §B.9 (768/1024) — không invent pixel mới. Fluid type scale (§B.1) Deferred. */
 
-  /* Tablet: gutter rộng hơn; Footer chuyển sang hàng (two-col-ready). */
+  /* Tablet/desktop: gutter rộng hơn; Header split hai biên; density curve major (Hero) → rest (Pillar)
+     → action (Contact gọn, không placeholder) → de-escalation (Footer). Gaps biến thiên 128/96/80. */
   @media (min-width: 768px) {
     .container-prose,
     .container-content,
     .container-wide {
       padding-inline: var(--space-6);
+    }
+    .hero {
+      padding-block: var(--space-8);
+    }
+    .pillar-map {
+      padding-block: var(--space-8) var(--space-7);
+    }
+    .contact-cta {
+      padding-block: var(--space-7);
     }
     .site-footer {
       flex-direction: row;
