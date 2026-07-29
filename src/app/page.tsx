@@ -55,10 +55,11 @@ export default function HomePage() {
         <p className="wordmark">
           <Link href="/">Cao Đắc Chiến</Link>
         </p>
-        {/* Nav item tới route chưa dựng (404) đã omit (link honesty, Owner 1.5D-F). Giữ Liên hệ = email thật.
-           Route link forward-compat: bật lại khi trang thật tồn tại. */}
+        {/* Nav: "Giới thiệu" đã kích hoạt (route /about thật tồn tại). Các route chưa dựng vẫn omit (link honesty).
+           Route link khác forward-compat: bật lại khi trang thật tồn tại. */}
         <nav className="primary-nav" aria-label="Điều hướng chính">
           <ul>
+            <li><Link href="/about">Giới thiệu</Link></li>
             <li><a href="mailto:forwork.chiencd@gmail.com">Liên hệ</a></li>
           </ul>
         </nav>
