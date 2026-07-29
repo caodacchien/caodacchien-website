@@ -148,7 +148,149 @@
 }
 
 @layer layout {
-  /* Container/layout foundation — token đã ở :root. Helper class thêm khi section cần (checkpoint sau). */
+  /* Container hierarchy (contract §4 / §B.3). Surface tràn viền là nền; nội dung bám container.
+     Gutter tăng theo breakpoint ở layer `responsive`. */
+  .container-prose,
+  .container-content,
+  .container-wide {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--space-5);
+  }
+  .container-prose {
+    max-width: var(--container-prose);
+  }
+  .container-content {
+    max-width: var(--container-content);
+  }
+  .container-wide {
+    max-width: var(--container-wide);
+  }
+
+  /* List reset cho nav + list biên tập (utilities-safe: chỉ list dùng cho layout). */
+  .primary-nav ul,
+  .footer-nav ul,
+  .footer-connect ul,
+  .pillars,
+  .article-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* S0 — Header: dải biên tập mảnh, split hai biên (wordmark / nav). */
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-5);
+    padding-block: var(--space-5);
+  }
+  .site-header .wordmark {
+    margin: 0;
+    font-weight: var(--weight-heading);
+  }
+  .primary-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  /* S1 — Hero: statement-led, không cột media rỗng khi thiếu portrait.
+     max-width statement = measure tạm cho line-length; type-scale cuối Deferred (§B.1). */
+  .hero {
+    padding-block: var(--space-8) var(--space-9);
+  }
+  .hero .eyebrow {
+    margin: 0 0 var(--space-3);
+  }
+  .hero h1 {
+    max-width: 46ch;
+    margin: 0 0 var(--space-5);
+  }
+  .hero .hero-actions {
+    margin: 0;
+  }
+
+  /* S4 — Pillar Map: index biên tập theo hàng (không card/tile). Hairline = ranh giới hàng. */
+  .pillar-map {
+    padding-block: var(--space-7);
+  }
+  .pillar-map h2 {
+    margin: 0 0 var(--space-5);
+  }
+  .pillars > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-5);
+    padding-block: var(--space-4);
+    border-block-start: 1px solid var(--color-border);
+  }
+  .pillars > li:last-child {
+    border-block-end: 1px solid var(--color-border);
+  }
+  .pillars > li h3 {
+    margin: 0;
+  }
+  .pillars > li p {
+    max-width: 46ch;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  /* S5 — Work With Me (Grey supporting; render khi servicesOffered ready): hai vùng cân. */
+  .work-with-me {
+    padding-block: var(--space-8);
+  }
+  .work-with-me .work-lead {
+    margin: 0 0 var(--space-6);
+  }
+  .work-regions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6) var(--space-7);
+  }
+  .work-region {
+    flex: 1 1 18rem;
+  }
+
+  /* S6 — Contact CTA: đỉnh hành động, centered cô lập. */
+  .contact-cta {
+    padding-block: var(--space-9);
+    text-align: center;
+  }
+  .contact-cta h2 {
+    margin: 0 0 var(--space-4);
+  }
+  .contact-actions {
+    margin: 0;
+  }
+
+  /* S7 — Footer: quiet, giảm cường độ sau S6; stack (mobile-first), two-col ở layer responsive. */
+  .site-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-block: var(--space-7);
+    border-block-start: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+  .site-footer .wordmark,
+  .copyright {
+    margin: 0;
+  }
+  .footer-nav ul,
+  .footer-connect ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+  .footer-contact {
+    font-style: normal;
+  }
 }
 
 @layer surfaces {
@@ -213,8 +355,37 @@
 }
 
 @layer responsive {
-  /* Mobile-first (D57/OD-CSS-2). Breakpoint §B.9 dùng trực tiếp trong media query khi section cần.
-     Fluid type scale (§B.1 mobile) Deferred — chưa có section. */
+  /* Mobile-first (D57/OD-CSS-2): base = composition mobile; breakpoint mở rộng theo content stress.
+     Giá trị §B.9 (768/1024) — không invent pixel mới. Fluid type scale (§B.1) Deferred. */
+
+  /* Tablet: gutter rộng hơn; Footer chuyển sang hàng (two-col-ready). */
+  @media (min-width: 768px) {
+    .container-prose,
+    .container-content,
+    .container-wide {
+      padding-inline: var(--space-6);
+    }
+    .site-footer {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      column-gap: var(--space-7);
+    }
+    .site-footer .wordmark,
+    .copyright {
+      flex-basis: 100%;
+    }
+  }
+
+  /* Desktop: gutter đầy đủ (lề space-7). */
+  @media (min-width: 1024px) {
+    .container-prose,
+    .container-content,
+    .container-wide {
+      padding-inline: var(--space-7);
+    }
+  }
 }
 
 @layer accessibility {

@@ -52,7 +52,7 @@ export default function HomePage() {
   return (
     <>
       {/* ===== S0 — Site Header ===== */}
-      <header className="site-header">
+      <header className="site-header container-content">
         <p className="wordmark">
           <Link href="/">Cao Đắc Chiến</Link>
         </p>
@@ -69,7 +69,7 @@ export default function HomePage() {
 
       <main id="main-content">
         {/* ===== S1 — Hero / Positioning Statement ===== */}
-        <section className="hero" aria-labelledby="hero-heading">
+        <section className="hero container-content" aria-labelledby="hero-heading">
           <p className="eyebrow">Marketing Leader · Brand &amp; Marketing Strategist</p>
           {/* H1 duy nhất. Nguồn: BRAND_POSITIONING §1 (VERIFIED). */}
           <h1 id="hero-heading">
@@ -85,7 +85,7 @@ export default function HomePage() {
 
         {/* ===== S2 — Featured Writing (D55: omit-when-empty) ===== */}
         {showWriting && (
-          <section className="featured-writing" aria-labelledby="writing-heading">
+          <section className="featured-writing container-prose" aria-labelledby="writing-heading">
             <h2 id="writing-heading">Viết</h2>
             <ul className="article-list">
               {featuredWriting.map((article) => (
@@ -111,26 +111,32 @@ export default function HomePage() {
 
         {/* ===== S3 — Featured Case Study (D55/D6: omit-when-empty) ===== */}
         {showCase && featuredCaseStudy && (
-          <section className="featured-case-study" aria-labelledby="case-heading">
-            <h2 id="case-heading">Case study tiêu biểu</h2>
-            <article className="case">
-              <h3>
-                <Link href={featuredCaseStudy.href}>{featuredCaseStudy.title}</Link>
-              </h3>
-              <h4>Bối cảnh</h4>
-              <p>{featuredCaseStudy.context}</p>
-              <h4>Vấn đề</h4>
-              <p>{featuredCaseStudy.problem}</p>
-              <h4>Cách tiếp cận</h4>
-              <p>{featuredCaseStudy.approach}</p>
-              <h4>Kết quả</h4>
-              <p>{featuredCaseStudy.result}</p>
-            </article>
+          <section
+            className="featured-case-study"
+            data-surface="black"
+            aria-labelledby="case-heading"
+          >
+            <div className="container-wide">
+              <h2 id="case-heading">Case study tiêu biểu</h2>
+              <article className="case">
+                <h3>
+                  <Link href={featuredCaseStudy.href}>{featuredCaseStudy.title}</Link>
+                </h3>
+                <h4>Bối cảnh</h4>
+                <p>{featuredCaseStudy.context}</p>
+                <h4>Vấn đề</h4>
+                <p>{featuredCaseStudy.problem}</p>
+                <h4>Cách tiếp cận</h4>
+                <p>{featuredCaseStudy.approach}</p>
+                <h4>Kết quả</h4>
+                <p>{featuredCaseStudy.result}</p>
+              </article>
+            </div>
           </section>
         )}
 
         {/* ===== S4 — Pillar Map (bắt buộc; 5 trụ thật D16/D51) ===== */}
-        <section className="pillar-map" aria-labelledby="pillar-heading">
+        <section className="pillar-map container-content" aria-labelledby="pillar-heading">
           <h2 id="pillar-heading">Chủ đề — năm trụ nội dung</h2>
           <ul className="pillars">
             {pillars.map((pillar) => (
@@ -146,29 +152,42 @@ export default function HomePage() {
 
         {/* ===== S5 — Work With Me (D54: conditional-hidden; ẩn → S6 nối sau S4) ===== */}
         {showServices && servicesOffered && (
-          <section className="work-with-me" id="work-with-me" aria-labelledby="work-heading">
-            <h2 id="work-heading">Làm việc cùng tôi</h2>
-            <p className="work-lead">{servicesOffered.lead}</p>
-            <h3>Phù hợp khi</h3>
-            <ul>
-              {servicesOffered.fit.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <h3>Có thể chưa phù hợp khi</h3>
-            <ul>
-              {servicesOffered.notFit.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p>
-              <Link href="/contact/">Cách một cuộc trao đổi bắt đầu</Link>
-            </p>
+          <section
+            className="work-with-me"
+            id="work-with-me"
+            data-surface="grey"
+            aria-labelledby="work-heading"
+          >
+            <div className="container-content">
+              <h2 id="work-heading">Làm việc cùng tôi</h2>
+              <p className="work-lead">{servicesOffered.lead}</p>
+              <div className="work-regions">
+                <div className="work-region">
+                  <h3>Phù hợp khi</h3>
+                  <ul>
+                    {servicesOffered.fit.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="work-region">
+                  <h3>Có thể chưa phù hợp khi</h3>
+                  <ul>
+                    {servicesOffered.notFit.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <p>
+                <Link href="/contact/">Cách một cuộc trao đổi bắt đầu</Link>
+              </p>
+            </div>
           </section>
         )}
 
         {/* ===== S6 — Contact CTA (bắt buộc; action peak) ===== */}
-        <section className="contact-cta" aria-labelledby="contact-heading">
+        <section className="contact-cta container-content" aria-labelledby="contact-heading">
           <h2 id="contact-heading">Liên hệ</h2>
           <p className="contact-actions">
             <Link href="/contact/">Bắt đầu trao đổi</Link>
@@ -177,7 +196,7 @@ export default function HomePage() {
       </main>
 
       {/* ===== S7 — Site Footer ===== */}
-      <footer className="site-footer">
+      <footer className="site-footer container-content">
         <p className="wordmark">Cao Đắc Chiến</p>
 
         <nav className="footer-nav" aria-label="Điều hướng phụ">
