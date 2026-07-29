@@ -4,7 +4,9 @@
 
 **Design Direction đã khóa theo D29 (2026-07-24):** hướng **Tòa soạn (Editorial) làm nền · cấu trúc Thư viện (Library) · khối dữ liệu Hồ sơ Chiến lược**.
 
-**Bảng màu cụ thể vẫn chưa chốt** — điền ở Milestone 0.4 (D10, D32). Kiến trúc token và danh sách component nằm ở `COMPONENT_INVENTORY.md`. Kiến trúc thông tin nằm ở `INFORMATION_ARCHITECTURE.md`.
+**Bảng màu đã khóa ở Milestone 0.4C (D47):** hệ Kinetic 4-color (White `#FBFBFB` · Black `#040404` · Grey `#DEDEDE` · Orange `#FF4000`), **section-based composition** (D46 — không light/dark toggle). Danger color giữ `Pending` (D47). Giá trị canonical ở `COMPONENT_INVENTORY.md §B.8`. Kiến trúc token và danh sách component nằm ở `COMPONENT_INVENTORY.md`. Kiến trúc thông tin nằm ở `INFORMATION_ARCHITECTURE.md`.
+
+**Governance:** tài liệu này thừa kế `docs/design-bible/` (governance layer) và đứng dưới Decision Log theo hierarchy **D50**: Decision Log → Design Bible → **Design System** → Component Inventory → AI Rulebook → CLAUDE.md → Source.
 
 Kết quả Milestone 0.3 lần một đã bị hủy theo D17 và không được tái sử dụng.
 
@@ -58,8 +60,8 @@ Mỗi section được quyền, khi xuống breakpoint nhỏ hơn: đổi thứ 
 
 *(Tu chỉnh D36/D32 theo **D43** — chủ dự án chọn hệ font **Geist** (Vercel, OFL 1.1). Bỏ serif ở MVP.)*
 
-- **Geist Sans** — font chính: Hero · Heading · Body · Navigation · UI · Button · Form · Label.
-- **Geist Mono** — chỉ metadata/technical: ngày, thời gian đọc, category/tag, số liệu case study, nội dung kỹ thuật/code. Không làm phong cách chính.
+- **Geist Sans** — **typeface duy nhất** của visible UI (D48): Hero · Heading · Body · Navigation · UI · Button · Form · Label · metadata · ngày/reading time · metric/số/tag/badge/status.
+- **Không dùng Geist Mono** trong visible UI (D48 — supersede mệnh đề mono của D43). Số dùng `tabular-nums`, không slashed zero, không italic cho metric.
 - **Không dùng serif** trong MVP.
 
 Tinh thần editorial nay đến từ **khoảng trắng rộng · measure 68ch · line-height 1.7 · sự tiết chế** (Geist là grotesque kiểu Swiss-minimal), không còn từ serif. Font, weight, letter-spacing và **kiểm dấu tiếng Việt** chi tiết ở `COMPONENT_INVENTORY.md` §B.1; breakpoints ở §B.9.
@@ -85,9 +87,9 @@ Không quá 2 CTA cạnh tranh trong cùng một viewport (P8, D23). CTA chính:
 
 Subtle · purposeful · product-quality · **không decorative**. Thời lượng 120–200ms (D32). **Animation chỉ tồn tại khi phục vụ usability hoặc feedback** — không có animation thuần trang trí cạnh tranh với nội dung. Tôn trọng `prefers-reduced-motion`.
 
-### Color mode — hai chế độ đều first-class
+### Color — section-based composition (D46/D47)
 
-Light **không phải** bản đảo màu của dark. Hai chế độ dùng cùng hierarchy, cùng semantic token, đo tương phản AA **riêng từng chế độ** (D10).
+MVP **không** có global light/dark toggle (D46 — supersede D10). Màu đổi theo **section** phục vụ mạch narrative: White (long-form) · Grey (chuyển nhịp) · Black (statement/featured/footer) · Orange (focal/CTA). Semantic token gán **theo từng surface**; đo tương phản AA **riêng từng surface**. Giá trị ở `COMPONENT_INVENTORY.md §B.8`. Danger color giữ `Pending` (D47).
 
 ## Ràng buộc đã chốt trước khi thiết kế
 
@@ -107,7 +109,7 @@ Các quyết định sau đã được duyệt và mọi Design Direction đề 
 | **D26** | **Nav 5 mục: Viết · Case study · Chủ đề · Giới thiệu · Liên hệ. Experience là section trong About. Chịu được 8 mục Phase 2 (D18)** |
 | D33 | Search, Pagination, Filter hoãn Phase 2 — thiết kế MVP không phụ thuộc chúng |
 | D18 | Phải có mẫu cho khối "Làm việc cùng tôi" trên Home và About. Khối thông tin, không phải phễu bán hàng |
-| D10 | Bắt buộc có cả light mode và dark mode ngay ở MVP |
+| D46 | Section-based color composition; **không** global light/dark toggle ở MVP (supersede D10). AA đo theo từng surface |
 | D1 | Bố cục phải chịu được text tiếng Việt có dấu, và sau này chịu được text tiếng Anh dài hơn khoảng 20–30% khi bật locale `en` |
 | D7 | Mọi thành phần hiển thị số liệu phải có trạng thái "chưa có dữ liệu" tử tế, vì nội dung thật chưa sẵn sàng |
 | D14 | Trang Projects filter theo dịch vụ và ngành. Thiết kế không được giả định trục filter là công nghệ |
@@ -118,7 +120,7 @@ Các quyết định sau đã được duyệt và mọi Design Direction đề 
 Claude Code phải đề xuất 3–5 hướng thiết kế. Mỗi hướng gồm:
 - Triết lý
 - Mood
-- Màu sắc, mô tả cho **cả light mode và dark mode**
+- Màu sắc theo **section-based composition** (surface + accent per section, D46/D47)
 - Typography
 - Layout
 - Motion
@@ -142,8 +144,8 @@ Quy tắc đặt tên token, bắt buộc theo D10:
 
 - Tầng sử dụng chỉ được dùng token **semantic**: `--color-surface`, `--color-surface-raised`, `--color-text-primary`, `--color-text-muted`, `--color-border`, `--color-accent`, `--color-danger`.
 - Token nguyên thủy theo giá trị màu như `--gray-900` chỉ tồn tại ở tầng định nghĩa, **cấm** dùng trực tiếp trong component.
-- Mỗi token semantic phải có giá trị cho cả hai chế độ.
-- Shadow trong dark mode không được sao chép từ light mode. Dark mode dùng phân tầng bằng độ sáng bề mặt thay vì đổ bóng.
+- Token semantic gán **theo surface** (section-based, D46); không nhân bản 2-mode.
+- Trên surface tối (Black), phân tầng bằng **độ sáng bề mặt**, không đổ bóng.
 
 ### Phase 3 — Wireframe
 Wireframe cho:
@@ -159,15 +161,12 @@ Mô tả:
 - Error
 - Empty
 - Success
-- Dark mode
 
-Yêu cầu riêng cho theme, theo D10:
+Màu theo **section-based composition** (D46 — không còn theme toggle):
 
-- Mặc định theo `prefers-color-scheme` của hệ thống.
-- Có nút chuyển theme với ba trạng thái: system, light, dark.
-- Lưu lựa chọn của người dùng và khôi phục ở lần truy cập sau.
-- Không được nhấp nháy sai theme khi tải trang.
-- Nút chuyển theme phải truy cập được bằng bàn phím và có nhãn cho screen reader.
+- Không `prefers-color-scheme` switching, không nút chuyển theme, không `ThemeToggle` (D46 supersede D10).
+- State trên surface tối (Black) phân tầng bằng độ sáng bề mặt, không đổ bóng.
+- Mỗi state đo tương phản AA theo đúng surface nó xuất hiện.
 
 ## Nguồn tham khảo định hướng
 
@@ -185,7 +184,7 @@ Yêu cầu riêng cho theme, theo D10:
 - Không dùng quá nhiều gradient hoặc glassmorphism.
 - Không hy sinh readability cho hiệu ứng.
 - Không dùng animation dài hoặc gây cản trở.
-- Mọi màu phải đạt độ tương phản hợp lý. Kiểm tra tương phản **riêng cho từng chế độ sáng và tối**, không suy diễn kết quả từ chế độ này sang chế độ kia.
+- Mọi màu phải đạt độ tương phản hợp lý. Kiểm tra tương phản **riêng cho từng surface** (White/Grey/Black/Orange), không suy diễn kết quả từ surface này sang surface kia.
 - Component phải nhất quán toàn site.
 - Tôn trọng `prefers-reduced-motion`.
 
@@ -243,7 +242,7 @@ Mục tiêu: subtle · premium · intentional · precision · craft · editorial
 - **Sound mặc định ON.**
 - Người dùng có thể chủ động **Mute**; trạng thái Mute được lưu lại.
 - **Luôn có nút Sound / Mute** với icon rõ ràng, dễ tìm, **không ẩn trong menu**, không cần mở Settings để tắt.
-- Cần một component điều khiển âm thanh riêng ở Phase triển khai — chưa nằm trong 19 component MVP.
+- Cần một component điều khiển âm thanh riêng ở Phase triển khai — chưa nằm trong 18 component MVP.
 
 ### Interaction được phép phát Sound — chỉ khi user chủ đích
 

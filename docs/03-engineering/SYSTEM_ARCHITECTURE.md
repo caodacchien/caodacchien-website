@@ -7,7 +7,7 @@ User
   |
 Cloudflare DNS / SSL
   |
-Vercel
+Cloudflare Pages (hosting, static-first — D56)
   |
 Next.js Application
   |---- content/writing/*.mdx        (bài viết)
@@ -36,23 +36,21 @@ MVP **không** dùng Supabase Auth và **không** có CMS. Xem D3.
 
 ## 3. Stack đề xuất
 
-- Next.js
+- Next.js (App Router, static-first — D56)
 - React
 - TypeScript
-- Tailwind CSS
-- shadcn/ui
+- **Native CSS + CSS Modules** (OD-CSS-1; ~~Tailwind/shadcn~~ đã bỏ)
 - Supabase
 - Zod
 - pnpm
-- Vercel
-- Cloudflare DNS
+- **Cloudflare Pages** (hosting, D56) · Cloudflare DNS/SSL
 
 ## 4. Cấu trúc code dự kiến
 
 ```text
 src/
-  app/
-    [locale]/          # route group theo locale, MVP chỉ có 'vi'
+  app/                 # MVP: route phẳng (page.tsx ở `/`), không [locale] (D57)
+    # [locale]/        # (Phase 2) route group theo locale khi bật song ngữ — chưa dùng ở MVP
   components/
   features/
   lib/
@@ -97,13 +95,13 @@ docs/
 | Database | Chỉ bảng `contacts` trên Supabase, ghi-một-chiều | D35 |
 | Email | Resend, tích hợp ở Milestone 1.7, không tạo API key ở Phase 0 | D8 |
 | Analytics | Chỉ Google Analytics 4 ở MVP | D9 |
-| Ngôn ngữ | `vi` ở MVP, kiến trúc sẵn sàng song ngữ | D1 |
-| Theme | Light và dark ngay ở MVP | D10 |
+| Ngôn ngữ / Routing | `vi` ở MVP, **route phẳng `/`, không `[locale]`** ở MVP; song ngữ Phase 2 | D1, **D57** |
+| Theme | ~~Light và dark~~ **Section-based composition, không light/dark toggle** | D10, **D46** |
 | Search, Pagination, Filter, Newsletter | Hoãn Phase 2 | D33, D27 |
 | Topics `/topics/[pillar]` | Giữ trong MVP, đúng 5 pillar | D31 |
 | Media storage | `public/` + `next/image` | D11 |
 | Navigation | 5 mục; Experience là section trong About | D26 |
-| Gói Vercel | Hobby → Pro khi bật consulting (gate 1.8) | D19 |
+| Hosting | **Cloudflare Pages, static-first** (amend Vercel) | **D56**, D19 |
 
 ## 7. Quyết định còn mở
 
@@ -115,11 +113,13 @@ Ràng buộc kiến trúc kèm theo: hệ thống điều hướng và bố cụ
 
 ## 8. Internationalization
 
+**Tu chỉnh bởi D57 (2026-07-28):** MVP dùng **route phẳng** (`/`, `<html lang="vi">`), **không** `[locale]` segment / middleware i18n / i18n package / locale switcher. Song ngữ là **Phase 2 future-ready** (khi bật cần checkpoint migration riêng). Mô tả `[locale]` + middleware dưới đây là kiến trúc **Phase 2**, không áp dụng MVP; `slug.vi.mdx` và "kiến trúc sẵn sàng song ngữ" vẫn giữ.
+
 Theo D1, MVP chỉ xuất bản tiếng Việt nhưng kiến trúc phải sẵn sàng cho song ngữ.
 
-- Cấu hình tập trung tại `src/config/i18n/index.ts` với `defaultLocale = 'vi'` và `locales = ['vi']`.
-- Route nằm dưới `src/app/[locale]/`.
-- Middleware rewrite `/` sang `/vi` ở tầng nội bộ. URL công khai ở MVP **không** có tiền tố locale để tránh làm loãng tín hiệu SEO khi chỉ có một ngôn ngữ.
+- **(Phase 2)** Cấu hình tập trung tại `src/config/i18n/index.ts` với `defaultLocale = 'vi'` và `locales = ['vi']`.
+- **(Phase 2)** Route nằm dưới `src/app/[locale]/`.
+- **(Phase 2)** Middleware rewrite `/` sang `/vi` ở tầng nội bộ. URL công khai ở MVP **không** có tiền tố locale để tránh làm loãng tín hiệu SEO khi chỉ có một ngôn ngữ.
 - Chuỗi giao diện đặt trong `src/config/i18n/vi.ts`, không hard-code trong JSX.
 - Mọi bảng nội dung có cột `locale` và `translation_key`. Xem `DATABASE.md`.
 - File MDX đặt tên `slug.vi.mdx`.

@@ -29,6 +29,11 @@ Trước mọi công việc, phải đọc:
 11. `docs/04-ai/AI_RULEBOOK.md`
 12. `docs/05-devops/DEPLOYMENT.md`
 13. `docs/06-operations/ROADMAP.md`
+14. `docs/design-bible/` — governance layer (D50); với công việc thiết kế/UI, đọc theo trật tự ở `docs/design-bible/README.md`
+
+**Governance hierarchy (D50):** Decision Log → Design Bible → Design System → Component Inventory → AI Rulebook → CLAUDE.md → Source. Tầng dưới không mâu thuẫn tầng trên; Decision Log là thẩm quyền tối cao; Source code không bao giờ là nguồn sự thật.
+
+**Owner-approved route & content-readiness decisions:** route contract và điều kiện render nội dung do Decision Log + `CONTENT_INVENTORY.md` chi phối — `/topics/` hub (D51); kênh social render theo D53; "Làm việc cùng tôi" conditional (D54); featured Writing/Case theo ngưỡng thật (D55). Không tự tạo route/social/dịch vụ/bài/case/metric; chưa ready thì omit, không fabricate (AI_RULEBOOK §4.4).
 
 Nếu tài liệu mâu thuẫn, dừng lại và báo rõ mâu thuẫn. Không tự suy đoán.
 

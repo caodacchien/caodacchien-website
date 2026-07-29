@@ -33,15 +33,35 @@ Roboworld là **một case study trong nhiều case study**, không phải khung
 
 ## Stack
 
-- Next.js + React + TypeScript
-- Tailwind CSS + shadcn/ui
+- Next.js + React + TypeScript (App Router, static-first)
+- **Native CSS + CSS Modules** (OD-CSS-1; không Tailwind/shadcn)
 - **MDX cho bài viết và case study** (D35)
 - **`profile.config.ts` cho hồ sơ và kinh nghiệm** (D35)
 - **Supabase chỉ giữ bảng `contacts`** (D35)
-- Vercel cho triển khai ứng dụng
+- **Cloudflare Pages** cho triển khai (hosting target MVP, **static-first** — D56)
 - Cloudflare cho DNS, SSL và bảo vệ tên miền
 - GitHub cho source control
 - Claude Code cho AI-assisted development
+
+Ghi chú posture MVP: route **phẳng `/`**, ngôn ngữ mặc định **tiếng Việt** (`<html lang="vi">`), **không** `[locale]`/i18n ở MVP (D57 — song ngữ là Phase 2). Cơ chế build/deploy (static export/adapter) **chưa khóa** — quyết ở deployment checkpoint (D56).
+
+> CSS approach đã khóa: **Native CSS + CSS Modules** (OD-CSS-1, `homepage-css-architecture-spec.md`) — không Tailwind/shadcn.
+
+## Phát triển cục bộ
+
+Yêu cầu: **Node 24.18.0** (xem `.nvmrc`) · **pnpm 10.15.1** (Corepack, xem `packageManager`).
+
+```bash
+corepack enable          # bật pnpm đúng version
+pnpm install             # cài dependency
+pnpm dev                 # chạy dev server (http://localhost:3000)
+pnpm lint                # ESLint
+pnpm typecheck           # TypeScript (tsc --noEmit)
+pnpm build               # build production
+pnpm check               # lint + typecheck
+```
+
+Milestone 1.1 mới là **nền móng kỹ thuật** (technical shell) — chưa phải homepage production.
 
 ## Quyết định đã chốt
 
@@ -58,7 +78,7 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | D7 | Cấm bịa nội dung, placeholder phải đánh dấu rõ |
 | D8 | Email dùng Resend, tích hợp ở Milestone 1.7 |
 | D9 | MVP chỉ dùng Google Analytics 4 |
-| D10 | MVP hỗ trợ cả light mode và dark mode |
+| D10 | ~~MVP hỗ trợ cả light mode và dark mode~~ *(superseded by D46)* |
 | **D12** | **Định vị: Publishing Platform, không phải portfolio** (tinh chỉnh bởi D20) |
 | D13 | Roboworld là một case study, không phải khung định vị |
 | D14 | `projects` là mô hình case study marketing, không phải dự án phần mềm |
@@ -76,14 +96,21 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | D30 | 8 Design Principle là tầng quyết định cao nhất |
 | D31 | Information Architecture; giữ `/topics/[pillar]` 5 trụ |
 | D32 | Kiến trúc Design Token (màu điền ở 0.4) |
-| D33 | 19 component; Search/Pagination/Filter/Newsletter → Phase 2 |
+| D33 | 19 component; Search/Pagination/Filter/Newsletter → Phase 2 *(nay 18 sau D46)* |
 | D34 | 12 Design Constraint |
 | **D35** | **Option B — MDX-first; Supabase chỉ còn bảng `contacts`** |
 | **D36** | **Design Direction: Strategic Editorial with Product-Level Precision** — editorial-first + interaction-first; tham khảo resend.com + recent.design; thêm P11–P13; Sound & Interaction (mặc định ON, future); tu chỉnh typography + container của D32 |
 | D11 | Media storage = `public/` + `next/image` |
 | D19 | Vercel Hobby → Pro khi bật consulting (gate 1.8) |
 | **D26** | **Nav 5 mục theo loại nội dung; Experience là section trong About** (tu chỉnh D4) |
-| D27 | Newsletter hoãn Phase 2; MVP còn 19 component |
+| D27 | Newsletter hoãn Phase 2; MVP còn 19 component *(nay 18 sau D46)* |
+| **D46** | **Section-based color composition; bỏ light/dark toggle** (supersede D10); loại `ThemeToggle` → 18 component |
+| **D47** | **Khóa 4 primitive Kinetic** (White/Black/Grey/Orange) + semantic per surface; **Danger = Pending** |
+| **D48** | **Geist Sans-only**; loại Geist Mono khỏi visible UI; số dùng `tabular-nums` |
+| **D49** | **Radius contract R3** (control 8–10 · card 12–16 · panel 20–28 · signature 36–48) — supersede trần 8px D32 |
+| **D50** | **Design Governance hierarchy**; ratify CDC Design Bible làm governance layer |
+| **D56** | **Hosting MVP = Cloudflare Pages, static-first**; foundation deployment-agnostic; không mặc định Vercel (amend D19/D5) |
+| **D57** | **Routing MVP phẳng `/`, `lang="vi"`**; không `[locale]`/i18n ở MVP; song ngữ Phase 2 (amend D1) |
 
 **Không còn Decision OPEN trong Foundation** (đóng ở Milestone 0.5D — 2026-07-25). Future Enhancement (Sound, View Transitions, header collapse, PWA) ở `DESIGN_SYSTEM.md`.
 
@@ -100,13 +127,14 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 
 - `CLAUDE.md`: hướng dẫn Claude Code
 - `docs/00-foundation/PROJECT_CONSTITUTION.md`: hiến pháp dự án
-- `docs/00-foundation/DECISION_LOG.md`: nhật ký quyết định D1–D35
+- `docs/00-foundation/DECISION_LOG.md`: nhật ký quyết định D1–D50
 - `docs/01-product/BRAND_POSITIONING.md`: **nguồn sự thật về định vị**
 - `docs/01-product/PRODUCT_REQUIREMENTS.md`: yêu cầu sản phẩm
 - `docs/01-product/CONTENT_INVENTORY.md`: danh mục nội dung thật cần cung cấp
 - `docs/02-design/DESIGN_SYSTEM.md`: hệ thống thiết kế, Design Principles và Constraints
 - `docs/02-design/INFORMATION_ARCHITECTURE.md`: sitemap, taxonomy, URL, điều hướng
-- `docs/02-design/COMPONENT_INVENTORY.md`: 19 component MVP và kiến trúc Design Token
+- `docs/02-design/COMPONENT_INVENTORY.md`: 18 component MVP và kiến trúc Design Token (nguồn giá trị token)
+- `docs/design-bible/`: **governance layer** (D50) — thinking model, anti-patterns, reference philosophy, review gates
 - `docs/03-engineering/SYSTEM_ARCHITECTURE.md`: kiến trúc hệ thống
 - `docs/03-engineering/DATABASE.md`: mô hình dữ liệu
 - `docs/04-ai/AI_RULEBOOK.md`: quy tắc AI

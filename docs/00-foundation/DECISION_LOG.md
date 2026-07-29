@@ -15,6 +15,7 @@ Trạng thái: `Approved` | `Open` | `Superseded`
 ## D1 — Ngôn ngữ website
 
 **Trạng thái:** Approved — 2026-07-23
+**Đã tu chỉnh bởi:** **D57** — MVP dùng route **phẳng** (`/`, `<html lang="vi">`), **không** `[locale]`/middleware/i18n ở MVP. Ràng buộc "route dưới `src/app/[locale]/`" chuyển thành **Phase 2 future-ready**. "Kiến trúc sẵn sàng song ngữ" và `slug.vi.mdx` **giữ nguyên**.
 
 **Bối cảnh:** `PRODUCT_REQUIREMENTS.md` §7 để ngỏ lựa chọn Việt / Anh / song ngữ. Đây là quyết định chặn nặng nhất vì ảnh hưởng routing, mô hình dữ liệu, sitemap và hreflang.
 
@@ -203,9 +204,11 @@ Trạng thái: `Approved` | `Open` | `Superseded`
 
 ## D10 — Dark mode
 
-**Trạng thái:** Approved — 2026-07-23
+**Trạng thái:** ~~Approved — 2026-07-23~~ **Superseded by D46 (2026-07-27)**
 
-**Quyết định:** MVP hỗ trợ cả light mode và dark mode.
+**Superseded:** D46 chuyển MVP sang section-based color composition, bỏ light/dark toggle và ThemeToggle. Nội dung D10 dưới đây giữ để tra cứu lịch sử; ràng buộc "semantic token, không đặt tên theo giá trị màu" và "đo AA riêng từng bề mặt" vẫn còn hiệu lực dưới D46/D47.
+
+**Quyết định (lịch sử):** MVP hỗ trợ cả light mode và dark mode.
 
 **Yêu cầu bắt buộc:**
 
@@ -460,6 +463,7 @@ Hai vế có vai trò khác nhau và không được rút gọn còn một:
 ### D19 — Rủi ro giấy phép Vercel Hobby
 
 **Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn phương án A: Hobby → Pro theo điều kiện)
+**Đã tu chỉnh bởi:** **D56** — hosting target MVP chuyển sang **Cloudflare Pages, static-first**; Vercel **không còn** là production target bắt buộc. Rủi ro giấy phép Vercel Hobby (nội dung dưới) trở thành **không áp dụng** cho MVP; giữ để tra cứu lịch sử.
 **Liên quan:** D5, D12
 
 **Vấn đề:** Gói Vercel Hobby cấm sử dụng cho mục đích thương mại. Khi định vị còn là "website thương hiệu cá nhân" chung chung, rủi ro này ở mức lý thuyết. D12 đã đổi tình thế: consulting và sản phẩm số giờ là **mục đích được tuyên bố công khai** của sản phẩm.
@@ -573,15 +577,16 @@ Ghi lại để đo về sau, không phải quyết định:
 ## D32 — Design Tokens
 
 **Trạng thái:** Approved — 2026-07-24
-**Đã tu chỉnh bởi:** D36 — body chuyển sang sans (serif dồn lên tiêu đề); khôi phục `--container-wide` (nay 4 container). **D43** — bỏ serif hoàn toàn ở MVP, dùng hệ font Geist. Thang chữ 8 bậc và các token khác giữ nguyên.
+**Đã tu chỉnh bởi:** D36 — body chuyển sang sans (serif dồn lên tiêu đề); khôi phục `--container-wide` (nay 4 container). **D43** — bỏ serif hoàn toàn ở MVP, dùng hệ font Geist. **D47** — điền giá trị màu (4-color Kinetic, section-based). **D48** — bỏ Geist Mono khỏi visible UI. **D49** — thay **trần radius 8px** bằng radius contract R3 (control 8–10 · card 12–16 · panel 20–28 · signature 36–48). Thang chữ 8 bậc và các token khác giữ nguyên.
 
-**Quyết định:** Khóa **kiến trúc** token, **để trống giá trị màu** tới Milestone 0.4 (tôn trọng D10). Thang chữ 8 bậc (đã bỏ `--text-display`), spacing cơ sở 4px, container 3 mức (đã bỏ `--container-wide`), trần radius 8px, elevation 2 mức (đã bỏ `--elevation-2`), trần motion 200ms, màu semantic 2 tầng. Chi tiết ở `COMPONENT_INVENTORY.md`.
+**Quyết định:** Khóa **kiến trúc** token, **để trống giá trị màu** tới Milestone 0.4 (tôn trọng D10). Thang chữ 8 bậc (đã bỏ `--text-display`), spacing cơ sở 4px, container 3 mức (đã bỏ `--container-wide`), ~~trần radius 8px~~ *(superseded by D49)*, elevation 2 mức (đã bỏ `--elevation-2`), trần motion 200ms, màu semantic 2 tầng. Chi tiết ở `COMPONENT_INVENTORY.md`.
 
 ## D33 — Component Inventory
 
 **Trạng thái:** Approved — 2026-07-24
+**Đã tu chỉnh bởi:** D46 — loại `ThemeToggle` (bỏ light/dark toggle) → **18 component**. Kiến trúc `ContentCard` chung **giữ nguyên** (chủ dự án chốt không tách SignatureCard; chỉ tách component khi hành vi/ngữ nghĩa thực sự khác, không tách vì styling).
 
-**Quyết định:** **19 component** cho MVP (từ 38 sau tối giản hóa). `SearchDialog`, `Pagination`, `FilterBar` hoãn **Phase 2**. **`NewsletterForm` hoãn Phase 2 theo D27** (từ 20 → 19). Chi tiết và danh sách gộp/bỏ ở `COMPONENT_INVENTORY.md`.
+**Quyết định:** ~~**19 component**~~ **18 component** cho MVP (từ 38 sau tối giản hóa; `NewsletterForm` lùi Phase 2 theo D27; `ThemeToggle` loại theo D46). `SearchDialog`, `Pagination`, `FilterBar` hoãn **Phase 2**. Chi tiết và danh sách gộp/bỏ ở `COMPONENT_INVENTORY.md`.
 
 ## D34 — Design Constraints
 
@@ -612,7 +617,7 @@ Ghi lại để đo về sau, không phải quyết định:
 
 **Trạng thái:** Approved — 2026-07-24 (chủ dự án khóa)
 **Mở rộng:** D29 · **Tu chỉnh:** D32 (typography, container)
-**Đã tu chỉnh bởi:** D43 — typography chuyển sang hệ font **Geist (sans-first, bỏ serif ở MVP)**. Phần "serif cho Hero/Display/Major Heading" bên dưới là mô tả D36 gốc, giữ để tra cứu lịch sử.
+**Đã tu chỉnh bởi:** D43 — typography chuyển sang hệ font **Geist (sans-first, bỏ serif ở MVP)**. **D46** — §Color mode ("light và dark đều first-class") **superseded**: MVP dùng section-based composition, không light/dark toggle. **D48** — bỏ Geist Mono khỏi visible UI. Phần "serif cho Hero/Display/Major Heading" và "Color mode" bên dưới là mô tả D36 gốc, giữ để tra cứu lịch sử.
 
 **Quyết định:** Khóa câu định danh sản phẩm là **"A Strategic Editorial Platform for a Marketing Leader"**, hướng thiết kế **Strategic Editorial with Product-Level Precision** — ấn phẩm biên tập cao cấp với độ hoàn thiện interaction như một digital product hiện đại. Editorial-first, không phải visual-first.
 
@@ -724,6 +729,7 @@ Chủ dự án chốt OD-1..OD-5 cho Milestone 0.4. D43–D45 tiếp nối số,
 
 **Trạng thái:** Approved — 2026-07-25 (chủ dự án chọn hệ font Geist)
 **Tu chỉnh:** D36, D32 (typography — bỏ serif)
+**Đã tu chỉnh bởi:** **D48** — **loại Geist Mono khỏi visible UI**. Mệnh đề "Geist Mono chỉ dùng có chọn lọc cho metadata/technical" dưới đây **superseded**; Geist Sans nay là typeface duy nhất, số dùng `tabular-nums`. Giữ để tra cứu lịch sử.
 
 **Quyết định:** Dùng hệ font **Geist** (Vercel, SIL Open Font License 1.1).
 
@@ -758,6 +764,7 @@ Chi tiết container/nav/grid/typography-response ở `COMPONENT_INVENTORY.md` �
 ## D45 — Hướng màu, dark mode & quy trình wireframe (OD-2/3/4/5)
 
 **Trạng thái:** Approved — 2026-07-25 (hướng và quy trình; giá trị HEX chưa khóa)
+**Đã tu chỉnh bởi:** **D47** — OD-2 (accent đơn, off-white/near-black) **superseded** bởi hệ 4-color Kinetic section-based; HEX nay đã khóa. **D46** — OD-5 (dark mode hand-tuned) **superseded**: MVP không có dark mode/toggle. OD-3 (wireframe SSoT) và OD-4 (quy trình chủ dự án duyệt màu) **vẫn hiệu lực**.
 
 **Quyết định:**
 
@@ -767,3 +774,240 @@ Chi tiết container/nav/grid/typography-response ở `COMPONENT_INVENTORY.md` �
 - **OD-4 Quy trình chọn màu:** Claude đề xuất hệ màu + HEX; **chủ dự án duyệt trước khi khóa**. **Không tuyên bố "màu đã khóa" khi chưa có phê duyệt rõ ràng.**
 
 **Thực thi:** 0.4C đề xuất 2–3 phương án accent (tên hướng · ý nghĩa thương hiệu · primitive scale · semantic tokens · ví dụ · contrast light + dark · khuyến nghị), chủ dự án duyệt trước khi khóa HEX.
+
+---
+
+# Nhóm quyết định Milestone 0.4C — Kinetic Orange & Design Governance (2026-07-27)
+
+Chủ dự án chốt D46–D50 sau vòng 0.4C (Kinetic Orange pivot + tích hợp CDC Design Bible). D46–D50 tiếp nối số, không sửa hay đánh số lại D1–D45. Ba quyết định mở (Radius · Component Scope · Danger) đã được chủ dự án chốt trong lô này.
+
+## D46 — Section-based color composition (supersede D10)
+
+**Trạng thái:** Approved — 2026-07-27
+**Supersede:** D10 (light/dark mode + ThemeToggle)
+**Amend:** D36 (§color-mode), D45 (OD-5 dark hand-tuned), `DESIGN_SYSTEM.md` (§Color mode, §Phase 4 theme), `COMPONENT_INVENTORY.md` (bỏ ThemeToggle, §B.8), `INFORMATION_ARCHITECTURE.md` (§2/§9), `AI_RULEBOOK.md` (§5/§9), `PRODUCT_REQUIREMENTS.md` (§6)
+
+**Bối cảnh:** D10 khóa "MVP có cả light + dark mode + ThemeToggle theo `prefers-color-scheme`". Pivot Kinetic Orange ở 0.4C chuyển sang bố cục màu theo section; Design Bible `03-visual-language.md` và `06-color-surfaces.md` đã mã hóa. Hai nguồn mâu thuẫn trực tiếp.
+
+**Quyết định:** MVP dùng **section-based color composition** — surface đổi theo mạch narrative:
+
+- **White** — long-form, Writing, About, giải thích.
+- **Grey** — chuyển nhịp / supporting; không dùng cho long-form chính.
+- **Black** — statement, featured evidence, Work With Me, footer.
+- **Orange** — focal point, marker, CTA chính, focus có kiểm soát.
+
+**Bỏ global light/dark toggle. Loại ThemeToggle** khỏi component MVP (19 → **18**). Không `prefers-color-scheme` switching ở MVP.
+
+**Không đổi:** mọi cặp chữ-trên-nền vẫn đo tương phản WCAG AA **theo từng surface** (không suy diễn giữa các surface).
+
+**Lý do:** một hệ màu đơn giản, editorial, có chủ đích hơn theo mạch nội dung; giảm bề mặt phức tạp (không token 2-mode, không lo nhấp nháy theme).
+
+## D47 — Color primitives & semantic surface mapping (Danger = Pending)
+
+**Trạng thái:** Approved — 2026-07-27
+**Supersede/Amend:** D45 (OD-2 accent đơn → hệ 4-color section-based); điền giá trị màu để trống của D32/D10 vào `COMPONENT_INVENTORY.md §B.8`
+
+**Bối cảnh:** D45/OD-2 mới chốt *hướng* (một accent, off-white/near-black) và để **giá trị màu trống**. Pivot đã chốt 4 màu Kinetic; cần khóa primitive + mapping semantic per surface.
+
+**Quyết định:**
+
+- **Khóa 4 primitive:** Pure White `#FBFBFB` · Deep Black `#040404` · Neutral Grey `#DEDEDE` · Kinetic Orange `#FF4000`.
+- **Orange derived scale** (tint/shade) được phép cho text/hover/focus/selection; giá trị ở `COMPONENT_INVENTORY.md §B.8`.
+- **Semantic mapping per surface** (fg · secondary · muted · border · accent-text · on-accent) — chi tiết ở `COMPONENT_INVENTORY.md §B.8`.
+- **Orange budget:** ≤1 CTA + ≤1 marker/keyword mỗi viewport; cấm cam làm body/link nhỏ không đạt AA; **cam không dùng cho danger**.
+- **Danger Color = `Pending — Phase Color System`.** KHÔNG khóa HEX, KHÔNG palette danger ở milestone này. Functional danger state có thể tồn tại nhưng governance màu chưa mở khóa.
+
+**Ràng buộc:** accent-text cam phải dùng shade đủ tối theo surface để đạt AA (o-700 trên White, o-800 trên Grey, o-500 trên Black; chữ đen trên Orange).
+
+## D48 — Typography: Geist Sans-only (amend D43)
+
+**Trạng thái:** Approved — 2026-07-27
+**Amend:** D43 (mệnh đề Geist Mono — superseded, giữ lịch sử), `DESIGN_SYSTEM.md` (§Typography), `COMPONENT_INVENTORY.md §B.1`
+
+**Bối cảnh:** D43 chốt Geist Sans chính + Geist Mono cho metadata. Chủ dự án sau đó yêu cầu loại Mono khỏi visible UI vì cảm giác developer-tool và slashed-zero khiến metric trông máy móc, lệch art direction editorial.
+
+**Quyết định:**
+
+- **Geist Sans là typeface duy nhất** trong visible UI của MVP: heading, body, navigation, button, form, label, eyebrow, metadata, ngày/reading time, metric/phần trăm/số case study, tag, badge, status.
+- **Loại Geist Mono** khỏi visible UI và khỏi typography mapping mặc định.
+- **Số:** dùng `font-variant-numeric: tabular-nums` khi cần căn hàng; **không đổi font-family sang monospace, không slashed zero, không italic cho metric**.
+- **Metric chính:** Geist Sans weight 600–700.
+- **Metadata:** Geist Sans 450–500, letter-spacing 0–0.02em, ưu tiên sentence case, hạn chế uppercase dài.
+
+**Không đổi:** thang chữ 8 bậc, measure 68ch, line-height (D32/D43 giữ nguyên); fallback stack bỏ nhánh mono.
+
+## D49 — Radius Contract (R3 — Hybrid/Bridge)
+
+**Trạng thái:** Approved — 2026-07-27 (chủ dự án chọn **R3**)
+**Supersede:** D32 (trần radius 8px) + mệnh đề radius của C13/D24
+
+**Bối cảnh:** Ba nguồn radius mâu thuẫn: `COMPONENT_INVENTORY §B.4` trần 8px · Direction C.1 (≤48) · Design Bible `07` (≤64). Chủ dự án được trình 3 phương án R1/R2/R3.
+
+**Quyết định:** Chọn **R3 — Hybrid / Bridge**:
+
+| Archetype | Radius |
+| --- | --- |
+| control | 8–10px |
+| card | 12–16px |
+| panel | 20–28px |
+| signature | 36–48px |
+| pill | 999px — chỉ cho tag/chip/control có ngữ nghĩa |
+
+**Lý do chủ dự án chọn R3:** khả năng mở rộng dài hạn tốt hơn; cân bằng giữa cảm giác editorial và component tái sử dụng; ít mâu thuẫn tương lai giữa Design Bible và Component Inventory; ưu tiên hơn việc bám sát tuyệt đối prototype.
+
+**Ràng buộc:** không bo toàn bộ section; full-width section mặc định không radius; không nested rounded card; tối đa 1–2 signature-radius object mỗi trang; radius gắn archetype, không gắn tùy ý theo section. Giá trị canonical ở `COMPONENT_INVENTORY.md §B.4`.
+
+## D50 — Design Governance Hierarchy (ratify Design Bible)
+
+**Trạng thái:** Approved — 2026-07-27
+**Amend:** `AI_RULEBOOK.md` (§2 đọc bắt buộc), `CLAUDE.md` (nguồn sự thật), `README.md`
+
+**Bối cảnh:** `docs/design-bible/` được bổ sung làm governance layer nhưng chưa được Decision Log phê chuẩn. Cần khóa thứ tự thẩm quyền để tránh hai chỉ dẫn trái nhau cho AI agent.
+
+**Quyết định:** Chính thức nạp **CDC Design Bible** làm governance layer. Thứ tự thẩm quyền bắt buộc; tầng dưới không được mâu thuẫn tầng trên:
+
+```
+Decision Log → Design Bible → Design System → Component Inventory → AI Rulebook → CLAUDE.md → Source
+```
+
+**Trách nhiệm từng tầng:**
+
+| Tầng | Giữ | Không giữ |
+| --- | --- | --- |
+| **Decision Log** | Thẩm quyền tối cao; mọi quyết định (append-only); phân xử mâu thuẫn | Nguyên tắc/giá trị/triển khai chi tiết |
+| **Design Bible** | Governance reference: thesis, brand, thinking model (Human Composition, Editorial Intelligence, Reference Philosophy), anti-patterns, evidence, review gate. **Không override Decision Log** | Giá trị triển khai (số) |
+| **Design System** | Direction narrative + principles/constraints; trỏ tới decisions & Bible | Giá trị token cụ thể |
+| **Component Inventory** | **Nguồn duy nhất của "số"**: token values, radius, màu, breakpoint, danh sách component | Nguyên tắc/triết lý |
+| **AI Rulebook** | Quy tắc vận hành AI (workflow, an toàn, DoD) | Quyết định thiết kế |
+| **CLAUDE.md** | Con trỏ nguồn sự thật + quy tắc giao tiếp/kỹ thuật | Nội dung chi tiết |
+| **Source Code** | Thi hành. **Không bao giờ là nguồn sự thật** | Quyết định/nguyên tắc |
+
+**Ràng buộc chống trùng lặp:** giá trị (số) chỉ sống ở Component Inventory; Design Bible và Design System **trỏ tới**, không lặp lại. Khi Design Bible cần một con số, nó dẫn chiếu Component Inventory.
+
+---
+
+# Nhóm quyết định Homepage Semantic IA & Content Readiness (2026-07-27)
+
+Chủ dự án chốt D51–D55 sau Checkpoint 0.5A/0.5B (Semantic HTML homepage + audit). Tiếp nối số, không sửa/đánh số lại D1–D50.
+
+## D51 — `/topics/` là content hub độc lập
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** D31 (IA — thêm route hub), D26 (nav "Chủ đề")
+
+**Bối cảnh:** Semantic HTML homepage trỏ nav "Chủ đề" tới `/topics/`, nhưng IA (D31) mới chỉ khóa `/topics/[pillar]/`, chưa có index — bị đánh dấu assumption ở 0.5B.
+
+**Quyết định:**
+- `/topics/` là **trang index tổng hợp 5 trụ** (hub độc lập), không phải anchor `#pillar-map` trên Home.
+- Nav label "Chủ đề" trỏ về `/topics/`.
+- 5 route con (slug tiếng Việt không dấu, chốt cứng): `/topics/chien-luoc/` · `/topics/tang-truong-so/` · `/topics/noi-dung-truyen-thong/` · `/topics/ai-cho-marketing/` · `/topics/lanh-dao-quan-diem/`.
+- Homepage Pillar Map (S4) trỏ tới **từng route con**; hub index và Pillar Map là hai thứ khác nhau.
+
+**Rationale:** hub độc lập nhất quán với publishing platform, có giá trị SEO/độc lập; anchor on-page yếu.
+**Consequences:** không triển khai trang `/topics/` ở checkpoint này — chỉ khóa **route contract** trong IA; trang thực thuộc Milestone 1.x. Slug con là canonical cho mọi tài liệu/HTML.
+
+## D52 — GitHub là deferred evidence asset
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** `CONTENT_INVENTORY.md` §9
+
+**Bối cảnh:** GitHub `DRAFT` trong Content Inventory, xuất hiện như social link ở footer semantic HTML. Định vị là Marketing Leader, không phải kỹ sư (BRAND §8).
+
+**Quyết định:**
+- **Không** hiển thị GitHub như social channel ở Footer MVP (và không ở homepage/contact).
+- Phân loại GitHub là **`evidence_asset` (deferred)**, không phải `social_primary`. Không xóa GitHub khỏi Content Inventory.
+- Chỉ cân nhắc hiển thị tương lai khi repository có README rõ, có nội dung Marketing systems / AI workflow / automation / personal operating system, và củng cố định vị Marketing Leader.
+
+**Rationale:** tránh tín hiệu "hồ sơ kỹ sư" ngược định vị (D12/D20/§8).
+**Consequences:** footer MVP bỏ GitHub; giữ dữ liệu trong Inventory dưới nhãn evidence deferred.
+
+## D53 — Kênh xuất bản MVP: Email · LinkedIn · RSS
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** `CONTENT_INVENTORY.md` §9, `INFORMATION_ARCHITECTURE.md` §9 (footer)
+
+**Bối cảnh:** chỉ Email `READY`; LinkedIn/Facebook/X/YouTube = TODO. Cần khóa danh sách kênh để không render link giả.
+
+**Quyết định:**
+- **Primary:** Email `forwork.chiencd@gmail.com` (READY) · LinkedIn (`OWNER ASSET REQUIRED`) · RSS `/rss.xml` (route contract).
+- **Deferred:** Facebook · X · YouTube · Instagram · Behance.
+- **Quy tắc render:** chỉ render một social link khi **URL thật đã có trong Content Inventory**; không render icon/link placeholder; không dùng `#`; không suy đoán username/URL. Nếu LinkedIn chưa có URL lúc production, footer chỉ hiển thị **Email + RSS**. Footer/nav phải cân bằng ngay cả khi chỉ 2 link.
+
+**Rationale:** trung thực (D7), footer tiết chế (IA §9).
+**Consequences:** MVP footer render Email + RSS (+ LinkedIn khi có URL thật).
+
+## D54 — "Làm việc cùng tôi" conditional cho tới khi có dịch vụ được duyệt
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** D18 (khối "Làm việc cùng tôi"), `PRODUCT_REQUIREMENTS.md`
+
+**Bối cảnh:** `servicesOffered` (CONTENT_INVENTORY §8b) = TODO. D18 giữ khối này trên Home/About nhưng chưa quy định hành vi khi thiếu nội dung.
+
+**Quyết định:**
+- Giữ section S5 trong IA và semantic structure. Trạng thái MVP: **`conditional_hidden_until_content_ready`**.
+- **Không render công khai** nếu `servicesOffered` chưa được Owner cung cấp + phê duyệt.
+- **Không** tự viết dịch vụ chung chung (tư vấn chiến lược / quản lý thương hiệu / performance marketing / xây dựng hệ thống…) khi Owner chưa xác nhận cụ thể.
+- Khi chưa có content: S5 **omit** trên production; **S6 Contact CTA nối trực tiếp sau S4 Pillar Map**; transition vẫn tự nhiên. Không placeholder public, không bảng giá/lịch hẹn/package/scarcity.
+
+**Rationale:** D7 (không ship placeholder) + D18 (khối thông tin, không phễu).
+**Consequences:** graceful omission cho S5; cần Owner cung cấp §8b để bật.
+
+## D55 — Featured content cần ngưỡng xuất bản thật
+
+**Trạng thái:** Approved — 2026-07-27
+**Amends:** D25 (Home flow), `PRODUCT_REQUIREMENTS.md`
+
+**Bối cảnh:** Bài viết (§10) và case study (§5) = TODO. D25 khóa Home có bài featured + case featured, nhưng chưa quy định hành vi khi thiếu nội dung.
+
+**Quyết định (Option A):**
+- Giữ cấu trúc homepage + component mapping. Khi chưa có nội dung thật: dùng **empty-state narrative trung thực** trong review; **không** render placeholder card production; **không** tạo title/excerpt/date/reading-time/metric/case giả.
+- **Bật Featured Writing** khi: ≥3 bài thật, có title/slug/published-date/excerpt/reading-time hợp lệ, Owner xác nhận bài featured.
+- **Bật Featured Case Study** khi: ≥1 case thật, có context/problem/approach/result, mọi metric được phép công khai (D6); case liên quan Roboworld giữ `REVIEW-REQUIRED` trước publish (D13).
+- Khi cả hai chưa đủ: homepage production **graceful omission**; không khoảng trống vô nghĩa; **không** thay bằng testimonial/logo wall/fake metric/generic feature grid.
+
+**Rationale:** D7/P1/§6 (bằng chứng thật hoặc omit, không giả).
+**Consequences:** S2/S3 conditional; cần cổng nội dung (CONTENT_INVENTORY §1) trước khi bật.
+
+---
+
+# Nhóm quyết định Foundation Setup — Deployment & Routing posture (2026-07-28)
+
+Chủ dự án chốt D56–D57 ở Milestone 1.1 (Foundation Setup / 1.1B review). Tiếp nối số, không sửa hay đánh số lại D1–D55.
+
+## D56 — MVP Hosting and Deployment Posture
+
+**Trạng thái:** Approved — 2026-07-28
+**Supersede/Amend:** D19 (Vercel Hobby→Pro — posture Vercel-as-production-target), D5 (tham chiếu Vercel), `DEPLOYMENT.md`, `SYSTEM_ARCHITECTURE.md` §1/§3
+
+**Bối cảnh:** D19/D5/DEPLOYMENT/SYSTEM_ARCH khóa **Vercel** làm hosting, hạ tầng Vercel đã tạo/verify ở Milestone 0.6C. Ở Milestone 1.1, chủ dự án chuyển hosting target sang Cloudflare Pages, static-first.
+
+**Quyết định:**
+- **Production hosting target của MVP là Cloudflare Pages.**
+- Rendering posture là **static-first**.
+- Foundation dùng **Next.js App Router** nhưng **không phụ thuộc Vercel** — không Vercel-specific runtime/service, không server actions, không API routes giả, không middleware, không edge-runtime dependency khi chưa có requirement thật.
+- **Không khóa `output: "export"` tại Checkpoint 1.1.** Static export hoặc Cloudflare-compatible adapter được quyết định ở **deployment checkpoint riêng** sau khi content, image strategy và runtime requirement rõ.
+- **Image optimization strategy defer** đến Image Strategy/Deployment checkpoint.
+- Environment variable mapping cho Cloudflare chỉ thêm khi có biến môi trường thật.
+
+**Rationale:** hạ tầng thực tế chọn Cloudflare Pages; MVP thiên về publishing/content/case study; static-first giảm runtime complexity, chi phí, vendor lock-in; chưa có requirement auth/DB/API/SSR bắt buộc; foundation deployment-agnostic tránh sửa lớn khi khóa pipeline.
+
+**Consequences:** `next.config.ts` tối giản, không Vercel-specific; README không mô tả Vercel là production target; deployment docs phân biệt "hosting target" vs "build/runtime mechanism"; chưa tự thêm adapter/static-export config; ảnh phải review compatibility Cloudflare Pages. **Không đổi** lựa chọn Next.js App Router. Hạ tầng Vercel 0.6C trở thành không dùng cho hosting — DNS/SSL vẫn qua Cloudflare (D5 giữ).
+
+## D57 — MVP Language and Routing Posture
+
+**Trạng thái:** Approved — 2026-07-28
+**Amend:** D1 (route dưới `[locale]` — chuyển thành Phase 2 future-ready), `SYSTEM_ARCHITECTURE.md` §8, `INFORMATION_ARCHITECTURE.md`
+
+**Bối cảnh:** D1/SYSTEM_ARCH §8 khóa `src/app/[locale]/` + middleware rewrite `/`→`/vi` là bắt buộc. MVP chỉ có tiếng Việt; `[locale]` tạo complexity chưa tạo giá trị.
+
+**Quyết định:**
+- Homepage canonical route của MVP là **`/`**; ngôn ngữ mặc định **tiếng Việt**; root document **`<html lang="vi">`**.
+- **Không** `[locale]` segment · **không** route `/vi/` · **không** middleware i18n · **không** i18n package · **không** locale switcher · **không** duplicate `/` ↔ `/vi/`.
+- Route nội dung giữ dạng **phẳng** theo IA đã khóa: `/writing/` · `/case-studies/` · `/topics/` · `/about/` · `/contact/` (và các route đã duyệt).
+- **Đa ngôn ngữ chỉ mở ở Phase 2** khi có content, workflow biên tập, canonical/hreflang và nguồn lực dịch thật.
+
+**Amend D1:** bỏ ràng buộc "route dưới `[locale]`" ở MVP; **giữ** "kiến trúc sẵn sàng song ngữ" như *future-ready* (MDX vẫn `slug.vi.mdx`; bật `en` Phase 2 cần checkpoint migration riêng).
+
+**Rationale:** MVP chỉ nội dung tiếng Việt; `/` ngắn/rõ/phù hợp canonical; tránh middleware, duplicate route, SEO ambiguity, maintenance overhead.
+
+**Consequences:** `src/app/page.tsx` ở `/`; `layout.tsx` giữ `lang="vi"`; không tạo `[locale]`; không cài i18n package; mở song ngữ sau cần checkpoint migration riêng. **Không** đổi sitemap nội dung đã khóa ngoài việc bỏ prefix locale bắt buộc.

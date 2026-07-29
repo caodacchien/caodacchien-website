@@ -12,7 +12,8 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 ├── /writing/                  Danh sách bài viết (hiển thị hết — pagination Phase 2)
 │   └── /writing/[slug]/        Bài viết
 │
-├── /topics/[pillar]/          Hub của một trụ (đúng 5 trụ, D31)
+├── /topics/                   Hub index tổng hợp 5 trụ (D51)
+│   └── /topics/[pillar]/       Hub của một trụ (đúng 5 trụ, D31)
 │
 ├── /case-studies/             Danh sách case study (hiển thị hết — filter Phase 2)
 │   └── /case-studies/[slug]/   Một case study
@@ -27,6 +28,8 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 
 **Hoãn Phase 2:** `/resources/`, `/speaking/`, `/tags/[tag]/`, `/writing/page/[n]/` (pagination), search. Kiến trúc phải chừa chỗ cho hai mục đầu mà không thiết kế lại (D18).
 
+**Routing posture MVP (D57):** Homepage canonical là **`/`**; mọi route MVP **không có tiền tố locale** (`/writing/`, `/case-studies/`, `/topics/`, `/about/`, `/contact/`…). **Không** `[locale]`/`/vi/`/middleware i18n ở MVP. Đa ngôn ngữ (locale prefix + hreflang) là **Phase 2 future-ready**.
+
 ## 2. Navigation
 
 Điều hướng theo **loại nội dung**, không theo cấu trúc portfolio.
@@ -34,7 +37,6 @@ Nguồn sự thật về định vị: `BRAND_POSITIONING.md`. Khi mâu thuẫn,
 | Vị trí | Nội dung |
 | --- | --- |
 | Header chính | **Viết · Case study · Chủ đề · Giới thiệu · Liên hệ** (5 mục, D26). Experience là section trong About, không lên nav |
-| Header phụ | Nút chuyển theme (D10) |
 | Không lên header | "Làm việc cùng tôi" — là **khối** trên Home và About, không phải mục nav (D18, P2) |
 | Trong bài | Mục lục dính ở cột lề phải (desktop), thu gọn trên mobile |
 | Cuối bài | 3 bài liên quan cùng trụ + tối đa 1 CTA (P8) |
@@ -57,8 +59,13 @@ Năm trụ: `Chiến lược` · `Tăng trưởng số` · `Nội dung và Truy�
 | Loại | Mẫu | Ví dụ |
 | --- | --- | --- |
 | Bài viết | `/writing/[slug]/` | `/writing/khung-dinh-vi-thuong-hieu/` |
+| **Hub index chủ đề** | `/topics/` | `/topics/` (D51 — nav "Chủ đề" trỏ về đây) |
 | Hub trụ | `/topics/[pillar]/` | `/topics/ai-cho-marketing/` |
 | Case study | `/case-studies/[slug]/` | `/case-studies/tai-dinh-vi-x/` |
+
+**Slug 5 trụ (canonical, chốt cứng theo D51):** `chien-luoc` · `tang-truong-so` · `noi-dung-truyen-thong` · `ai-cho-marketing` · `lanh-dao-quan-diem`. Đây là giá trị duy nhất; mọi tài liệu/HTML dùng đúng bộ này.
+
+**Phân biệt (D51):** `/topics/` là **hub index** (trang liệt kê 5 trụ, có route riêng, giá trị SEO/độc lập) — **khác** với **Pillar Map trên Home (S4)**, vốn là một khối dẫn tới từng `/topics/[pillar]/`. Không dùng anchor `#pillar-map` thay cho hub index.
 
 **Quy tắc:**
 
@@ -119,6 +126,13 @@ Chốt theo **D25**. Chi tiết ở `PRODUCT_REQUIREMENTS.md` §5.
 
 Trần 2 CTA mỗi trang (D23/P8).
 
+**Conditional rendering (D54/D55) — spine không đổi, chỉ điều kiện hiển thị production:**
+
+- **S2 Featured Writing / S3 Featured Case Study:** chỉ render khi đạt ngưỡng nội dung thật (D55 — Writing ≥3 bài hợp lệ + Owner xác nhận featured; Case ≥1 case hợp lệ, metric được phép công khai). Chưa đủ → **graceful omission** trên production (không placeholder card, không fake).
+- **S5 Làm việc cùng tôi:** `conditional_hidden_until_content_ready` (D54) — không render nếu `servicesOffered` chưa được Owner cung cấp/duyệt.
+- **Fallback thứ tự khi omit:** nếu S5 ẩn → **S6 Contact CTA nối trực tiếp sau S4 Pillar Map**; nếu S2/S3 ẩn → các khối còn lại dồn liền, transition narrative vẫn tự nhiên, không để khoảng trống vô nghĩa (logic nối ở `homepage-layout-logic.md`).
+- Không thay khối thiếu bằng testimonial / logo wall / fake metric / generic feature grid.
+
 ## 9. Footer structure
 
 Footer nhỏ, **không phải sitemap**. Hai cột + dòng cuối:
@@ -127,7 +141,7 @@ Footer nhỏ, **không phải sitemap**. Hai cột + dòng cuối:
 | --- | --- |
 | Viết · Case study · Chủ đề · Giới thiệu · Liên hệ · Kinh nghiệm (anchor About) | Social · RSS |
 
-Dòng cuối: bản quyền · Chính sách riêng tư · nút chuyển theme. Experience nằm ở footer/About (D21).
+Dòng cuối: bản quyền · Chính sách riêng tư. *(Bỏ nút chuyển theme — D46 section-based, không light/dark toggle.)* Experience nằm ở footer/About (D21).
 
 ## 10. Trạng thái quyết định (đã đóng ở 0.5D)
 
