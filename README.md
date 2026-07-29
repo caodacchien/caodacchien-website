@@ -38,9 +38,9 @@ Roboworld là **một case study trong nhiều case study**, không phải khung
 - **MDX cho bài viết và case study** (D35)
 - **`profile.config.ts` cho hồ sơ và kinh nghiệm** (D35)
 - **Supabase chỉ giữ bảng `contacts`** (D35)
-- **Cloudflare Pages** cho triển khai (hosting target MVP, **static-first** — D56)
+- Triển khai: **hiện tại Vercel** phục vụ production và preview; **target đã duyệt là Cloudflare Pages** static-first (D56) — **chưa provision**. Chi tiết ở `docs/05-devops/DEPLOYMENT.md`
 - Cloudflare cho DNS, SSL và bảo vệ tên miền
-- GitHub cho source control
+- GitHub branch `main` là source of truth cho source control
 - Claude Code cho AI-assisted development
 
 Ghi chú posture MVP: route **phẳng `/`**, ngôn ngữ mặc định **tiếng Việt** (`<html lang="vi">`), **không** `[locale]`/i18n ở MVP (D57 — song ngữ là Phase 2). Cơ chế build/deploy (static export/adapter) **chưa khóa** — quyết ở deployment checkpoint (D56).
@@ -101,7 +101,7 @@ Chi tiết tại `docs/00-foundation/DECISION_LOG.md`.
 | **D35** | **Option B — MDX-first; Supabase chỉ còn bảng `contacts`** |
 | **D36** | **Design Direction: Strategic Editorial with Product-Level Precision** — editorial-first + interaction-first; tham khảo resend.com + recent.design; thêm P11–P13; Sound & Interaction (mặc định ON, future); tu chỉnh typography + container của D32 |
 | D11 | Media storage = `public/` + `next/image` |
-| D19 | Vercel Hobby → Pro khi bật consulting (gate 1.8) |
+| D19 | Vercel Hobby → Pro khi bật consulting (gate 1.8) — *superseded bởi D56* |
 | **D26** | **Nav 5 mục theo loại nội dung; Experience là section trong About** (tu chỉnh D4) |
 | D27 | Newsletter hoãn Phase 2; MVP còn 19 component *(nay 18 sau D46)* |
 | **D46** | **Section-based color composition; bỏ light/dark toggle** (supersede D10); loại `ThemeToggle` → 18 component |

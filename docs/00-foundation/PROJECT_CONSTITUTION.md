@@ -24,7 +24,8 @@ Không viết production code trước khi:
 ### 2.2 Chi phí vận hành thấp
 Ưu tiên free tier và kiến trúc đơn giản:
 - GitHub Free
-- Vercel Hobby
+- **Cloudflare Pages Free** — hosting target production (D56)
+- Vercel Hobby — preview deployment và repository checks
 - Supabase Free
 - Cloudflare Free
 - Dịch vụ trả phí chỉ được thêm khi có nhu cầu thực tế
@@ -35,7 +36,7 @@ Mã nguồn, domain, database và hạ tầng cá nhân phải nằm dưới tà
 | Hạng mục | Tài khoản |
 | --- | --- |
 | Domain | `caodacchien.io.vn`, sở hữu cá nhân |
-| Email hạ tầng | `forwork.chiencd@gmail.com` |
+| Email hạ tầng | một địa chỉ cá nhân của chủ dự án (không phải email Roboworld). Giá trị cụ thể không ghi trong repository Public |
 | GitHub | `caodacchien` |
 | Cloudflare, Vercel, Supabase | tài khoản cá nhân dùng email hạ tầng ở trên |
 
