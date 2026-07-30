@@ -112,7 +112,7 @@ export default function WritingPage() {
         </section>
       </main>
 
-      <SiteFooter className="writing-footer" />
+      <SiteFooter className="site-footer-long" />
     </>
   );
 }
