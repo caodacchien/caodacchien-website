@@ -5,7 +5,7 @@ import WritingHero from "@/components/WritingHero";
 import FeaturedArticle from "@/components/FeaturedArticle";
 import PillarStrip from "@/components/PillarStrip";
 import ArticleCard from "@/components/ArticleCard";
-import EmptyState from "@/components/EmptyState";
+import StatusMessage from "@/components/StatusMessage";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { getFeaturedArticle, getLatestArticles } from "@/lib/writing";
 
@@ -104,7 +104,7 @@ export default function WritingPage() {
               ))}
             </ul>
           ) : (
-            <EmptyState
+            <StatusMessage
               title="Những bài viết dài đầu tiên đang được chuẩn bị."
               description="Nội dung đáng xuất bản cần thời gian. Khi bài đầu tiên hoàn chỉnh, nó sẽ xuất hiện tại đây."
             />
