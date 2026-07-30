@@ -216,20 +216,22 @@
     list-style: none;
   }
 
-  /* S0 — Header: dải biên tập mảnh, split một hàng (wordmark trái / Liên hệ phải) mọi breakpoint.
-     Nav còn 1 item (Liên hệ mailto) sau link-honesty → single row an toàn ở 320px (không overflow), nowrap. */
+  /* S0 — Header dùng chung: dải biên tập mảnh, split hai biên (wordmark trái / nav phải).
+     Nav 3 mục không vừa một hàng ở 320–375px → cho phép nav rơi xuống hàng dưới NGUYÊN KHỐI
+     (flex-wrap, không hamburger/drawer), và khóa wordmark không vỡ hai dòng. */
   .site-header {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-3) var(--space-4);
     padding-block: var(--space-5);
   }
   .site-header .wordmark {
     margin: 0;
     font-weight: var(--weight-heading);
+    white-space: nowrap;
   }
   .primary-nav ul {
     display: flex;
@@ -334,6 +336,11 @@
   }
   .footer-contact {
     font-style: normal;
+  }
+  /* Modifier duy nhất của footer: cân bằng ending cho trang dài (About, Writing).
+     Home ngắn hơn nên giữ nhịp mặc định. Không tạo biến thể footer theo tên trang. */
+  .site-footer-long {
+    padding-block-start: var(--space-8);
   }
 
   /* ===== About page (/about) — editorial refinement (page-specific; White surface D46, không dark mode).
@@ -469,9 +476,6 @@
   .about-cta-lead {
     max-width: 46ch;
     margin: 0 auto var(--space-5);
-  }
-  .about-footer {
-    padding-block-start: var(--space-8);
   }
 }
 
@@ -723,17 +727,6 @@
  * ========================================================================== */
 
 @layer layout {
-  /* Header dùng chung: nav 3 mục không còn vừa một hàng ở 320–375px.
-     Cho phép nav rơi xuống hàng dưới NGUYÊN KHỐI, và khóa wordmark không vỡ hai dòng.
-     Chỉ áp cho `.site-header-shared` — header inline của Home/About không đổi. */
-  .site-header-shared {
-    flex-wrap: wrap;
-    row-gap: var(--space-3);
-  }
-  .site-header-shared .wordmark {
-    white-space: nowrap;
-  }
-
   /* Hero — cùng nhịp với About hero (statement-led, không cột media rỗng). */
   .writing-hero {
     padding-block: var(--space-7) var(--space-8);
@@ -833,11 +826,6 @@
   .empty-state-description {
     max-width: 52ch;
     margin: 0;
-  }
-
-  /* Footer cân bằng kết thúc cho trang dài (cùng cách xử lý About). */
-  .writing-footer {
-    padding-block-start: var(--space-8);
   }
 }
 

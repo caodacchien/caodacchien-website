@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 // About page — kế thừa design Homepage (White surface, D46 — không global dark mode/ThemeToggle).
 // Nội dung VERIFIED từ CONTENT_INVENTORY (Owner 1.5 About). KHÔNG bịa fact/ngày/số liệu/khách hàng (D7).
@@ -54,18 +55,8 @@ const principles = [
 export default function AboutPage() {
   return (
     <>
-      {/* Header — nhất quán Homepage. Nav: Giới thiệu (route thật) + Liên hệ (mailto thật). */}
-      <header className="site-header container-content">
-        <p className="wordmark">
-          <Link href="/">Cao Đắc Chiến</Link>
-        </p>
-        <nav className="primary-nav" aria-label="Điều hướng chính">
-          <ul>
-            <li><Link href="/about">Giới thiệu</Link></li>
-            <li><a href="mailto:forwork.chiencd@gmail.com">Liên hệ</a></li>
-          </ul>
-        </nav>
-      </header>
+      {/* Header dùng chung (Global Layout Adoption). aria-current="page" trên "Giới thiệu". */}
+      <SiteHeader currentPath="/about/" />
 
       <main id="main-content">
         {/* Hero — không portrait; hierarchy bằng type + measure + spacing (Owner asset ảnh chưa có). */}
@@ -184,14 +175,8 @@ export default function AboutPage() {
         </section>
       </main>
 
-      {/* Footer — nhất quán Homepage; chỉ content/link thật. about-footer: cân bằng ending cho trang dài. */}
-      <footer className="site-footer about-footer container-content">
-        <p className="wordmark">Cao Đắc Chiến</p>
-        <address className="footer-contact">
-          Liên hệ: <a href="mailto:forwork.chiencd@gmail.com">forwork.chiencd@gmail.com</a>
-        </address>
-        <p className="copyright">© {new Date().getFullYear()} Cao Đắc Chiến</p>
-      </footer>
+      {/* Footer dùng chung; modifier `site-footer-long` = cân bằng ending cho trang dài (giữ nguyên nhịp đã duyệt). */}
+      <SiteFooter className="site-footer-long" />
     </>
   );
 }

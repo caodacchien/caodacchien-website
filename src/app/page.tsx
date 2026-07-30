@@ -4,6 +4,8 @@
 // Copy chỉ dùng nguồn thật: BRAND_POSITIONING §1/§3, CONTENT_INVENTORY §9, routes IA/D51/D57.
 
 import Link from "next/link";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 // ---- Types (đủ đơn giản, không data-layer/CMS) ----
 type Pillar = { title: string; href: string; scope: string };
@@ -50,20 +52,9 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ===== S0 — Site Header ===== */}
-      <header className="site-header container-content">
-        <p className="wordmark">
-          <Link href="/">Cao Đắc Chiến</Link>
-        </p>
-        {/* Nav: "Giới thiệu" đã kích hoạt (route /about thật tồn tại). Các route chưa dựng vẫn omit (link honesty).
-           Route link khác forward-compat: bật lại khi trang thật tồn tại. */}
-        <nav className="primary-nav" aria-label="Điều hướng chính">
-          <ul>
-            <li><Link href="/about">Giới thiệu</Link></li>
-            <li><a href="mailto:forwork.chiencd@gmail.com">Liên hệ</a></li>
-          </ul>
-        </nav>
-      </header>
+      {/* ===== S0 — Site Header (shared, Global Layout Adoption) ===== */}
+      {/* Home không có mục nav trỏ về chính nó → không aria-current trên trang này. */}
+      <SiteHeader currentPath="/" />
 
       <main id="main-content">
         {/* ===== S1 — Hero / Positioning Statement ===== */}
@@ -193,19 +184,9 @@ export default function HomePage() {
         </section>
       </main>
 
-      {/* ===== S7 — Site Footer ===== */}
-      {/* Footer nav phụ (route 404), RSS (/rss.xml 404), Privacy (/privacy/ 404), Kinh nghiệm (404) đã omit
-         (link honesty, Owner 1.5D-F). Không empty nav/list container. Giữ email thật + tên + copyright. */}
-      <footer className="site-footer container-content">
-        <p className="wordmark">Cao Đắc Chiến</p>
-
-        {/* address chỉ bao thông tin liên hệ của chủ website (email READY, CONTENT §9). */}
-        <address className="footer-contact">
-          Liên hệ: <a href="mailto:forwork.chiencd@gmail.com">forwork.chiencd@gmail.com</a>
-        </address>
-
-        <p className="copyright">© {new Date().getFullYear()} Cao Đắc Chiến</p>
-      </footer>
+      {/* ===== S7 — Site Footer (shared, Global Layout Adoption) ===== */}
+      {/* Không modifier nhịp trang dài: Home ngắn hơn About/Writing, giữ nguyên footer balance đã duyệt. */}
+      <SiteFooter />
     </>
   );
 }
