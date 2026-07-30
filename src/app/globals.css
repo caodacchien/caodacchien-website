@@ -567,7 +567,8 @@
      Bugfix: trước chỉ scope `.hero .eyebrow` nên eyebrow About render như <p> thường. */
   .hero .eyebrow,
   .about-hero .eyebrow,
-  .writing-hero .eyebrow {
+  .writing-hero .eyebrow,
+  .status-page .eyebrow {
     color: var(--color-text-muted);
     font-size: var(--text-xs);
     font-weight: var(--weight-medium);
@@ -901,6 +902,69 @@
     }
     .empty-state {
       padding-block: var(--space-7);
+    }
+  }
+}
+
+/* ============================================================================
+ * Trang trạng thái (404 · 500) — hoàn tất Milestone 1.2 (Global layout).
+ * CHỈ THÊM selector mới. Kế thừa token/container/eyebrow sẵn có: không primitive mới,
+ * không màu mới, không font mới. Không dùng Orange (giữ accent budget cho CTA thật).
+ * ========================================================================== */
+
+@layer layout {
+  /* Khoảng lặng đủ để trang lỗi không đọc như một trang bị hỏng dở. */
+  .status-page {
+    padding-block: var(--space-8) var(--space-9);
+  }
+  .status-page .eyebrow {
+    margin: 0 0 var(--space-4);
+  }
+  .status-page h1 {
+    max-width: 24ch;
+    margin: 0 0 var(--space-5);
+  }
+  .status-page-lead {
+    max-width: 56ch;
+    margin: 0 0 var(--space-6);
+  }
+  /* Hàng hành động: wrap ở mobile, không tràn ngang. */
+  .status-page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    margin: 0;
+  }
+}
+
+@layer components {
+  .status-page-lead {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+  }
+  /* Link hành động: ink + underline (điều hướng thật, không phải accent CTA). */
+  .status-page-actions a {
+    color: var(--color-text-primary);
+    text-underline-offset: 0.15em;
+  }
+  /* Nút retry đọc như link để hai loại hành động cùng một ngôn ngữ thị giác;
+     vẫn là <button> vì nó chạy hành vi, không điều hướng (semantic đúng). */
+  .status-page-retry {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+  }
+}
+
+@layer responsive {
+  @media (min-width: 768px) {
+    .status-page {
+      padding-block: var(--space-9);
     }
   }
 }
