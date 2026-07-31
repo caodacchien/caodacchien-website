@@ -7,7 +7,7 @@ import PillarStrip from "@/components/PillarStrip";
 import ArticleCard from "@/components/ArticleCard";
 import StatusMessage from "@/components/StatusMessage";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { getFeaturedArticle, getLatestArticles } from "@/lib/writing";
+import { getFeaturedArticle, getPublishedArticles } from "@/lib/mdx";
 
 // /writing/ — trang danh sách bài viết (route contract D31/D57/IA §1, §4).
 // Server component, không client JS. Kế thừa design language Home/About (White surface, D46).
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function WritingPage() {
   const featured = getFeaturedArticle();
-  const latest = getLatestArticles();
+  const latest = getPublishedArticles();
   const hasArticles = latest.length > 0;
 
   // JSON-LD: CollectionPage mô tả trang danh sách. KHÔNG phát sinh Article/datePublished

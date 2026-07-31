@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { articleHref, type Article } from "@/lib/writing";
+import { articleHref, type ArticleMeta } from "@/lib/writing";
 
 // Card bài viết dùng lại được (Writing list, Topic hub, Related — cùng một hợp đồng).
 // Server component. Mọi trường tùy chọn render có điều kiện: KHÔNG <time> giả,
 // KHÔNG reading time ước lượng, KHÔNG khung ảnh rỗng khi thiếu featuredImage (D7).
 
 // h3 vì card luôn nằm dưới một <h2> section (Writing list, Topic hub, Related).
-export default function ArticleCard({ article }: { article: Article }) {
+export default function ArticleCard({ article }: { article: ArticleMeta }) {
   const href = articleHref(article.slug);
   const hasMeta = Boolean(article.publishedAt || article.readingMinutes);
 

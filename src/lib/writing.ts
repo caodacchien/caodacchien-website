@@ -1,11 +1,11 @@
-// Data contract cho Writing (Milestone Writing Foundation).
-// KHÔNG data-layer/CMS/MDX ở checkpoint này (D35 MDX-first sẽ nối ở Milestone 1.3).
-// Hình dạng type khớp frontmatter MDX dự kiến để 1.3 không phải viết lại UI.
+// Taxonomy + kiểu dữ liệu + hằng số route của Writing.
+// Module này CỐ Ý không đọc filesystem và không import Zod: nó phải an toàn để import
+// từ bất kỳ component nào. Phần đọc nội dung nằm ở `src/lib/mdx.ts` (server-only).
 
 /**
  * Trụ nội dung — ĐÓNG, đúng 5 giá trị (D16).
  * Taxonomy đóng: thêm giá trị ngoài union này là type error lúc build,
- * tương ứng ràng buộc Zod enum sẽ dựng ở Milestone 1.3.
+ * tương ứng ràng buộc Zod enum ở `writing.schema.ts`.
  */
 export type Pillar =
   | "Chiến lược"
@@ -51,6 +51,12 @@ export const PILLARS: PillarEntry[] = [
   },
 ];
 
+/** Danh sách giá trị trụ hợp lệ — nguồn duy nhất cho Zod enum. */
+export const PILLAR_TITLES = PILLARS.map((p) => p.title) as [Pillar, ...Pillar[]];
+
+/** Trạng thái xuất bản (D1). Chỉ `published` mới lộ ra công khai. */
+export type ArticleStatus = "draft" | "published";
+
 export type ArticleImage = {
   src: string;
   /** Alt bắt buộc — ảnh nội dung không được để alt rỗng (WCAG 1.1.1). */
@@ -60,23 +66,47 @@ export type ArticleImage = {
 };
 
 /**
- * Bài viết. Mọi trường tùy chọn chỉ render khi có giá trị thật (D7/D55):
- * không ngày giả, không reading time ước lượng, không ảnh placeholder.
+ * Metadata một bài viết — thứ các component danh sách tiêu thụ.
+ * KHÔNG chứa thân bài (xem `ArticleSource`).
+ *
+ * `publishedAt` và `readingMinutes` là BẮT BUỘC ở đây (khác bản foundation trước):
+ * schema ép có ngày thật, còn reading time thì tính từ nội dung thật — nên không
+ * còn trường hợp hợp lệ nào mà một bài đã validate lại thiếu hai giá trị này.
  */
-export type Article = {
-  /** Slug tiếng Việt không dấu (D31). URL cuối: /writing/[slug]/ */
+export type ArticleMeta = {
+  /** Slug tiếng Việt không dấu (D31), derive từ TÊN FILE. URL cuối: /writing/[slug]/ */
   slug: string;
   title: string;
-  /** Tóm tắt biên tập. Không sinh tự động từ thân bài. */
+  /** Tóm tắt biên tập — dùng cho thẻ danh sách VÀ meta description. */
   summary: string;
+  /** ISO date YYYY-MM-DD, đã kiểm tra là ngày có thật trên lịch. */
+  publishedAt: string;
+  status: ArticleStatus;
   pillar: Pillar;
-  /** ISO date — chỉ set khi có ngày xuất bản thật. */
-  publishedAt?: string;
-  /** Phút đọc — chỉ set khi tính từ nội dung thật. */
-  readingMinutes?: number;
+  /** Phút đọc — TÍNH lúc build từ thân bài, không nằm trong frontmatter (D7). */
+  readingMinutes: number;
+  /** Owner đánh dấu featured (D25). Mặc định false. */
+  featured: boolean;
+  updatedAt?: string;
+  /**
+   * Ảnh bìa — CHƯA được lớp đọc điền ở checkpoint này.
+   *
+   * Frontmatter đã khóa (D1) chỉ có `coverImage` + `coverImageAlt`, KHÔNG có kích thước,
+   * trong khi `next/image` bắt buộc `width`/`height`. Schema vẫn validate hai trường đó
+   * để nội dung Owner viết hôm nay không bị sai về sau, nhưng việc nối ảnh vào UI cần
+   * một quyết định về nguồn kích thước (thêm trường frontmatter, đọc kích thước lúc
+   * build, hay dùng `fill` + CSS) — thuộc checkpoint route bài viết.
+   *
+   * Giữ trường ở đây để `ArticleCard`/`FeaturedArticle` đã duyệt không phải sửa markup.
+   */
   featuredImage?: ArticleImage;
-  /** Owner đánh dấu featured (D25 `featured: true`). */
-  featured?: boolean;
+};
+
+/** Một bài viết kèm thân MDX thô. Chỉ trang chi tiết mới cần dạng này. */
+export type ArticleSource = {
+  meta: ArticleMeta;
+  /** MDX THÔ, chưa compile. Việc compile thuộc checkpoint route bài viết. */
+  source: string;
 };
 
 /**
@@ -85,29 +115,7 @@ export type Article = {
  */
 export const FEATURED_WRITING_MIN = 3;
 
-/**
- * Nguồn bài viết — RỖNG.
- * CONTENT_INVENTORY §10 = TODO: chưa có bài viết nào đạt READY.
- * Không seed fixture/placeholder công khai (D7, AI_RULEBOOK §4.4).
- * Milestone 1.3 sẽ thay mảng này bằng lớp đọc MDX, giữ nguyên type Article.
- */
-export const articles: Article[] = [];
-
 /** Đường dẫn công khai của một bài (URL bất biến, D31). */
 export function articleHref(slug: string): string {
   return `/writing/${slug}/`;
-}
-
-/** Bài featured hợp lệ: đủ ngưỡng D55 VÀ được Owner đánh dấu. */
-export function getFeaturedArticle(list: Article[] = articles): Article | null {
-  if (list.length < FEATURED_WRITING_MIN) return null;
-  return list.find((a) => a.featured) ?? null;
-}
-
-/** Bài mới nhất. Chỉ sắp xếp khi có ngày thật; bài thiếu ngày giữ nguyên thứ tự nguồn. */
-export function getLatestArticles(list: Article[] = articles): Article[] {
-  return [...list].sort((a, b) => {
-    if (!a.publishedAt || !b.publishedAt) return 0;
-    return b.publishedAt.localeCompare(a.publishedAt);
-  });
 }
