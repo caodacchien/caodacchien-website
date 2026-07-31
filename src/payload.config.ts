@@ -33,6 +33,10 @@ export default buildConfig({
     // Khác với nút "Xem trước" mở tab mới: cái này nhúng thẳng website vào bên phải
     // khung soạn, gõ tới đâu thấy tới đó.
     livePreview: {
+      // BẮT BUỘC. Thiếu dòng này thì cấu hình phía dưới vẫn hợp lệ về kiểu dữ liệu,
+      // build vẫn xanh, nhưng Payload không bật xem trước cho collection nào cả —
+      // nên trong màn hình soạn bài không hiện gì.
+      collections: ["posts", "documents"],
       breakpoints: [
         { label: "Điện thoại", name: "mobile", width: 390, height: 844 },
         { label: "Máy tính bảng", name: "tablet", width: 834, height: 1112 },
