@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { articleHref, type Article } from "@/lib/writing";
+import { articleHref, type ArticleMeta } from "@/lib/writing";
 
 // Featured Article — chỉ metadata, không trích nội dung thân bài.
 // Chỉ được render khi qua ngưỡng D55 (≥3 bài thật) VÀ Owner đánh dấu featured.
 // Trang gọi chịu trách nhiệm gate; component không tự bịa trạng thái.
 
-export default function FeaturedArticle({ article }: { article: Article }) {
+export default function FeaturedArticle({ article }: { article: ArticleMeta }) {
   const href = articleHref(article.slug);
   const hasMeta = Boolean(article.publishedAt || article.readingMinutes);
 
