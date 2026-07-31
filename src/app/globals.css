@@ -1,11 +1,15 @@
 /*
- * Global CSS — Visual token foundation (Milestone 1.2B).
- * Token values canonical từ COMPONENT_INVENTORY §B (§B.1–B.9) + §B.8 (D46/D47).
- * Chỉ token foundation + base + surface resolution. CHƯA có component/section/homepage.
+ * Global CSS — nền tảng token theo hệ thiết kế pop.site.
+ *
+ * Nguồn: DESIGN.md (Pop Site — Style Reference). Thay toàn bộ hệ Kinetic 4-color
+ * (White/Black/Grey/Orange) đã khóa ở D46/D47 — xem quyết định A trong BRIEF.
+ * Bản Kinetic cũ khôi phục được bằng: git show main:src/app/globals.css
+ *
+ * Ba chỗ em cố ý đi chệch DESIGN.md, đều vì tiếng Việt hoặc vì khả năng tiếp cận —
+ * mỗi chỗ đánh dấu [CHỆCH] kèm lý do.
  */
 
-/* Cascade layer order — LOCKED (OD-CSS-4, css-architecture-spec §3). */
-@layer reset, tokens, base, layout, surfaces, components, states, utilities, responsive, accessibility;
+@layer reset, tokens, base, layout, components, utilities, accessibility;
 
 @layer reset {
   *,
@@ -40,949 +44,304 @@
     font: inherit;
     color: inherit;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote {
+    margin: 0;
+  }
 }
 
 @layer tokens {
   :root {
-    /* ---- Brand primitives (khóa, D47/§B.8) ---- */
-    --color-pure-white: #fbfbfb;
-    --color-deep-black: #040404;
-    --color-neutral-grey: #dedede;
-    --color-kinetic-orange: #ff4000;
+    color-scheme: light;
 
-    /* ---- Orange accent-text shades (§B.8 derived, contrast-safe) ---- */
-    --color-orange-700: #c42f00; /* accent-text trên White (AA 5.41:1) */
-    --color-orange-800: #a62800; /* accent-text trên Grey (AA 5.34:1) */
+    /* ---- Màu (DESIGN.md §Tokens — Colors) ---- */
+    --color-page-white: #ffffff;
+    --color-ink-black: #000000;
+    --color-charcoal: #171717;
+    --color-granite: #5e5e5e;
+    --color-slate: #6e6e73;
+    --color-mist: #d2d2d7;
+    --color-wash-blue: #e3eeff;
+    --color-signal-blue: #3b82f6;
+    --color-link-blue: #6ea5ff;
 
-    /* ---- Neutral ink ramp (§B.8 derived; 40=nhạt → 90=đậm) ---- */
-    --color-ink-40: #b0b0b0;
-    --color-ink-50: #8a8a8a;
-    --color-ink-60: #6e6e6e;
-    --color-ink-70: #555555;
-    --color-ink-90: #3a3a3a;
-    --color-ink-orange-strong: #1a0a05; /* secondary trên Orange surface (§B.8) */
-    --color-ink-orange-muted: #2a1206; /* muted trên Orange surface (§B.8) */
+    /* Hover của nút chính — DESIGN.md §Primary Pill Button */
+    --color-signal-blue-hover: #2f6fd6;
 
-    /* ---- Typography (§B.1). Per-role & fluid = Deferred impl detail (contract §7). ---- */
-    --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
-      Roboto, Arial, sans-serif;
-    --measure-prose: 68ch;
-    --leading-body: 1.7;
-    --leading-heading: 1.15;
-    --leading-ui: 1.5;
-    --weight-body: 400;
+    /* [CHỆCH 1] --color-link-blue (#6ea5ff) chỉ đạt 2.3:1 trên nền trắng, dưới chuẩn AA 4.5:1.
+       DESIGN.md dùng nó cho chữ link. Ở đây giữ token cho đúng hệ, nhưng chữ link dùng
+       --color-signal-blue (4.5:1 — vừa đủ AA). Link-blue chỉ dùng cho viền và nền nhạt. */
+
+    /* ---- Nền (DESIGN.md §Surfaces) ---- */
+    --surface-canvas: var(--color-page-white);
+    --surface-card: var(--color-page-white);
+    --surface-wash: var(--color-wash-blue);
+
+    /* ---- Ngữ nghĩa ---- */
+    --color-text-display: var(--color-ink-black);
+    --color-text-body: var(--color-charcoal);
+    --color-text-muted: var(--color-granite);
+    --color-text-meta: var(--color-slate);
+    --color-border-hairline: var(--color-mist);
+    --color-border-defined: var(--color-charcoal);
+    --color-focus-ring: var(--color-signal-blue);
+
+    /* ---- Chữ ---- */
+    /* --font-sans do next/font gắn vào <html> (Plus Jakarta Sans, có bộ dấu tiếng Việt).
+       Satoshi bị loại: file phát từ Fontshare thiếu 92/96 ký tự có dấu. Xem layout.tsx. */
+    --font-display: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, sans-serif;
+
+    --weight-regular: 400;
     --weight-medium: 500;
-    --weight-heading: 600;
-    /* Thang chữ 8 bậc — giá trị desktop canonical §B.1. Mobile step-down/clamp Deferred (section impl). */
-    --text-h1: 45px;
-    --text-h2: 36px;
-    --text-h3: 28px;
-    --text-lg: 22px;
-    --text-body: 19px;
-    --text-sm: 16px;
-    --text-xs: 14px;
+    --weight-bold: 700;
 
-    /* ---- Spacing (§B.2, base 4px) ---- */
-    --space-1: 4px;
-    --space-2: 8px;
-    --space-3: 12px;
-    --space-4: 16px;
-    --space-5: 24px;
-    --space-6: 32px;
-    --space-7: 48px;
-    --space-8: 64px;
-    --space-9: 96px;
-    --space-10: 128px;
-    /* Section rhythm anchor (§B.2 ranges: compact 5–6 · standard 7–8 · major 9–10) */
-    --space-compact: var(--space-6);
-    --space-standard: var(--space-8);
-    --space-major: var(--space-10);
+    /* Thang chữ — cột "giá trị đích" là số desktop canonical của DESIGN.md.
+       clamp() để co xuống mobile: DESIGN.md chỉ cho số desktop, không cho thang mobile. */
+    --text-caption: 12px;
+    --text-body: 15px;
+    --text-subheading: clamp(17px, 1rem + 0.5vw, 21px);
+    --text-heading: clamp(30px, 1.4rem + 4.2vw, 53px);
+    --text-display: clamp(38px, 1.5rem + 7vw, 93px);
+    --text-display-xl: clamp(44px, 1.6rem + 9vw, 120px);
 
-    /* ---- Radius (§B.4 / D49 R3; giá trị trong biên archetype) ---- */
-    --radius-control: 10px; /* 8–10 */
-    --radius-card: 14px; /* 12–16 */
-    --radius-panel: 24px; /* 20–28 */
-    --radius-signature: 40px; /* 36–48 */
-    --radius-pill: 999px;
+    --leading-caption: 1.2;
+    --leading-body: 1.4;
+    --leading-subheading: 1.3;
+    --leading-heading: 1.12;
 
-    /* ---- Motion (§B.6; trần 200ms). Easing = Deferred. ---- */
+    /* [CHỆCH 2] DESIGN.md đặt line-height 1.0 cho display và 0.9 cho display-xl.
+       Với tiếng Việt, dấu chồng (ế, ữ, ợ, ẵ) vươn cao hơn chiều cao chữ hoa — ở hai dòng
+       trở lên, 0.9 làm dấu dòng dưới đâm vào chân dòng trên. Nâng lên 1.02 / 0.96:
+       vẫn giữ được cảm giác dồn chặt, nhưng không chạm dấu. */
+    --leading-display: 1.02;
+    --leading-display-xl: 0.96;
+
+    /* Giãn chữ âm — dùng em thay px để co đúng tỉ lệ khi clamp thu nhỏ cỡ chữ.
+       DESIGN.md cho px ở cỡ desktop: -7.08px@120 = -0.059em, -4.65px@93 = -0.05em,
+       -2.44px@53 = -0.046em, -0.63px@21 = -0.03em. */
+    --tracking-subheading: -0.03em;
+    --tracking-heading: -0.046em;
+    --tracking-display: -0.05em;
+    --tracking-display-xl: -0.059em;
+
+    /* ---- Khoảng cách (DESIGN.md §Spacing Scale, base 4px) ---- */
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-20: 20px;
+    --space-24: 24px;
+    --space-36: 36px;
+    --space-40: 40px;
+    --space-60: 60px;
+    --space-80: 80px;
+    --space-120: 120px;
+
+    /* ---- Bo góc (DESIGN.md §Border Radius) ---- */
+    --radius-card: 8px;
+    --radius-input: 8px;
+    --radius-image: 22px;
+    --radius-feature-card: 22px;
+    --radius-secondary-button: 26px;
+    --radius-small-image: 42px;
+    --radius-pill: 9999px;
+
+    /* ---- Bố cục (DESIGN.md §Layout) ---- */
+    --page-max-width: 1200px;
+    --page-gutter: var(--space-24);
+    --section-gap: var(--space-80);
+    --card-padding: var(--space-20);
+    --element-gap: var(--space-16);
+
+    /* Cột đọc bài — DESIGN.md không quy định vì pop.site không có bài dài.
+       Website này lấy blog làm trục chính nên cần một giá trị: 68ch. */
+    --measure-prose: 68ch;
+
+    /* ---- Chuyển động — DESIGN.md không quy định. Giữ tối thiểu, đúng tinh thần "quiet". ---- */
     --duration-fast: 120ms;
     --duration-base: 160ms;
-    --duration-slow: 200ms;
-
-    /* ---- Container (§B.3) ---- */
-    --container-prose: 68ch;
-    --container-content: 1080px;
-    --container-wide: 1280px;
-    --container-full: 100%;
-
-    /* ---- Semantic (mặc định = White surface; đổi theo [data-surface], §B.8) ---- */
-    --color-surface: var(--color-pure-white);
-    --color-text-primary: var(--color-deep-black);
-    --color-text-secondary: var(--color-ink-90);
-    --color-text-muted: var(--color-ink-60);
-    --color-border: var(--color-neutral-grey);
-    --color-border-strong: var(--color-ink-40);
-    --color-accent: var(--color-kinetic-orange);
-    --color-accent-text: var(--color-orange-700);
-    --color-on-accent: var(--color-deep-black);
-    --color-focus-ring: var(--color-kinetic-orange);
-    /* Deferred (chưa có nguồn khóa): --color-selected, --color-disabled, danger/success/warning */
+    --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 }
 
 @layer base {
   body {
-    background-color: var(--color-surface);
-    color: var(--color-text-primary);
-    font-family: var(--font-sans);
+    background-color: var(--surface-canvas);
+    color: var(--color-text-body);
+    font-family: var(--font-display);
     font-size: var(--text-body);
     line-height: var(--leading-body);
+    font-weight: var(--weight-regular);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography roles — Geist Sans only (D48/§B.1). Per-role pixel qua token;
-     h1/h2 fluid clamp trong biên §B.1 (mobile/desktop pair, min ~34/28 → max 45/36). */
+  /* Tiêu đề — chữ đen tuyền, đậm 700, giãn chữ âm. DESIGN.md §Do:
+     "Set letter-spacing to -0.05em or tighter on any text 53px and above". */
   :where(h1) {
-    /* Mobile lower bound giảm (28px) để statement dài không dồn nhiều dòng lớn; desktop giữ max 45 (§B.1). */
-    font-size: clamp(1.75rem, 1.1rem + 3.2vw, var(--text-h1));
-    font-weight: var(--weight-heading);
-    line-height: var(--leading-heading);
-    letter-spacing: -0.01em;
-    /* pretty: wrapping tự nhiên cho câu dài tiếng Việt (tránh ngắt cụm vụng); balance chỉ hợp heading ngắn. */
-    text-wrap: pretty;
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-display);
+    text-wrap: balance;
   }
+
   :where(h2) {
-    font-size: clamp(1.75rem, 1.35rem + 2vw, var(--text-h2));
-    font-weight: var(--weight-heading);
+    font-size: var(--text-heading);
     line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-display);
     text-wrap: balance;
   }
+
   :where(h3) {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-heading);
-    line-height: 1.2;
+    font-size: var(--text-subheading);
+    line-height: var(--leading-subheading);
+    letter-spacing: var(--tracking-subheading);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-display);
     text-wrap: balance;
   }
+
   :where(h4) {
-    font-size: var(--text-lg);
-    font-weight: var(--weight-heading);
-    line-height: 1.3;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-display);
   }
 
-  /* Link base: ink + underline affordance (KHÔNG mặc định Orange — sửa over-orange, contract §6).
-     Accent-text giữ cho link nhấn có chủ đích / surface Black (component layer). */
-  a {
-    color: var(--color-text-primary);
+  /* [CHỆCH 3] DESIGN.md §Don't cấm màu nào khác #3b82f6 làm điểm nhấn, và §Do bảo giữ
+     màu này riêng cho nút chính và link đang hoạt động. Link trong bài viết dài mà chỉ
+     gạch chân đen thì người đọc khó phân biệt — nên link nội dung dùng gạch chân + đổi
+     sang signal blue khi rê chuột. Không tô xanh sẵn, để giữ đúng luật "một điểm xanh". */
+  :where(a) {
+    color: inherit;
     text-decoration: underline;
-    text-underline-offset: 0.15em;
+    text-underline-offset: 0.18em;
     text-decoration-thickness: 1px;
-  }
-  a:hover {
-    text-decoration-thickness: 2px;
+    text-decoration-color: var(--color-mist);
+    transition: color var(--duration-fast) var(--ease-out),
+      text-decoration-color var(--duration-fast) var(--ease-out);
   }
 
-  /* Selection styling Deferred: `--color-selected` chưa khóa (§B.8/prep §8). Dùng default trình duyệt cho tới khi có nguồn. */
+  :where(a:hover) {
+    color: var(--color-signal-blue);
+    text-decoration-color: currentColor;
+  }
+
+  :where(p) {
+    color: var(--color-text-body);
+  }
+
+  :where(strong, b) {
+    font-weight: var(--weight-bold);
+    color: var(--color-text-display);
+  }
+
+  :where(hr) {
+    border: 0;
+    border-top: 1px solid var(--color-border-hairline);
+  }
+
+  /* Số liệu xếp cột phải thẳng hàng */
+  :where(table, .tabular) {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 @layer layout {
-  /* Container hierarchy (contract §4 / §B.3). Surface tràn viền là nền; nội dung bám container.
-     Gutter tăng theo breakpoint ở layer `responsive`. */
-  .container-prose,
-  .container-content,
-  .container-wide {
+  .container {
     width: 100%;
+    max-width: var(--page-max-width);
     margin-inline: auto;
-    padding-inline: var(--space-5);
-  }
-  .container-prose {
-    max-width: var(--container-prose);
-  }
-  .container-content {
-    max-width: var(--container-content);
-  }
-  .container-wide {
-    max-width: var(--container-wide);
+    padding-inline: var(--page-gutter);
   }
 
-  /* List reset cho nav + list biên tập (utilities-safe: chỉ list dùng cho layout). */
-  .primary-nav ul,
-  .footer-nav ul,
-  .footer-connect ul,
-  .pillars,
-  .article-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .prose {
+    max-width: var(--measure-prose);
   }
 
-  /* S0 — Header dùng chung: dải biên tập mảnh, split hai biên (wordmark trái / nav phải).
-     Nav 3 mục không vừa một hàng ở 320–375px → cho phép nav rơi xuống hàng dưới NGUYÊN KHỐI
-     (flex-wrap, không hamburger/drawer), và khóa wordmark không vỡ hai dòng. */
-  .site-header {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-3) var(--space-4);
-    padding-block: var(--space-5);
-  }
-  .site-header .wordmark {
-    margin: 0;
-    font-weight: var(--weight-heading);
-    white-space: nowrap;
-  }
-  .primary-nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-4);
+  .section {
+    padding-block: var(--section-gap);
   }
 
-  /* S1 — Hero: statement-led, không cột media rỗng khi thiếu portrait.
-     max-width statement = measure tạm cho line-length; type-scale cuối Deferred (§B.1).
-     padding mobile-first gọn (giảm áp lực chiều cao mobile); desktop major ở layer responsive. */
-  .hero {
-    padding-block: var(--space-6);
-  }
-  .hero .eyebrow {
-    margin: 0 0 var(--space-3);
-  }
-  .hero h1 {
-    max-width: 46ch;
-    margin: 0 0 var(--space-5);
+  /* Đường kẻ tóc giữa các khối — DESIGN.md dựng chiều sâu bằng viền, không bằng bóng đổ */
+  .section + .section {
+    border-top: 1px solid var(--color-border-hairline);
   }
 
-  /* S4 — Pillar Map: index biên tập theo hàng (không card/tile). Hairline = ranh giới hàng. */
-  .pillar-map {
-    padding-block: var(--space-7);
-  }
-  .pillar-map h2 {
-    margin: 0 0 var(--space-5);
-  }
-  .pillars > li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-2) var(--space-5);
-    padding-block: var(--space-4);
-    border-block-start: 1px solid var(--color-border);
-  }
-  .pillars > li:last-child {
-    border-block-end: 1px solid var(--color-border);
-  }
-  .pillars > li h3 {
-    margin: 0;
-  }
-  .pillars > li p {
-    max-width: 46ch;
-    margin: 0;
-    color: var(--color-text-muted);
-  }
-
-  /* S5 — Work With Me (Grey supporting; render khi servicesOffered ready): hai vùng cân. */
-  .work-with-me {
-    padding-block: var(--space-8);
-  }
-  .work-with-me .work-lead {
-    margin: 0 0 var(--space-6);
-  }
-  .work-regions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-6) var(--space-7);
-  }
-  .work-region {
-    flex: 1 1 18rem;
-  }
-
-  /* S6 — Contact CTA: đỉnh hành động, centered cô lập. padding gọn lại để heading+CTA
-     thành khối hành động có chủ đích (không "placeholder" trong vùng rộng); desktop ở responsive. */
-  .contact-cta {
-    padding-block: var(--space-6);
-    text-align: center;
-  }
-  .contact-cta h2 {
-    margin: 0 0 var(--space-4);
-  }
-  .contact-actions {
-    margin: 0;
-  }
-
-  /* S7 — Footer: quiet, giảm cường độ sau S6. Ending emphasis (1.5D-G): wordmark = signature ink/600,
-     bottom padding rộng hơn cho cảm giác kết thúc; top giữ tiết chế (không đẩy xa S6). Không thêm content. */
-  .site-footer {
+  .stack {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
-    padding-block: var(--space-6) var(--space-7);
-    border-block-start: 1px solid var(--color-border);
-    color: var(--color-text-muted);
+    gap: var(--element-gap);
   }
-  .site-footer .wordmark,
-  .copyright {
-    margin: 0;
-  }
-  .site-footer .wordmark {
-    color: var(--color-text-primary);
-    font-weight: var(--weight-heading);
-  }
-  .footer-nav ul,
-  .footer-connect ul {
+
+  .row {
     display: flex;
+    align-items: center;
+    gap: var(--space-12);
     flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
-  }
-  .footer-contact {
-    font-style: normal;
-  }
-  /* Modifier duy nhất của footer: cân bằng ending cho trang dài (About, Writing).
-     Home ngắn hơn nên giữ nhịp mặc định. Không tạo biến thể footer theo tên trang. */
-  .site-footer-long {
-    padding-block-start: var(--space-8);
-  }
-
-  /* ===== About page (/about) — editorial refinement (page-specific; White surface D46, không dark mode).
-     padding mobile-first; desktop major ở layer responsive. ===== */
-  .about-hero {
-    padding-block: var(--space-7) var(--space-8);
-  }
-  .about-hero .eyebrow {
-    margin: 0 0 var(--space-4);
-  }
-  .about-hero h1 {
-    max-width: 24ch;
-    margin: 0 0 var(--space-6);
-  }
-  .about-hero .about-lead {
-    max-width: 60ch;
-    margin: 0 0 var(--space-4);
-  }
-  .about-hero .about-lead:last-child {
-    margin-block-end: 0;
-  }
-
-  .about-story,
-  .about-philosophy,
-  .about-expertise,
-  .about-experience,
-  .about-principles {
-    padding-block: var(--space-7);
-  }
-  .about-section > h2 {
-    margin: 0 0 var(--space-5);
-  }
-  /* Section kicker: rule biên tập ngắn trên mỗi heading (chuyển section rõ, tiết chế; trừ contact centered). */
-  .about-story > h2::before,
-  .about-philosophy > h2::before,
-  .about-expertise > h2::before,
-  .about-experience > h2::before,
-  .about-principles > h2::before {
-    content: "";
-    display: block;
-    width: var(--space-7);
-    height: 1px;
-    margin-block-end: var(--space-4);
-    background-color: var(--color-border);
-  }
-
-  /* Story — prose measure, nhịp đoạn văn. */
-  .about-story p {
-    max-width: var(--measure-prose);
-    margin: 0 0 var(--space-5);
-  }
-  .about-story p:last-child {
-    margin-block-end: 0;
-  }
-
-  /* Philosophy — statement dẫn + giá trị (list nhẹ) + niềm tin ngắn. */
-  .about-statement {
-    max-width: 46ch;
-    margin: 0 0 var(--space-6);
-  }
-  .about-values {
-    display: grid;
-    gap: var(--space-2);
-    max-width: 60ch;
-    margin: 0 0 var(--space-6);
-    padding: 0;
-    list-style: none;
-  }
-  .about-philosophy p {
-    max-width: 60ch;
-    margin: 0 0 var(--space-4);
-  }
-  .about-philosophy p:last-child {
-    margin-block-end: 0;
-  }
-
-  /* Vùng chuyên môn — index biên tập: 1 cột mobile → 2 cột desktop (không viền/card). */
-  .expertise-list {
-    display: grid;
-    gap: var(--space-3) var(--space-7);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  /* Kinh nghiệm — chuỗi nghề nghiệp: chức danh trái / tổ chức phải, hairline (không CV-dump). */
-  .about-rows {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .about-rows > li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-1) var(--space-4);
-    padding-block: var(--space-4);
-    border-block-start: 1px solid var(--color-border);
-  }
-  .about-rows > li:last-child {
-    border-block-end: 1px solid var(--color-border);
-  }
-  .about-rows h3 {
-    margin: 0;
-  }
-  .about-rows .exp-org {
-    margin: 0;
-  }
-
-  /* Working principles — chuỗi số thứ tự; mỗi mục không vỡ dòng giữa số và chữ. */
-  .principles-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    counter-reset: principle;
-  }
-  .principles-list li {
-    counter-increment: principle;
-    white-space: nowrap;
-  }
-  .principles-list li::before {
-    content: counter(principle, decimal-leading-zero);
-    margin-inline-end: var(--space-2);
-    color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Contact bridge (dẫn nhẹ trước CTA) + Footer weight (About-scoped, không đụng Home footer). */
-  .about-cta-lead {
-    max-width: 46ch;
-    margin: 0 auto var(--space-5);
-  }
-}
-
-@layer surfaces {
-  /* Section-based surface resolution (D46/§B.8). data-surface trên surface root gán lại semantic.
-     Component bên trong chỉ đọc semantic, không đọc primitive. Không global dark/light mode. */
-
-  /* Surface paint: section mang data-surface tự sơn nền + fg từ semantic đã re-map.
-     Forward hook — S3 (black) / S5 (grey) đang omit → không tạo region nào ở render hiện tại.
-     White = :root default (body đã sơn), không cần attribute. */
-  :where([data-surface]) {
-    background-color: var(--color-surface);
-    color: var(--color-text-primary);
-  }
-
-  [data-surface="white"] {
-    --color-surface: var(--color-pure-white);
-    --color-text-primary: var(--color-deep-black);
-    --color-text-secondary: var(--color-ink-90);
-    --color-text-muted: var(--color-ink-60);
-    --color-border: var(--color-neutral-grey);
-    --color-border-strong: var(--color-ink-40);
-    --color-accent-text: var(--color-orange-700);
-  }
-
-  [data-surface="grey"] {
-    --color-surface: var(--color-neutral-grey);
-    --color-text-primary: var(--color-deep-black);
-    --color-text-secondary: var(--color-ink-90);
-    --color-text-muted: var(--color-ink-70);
-    --color-border: var(--color-ink-40);
-    --color-border-strong: var(--color-ink-50);
-    --color-accent-text: var(--color-orange-800);
-    /* Kinetic Orange #FF4000 trên Grey = 2.61:1 (< 3:1 non-text). Dùng o-800 (5.34:1) cho focus ring. */
-    --color-focus-ring: var(--color-orange-800);
-  }
-
-  [data-surface="black"] {
-    --color-surface: var(--color-deep-black);
-    --color-text-primary: var(--color-pure-white);
-    --color-text-secondary: var(--color-ink-40);
-    --color-text-muted: var(--color-ink-50);
-    --color-border: var(--color-ink-90);
-    --color-border-strong: var(--color-ink-70);
-    --color-accent-text: var(--color-kinetic-orange);
-  }
-
-  [data-surface="orange"] {
-    --color-surface: var(--color-kinetic-orange);
-    --color-text-primary: var(--color-deep-black);
-    --color-text-secondary: var(--color-ink-orange-strong);
-    --color-text-muted: var(--color-ink-orange-muted);
-    --color-border: var(--color-deep-black);
-    --color-border-strong: var(--color-deep-black);
-    --color-accent-text: var(--color-deep-black);
-    --color-on-accent: var(--color-pure-white);
-    --color-focus-ring: var(--color-deep-black);
-  }
-}
-
-@layer components {
-  /* Wordmark — danh tính; không underline. */
-  .wordmark a {
-    color: var(--color-text-primary);
-    text-decoration: none;
-  }
-
-  /* Navigation — ink, underline chỉ khi hover (KHÔNG Orange nav, contract §6 S0/S7). */
-  .primary-nav ul,
-  .footer-nav ul,
-  .footer-connect ul {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-medium);
-  }
-  .primary-nav a,
-  .footer-nav a,
-  .footer-connect a {
-    color: var(--color-text-primary);
-    text-decoration: none;
-  }
-  .primary-nav a:hover,
-  .footer-nav a:hover,
-  .footer-connect a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
-  }
-
-  /* Eyebrow nhãn muted (sentence, không uppercase dài) — dùng chung Hero (Home) + About hero.
-     Bugfix: trước chỉ scope `.hero .eyebrow` nên eyebrow About render như <p> thường. */
-  .hero .eyebrow,
-  .about-hero .eyebrow,
-  .writing-hero .eyebrow,
-  .status-page .eyebrow {
-    color: var(--color-text-muted);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.02em;
-  }
-
-  /* S4 Pillar Map — index biên tập non-interactive (topic route 404, omit anchor 1.5D-F):
-     title ink (base h3), scope muted. KHÔNG anchor/hover/focus/underline giả, không card. */
-  .pillars > li p {
-    font-size: var(--text-sm);
-  }
-
-  /* S6 Contact CTA — điểm Orange duy nhất: accent fill control; hover đảo Deep Black;
-     focus ring đổi sang ink để tương phản trên nền cam (a11y). */
-  .contact-actions a {
-    display: inline-block;
-    /* Presence +1 step (1.5D-G): padding ngang space-6 (32), dọc space-4 (16); giữ type/weight/radius/Orange,
-       không giant/full-width/pill. */
-    padding: var(--space-4) var(--space-6);
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-heading);
-    text-decoration: none;
-    border-radius: var(--radius-control);
-    --color-focus-ring: var(--color-text-primary);
-  }
-  .contact-actions a:hover {
-    background-color: var(--color-text-primary);
-    color: var(--color-surface);
-  }
-
-  /* S7 Footer — quiet, cường độ thấp; link inline muted → ink khi hover. */
-  .site-footer {
-    font-size: var(--text-sm);
-  }
-  .footer-contact a,
-  .copyright a {
-    color: var(--color-text-secondary);
-  }
-  .footer-contact a:hover,
-  .copyright a:hover {
-    color: var(--color-text-primary);
-  }
-
-  /* About — type/color treatment (kế thừa role Homepage). */
-  .about-hero h1 {
-    /* Tăng presence tên: mobile floor lớn hơn (~36px), desktop giữ trần --text-h1 (45, §B.1). */
-    font-size: clamp(2.25rem, 1.5rem + 3.5vw, var(--text-h1));
-  }
-  .about-hero .about-lead:first-of-type {
-    font-size: var(--text-lg);
-  }
-  .about-hero .about-lead:not(:first-of-type) {
-    color: var(--color-text-secondary);
-  }
-  .about-statement {
-    font-size: var(--text-lg);
-  }
-  .about-values li {
-    color: var(--color-text-secondary);
-  }
-  .expertise-list li {
-    font-size: var(--text-lg);
-    font-weight: var(--weight-medium);
-  }
-  .about-rows .exp-org {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-  .principles-list li {
-    font-size: var(--text-sm);
-  }
-  .about-cta-lead {
-    color: var(--color-text-secondary);
-  }
-}
-
-@layer states {
-  /* Feedback transition tối thiểu (≤ --duration-fast; chỉ color/background/underline; easing default
-     — signature easing vẫn Deferred). reduced-motion tắt ở layer accessibility. */
-  a,
-  .contact-actions a {
-    transition:
-      color var(--duration-fast),
-      background-color var(--duration-fast),
-      text-decoration-thickness var(--duration-fast);
   }
 }
 
 @layer utilities {
-  /* utilities-safe (OD-CSS-3). Chưa cần helper nào ở foundation. */
-}
-
-@layer responsive {
-  /* Mobile-first (D57/OD-CSS-2): base = composition mobile; breakpoint mở rộng theo content stress.
-     Giá trị §B.9 (768/1024) — không invent pixel mới. Fluid type scale (§B.1) Deferred. */
-
-  /* Tablet/desktop: gutter rộng hơn; Header split hai biên; density curve major (Hero) → rest (Pillar)
-     → action (Contact gọn, không placeholder) → de-escalation (Footer). Gaps biến thiên 128/96/80. */
-  @media (min-width: 768px) {
-    .container-prose,
-    .container-content,
-    .container-wide {
-      padding-inline: var(--space-6);
-    }
-    .hero {
-      padding-block: var(--space-8);
-    }
-    .pillar-map {
-      padding-block: var(--space-8) var(--space-7);
-    }
-    .contact-cta {
-      padding-block: var(--space-7);
-    }
-    /* About page desktop rhythm — hero thêm silence; expertise 2 cột. */
-    .about-hero {
-      padding-block: var(--space-9);
-    }
-    .about-story,
-    .about-philosophy,
-    .about-expertise,
-    .about-experience,
-    .about-principles {
-      padding-block: var(--space-8);
-    }
-    .expertise-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .site-footer {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-start;
-      column-gap: var(--space-7);
-    }
-    .site-footer .wordmark,
-    .copyright {
-      flex-basis: 100%;
-    }
-  }
-
-  /* Desktop: gutter đầy đủ (lề space-7). */
-  @media (min-width: 1024px) {
-    .container-prose,
-    .container-content,
-    .container-wide {
-      padding-inline: var(--space-7);
-    }
-  }
-}
-
-/* ============================================================================
- * Writing (/writing) — Writing Foundation.
- * CHỈ THÊM selector mới. Không sửa rule của Home/About (hai trang giữ nguyên render).
- * Kế thừa token/surface/container sẵn có: không primitive mới, không màu mới, không font mới.
- * ========================================================================== */
-
-@layer layout {
-  /* Hero — cùng nhịp với About hero (statement-led, không cột media rỗng). */
-  .writing-hero {
-    padding-block: var(--space-7) var(--space-8);
-  }
-  .writing-hero .eyebrow {
-    margin: 0 0 var(--space-4);
-  }
-  .writing-hero h1 {
-    max-width: 20ch;
-    margin: 0 0 var(--space-6);
-  }
-  .writing-hero .writing-lead {
-    max-width: 60ch;
-    margin: 0 0 var(--space-4);
-  }
-  .writing-hero .writing-lead:last-child {
-    margin-block-end: 0;
-  }
-
-  /* Nhịp section — dùng lại kicker rule biên tập của About để hai trang cùng ngôn ngữ. */
-  .writing-featured,
-  .writing-pillars,
-  .writing-latest {
-    padding-block: var(--space-7);
-  }
-  .writing-featured > h2,
-  .writing-pillars > h2,
-  .writing-latest > h2 {
-    margin: 0 0 var(--space-5);
-  }
-  .writing-featured > h2::before,
-  .writing-pillars > h2::before,
-  .writing-latest > h2::before {
-    content: "";
-    display: block;
-    width: var(--space-7);
-    height: 1px;
-    margin-block-end: var(--space-4);
-    background-color: var(--color-border);
-  }
-  .writing-section-lead {
-    max-width: 60ch;
-    margin: calc(-1 * var(--space-2)) 0 var(--space-5);
-  }
-
-  /* Featured article — panel một khối, ảnh (nếu có) trên, nội dung dưới; desktop 2 cột. */
-  .featured-article {
-    display: grid;
-    gap: var(--space-5);
-    padding-block: var(--space-5);
-    border-block: 1px solid var(--color-border);
-  }
-  .featured-article-title {
-    margin: 0 0 var(--space-3);
-  }
-  .featured-article-summary {
-    max-width: 60ch;
-    margin: 0 0 var(--space-3);
-  }
-
-  /* Danh sách bài — 1 cột mobile, 2 cột từ tablet. */
-  .writing-grid {
-    display: grid;
-    gap: var(--space-6);
-  }
-
-  .article-card {
-    display: grid;
-    gap: var(--space-3);
-  }
-  /* Ảnh bài viết (featured + card) — cùng một treatment, không crop cứng. */
-  .featured-article-media img,
-  .article-card-media img {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-card);
-  }
-  .article-card-pillar,
-  .article-card-title,
-  .article-card-summary,
-  .article-card-meta {
-    margin: 0;
-  }
-  .article-card-summary {
-    max-width: 60ch;
-  }
-
-  /* Empty state — khoảng lặng biên tập, không khung/skeleton/card ma. */
-  .empty-state {
-    padding-block: var(--space-6);
-    border-block-start: 1px solid var(--color-border);
-  }
-  .empty-state-title {
-    max-width: 40ch;
-    margin: 0 0 var(--space-3);
-  }
-  .empty-state-description {
-    max-width: 52ch;
-    margin: 0;
-  }
-}
-
-@layer components {
-  .writing-hero .writing-lead:first-of-type {
-    font-size: var(--text-lg);
-  }
-  .writing-hero .writing-lead-secondary {
-    color: var(--color-text-secondary);
-  }
-  .writing-section-lead {
-    font-size: var(--text-sm);
+  .text-muted {
     color: var(--color-text-muted);
   }
 
-  /* Nhãn trụ trên card — muted, không biến thành chip/badge màu. */
-  .article-card-pillar {
-    font-size: var(--text-xs);
+  .text-meta {
+    color: var(--color-text-meta);
+  }
+
+  /* Nhãn nhỏ chữ hoa — DESIGN.md không có, nhưng cần cho siêu dữ liệu bài viết */
+  .micro {
+    font-size: var(--text-caption);
+    line-height: var(--leading-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-meta);
     font-weight: var(--weight-medium);
-    letter-spacing: 0.02em;
-    color: var(--color-text-muted);
-  }
-  .article-card-summary {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-  }
-  .article-card-meta {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .article-card-title {
-    font-size: var(--text-lg);
-  }
-  .featured-article-summary {
-    color: var(--color-text-secondary);
   }
 
-  .empty-state-title {
-    font-size: var(--text-lg);
-    color: var(--color-text-primary);
-  }
-  .empty-state-description {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-}
-
-@layer responsive {
-  @media (min-width: 768px) {
-    .writing-hero {
-      padding-block: var(--space-9);
-    }
-    .writing-featured,
-    .writing-pillars,
-    .writing-latest {
-      padding-block: var(--space-8);
-    }
-    .writing-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-7) var(--space-6);
-    }
-    .featured-article {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: start;
-      gap: var(--space-6);
-      padding-block: var(--space-6);
-    }
-    /* Không có ảnh → phần nội dung không bị dồn vào nửa trái. */
-    .featured-article-body:only-child {
-      grid-column: 1 / -1;
-      max-width: 68ch;
-    }
-    .empty-state {
-      padding-block: var(--space-7);
-    }
-  }
-}
-
-/* ============================================================================
- * Trang trạng thái (404 · 500) — hoàn tất Milestone 1.2 (Global layout).
- * CHỈ THÊM selector mới. Kế thừa token/container/eyebrow sẵn có: không primitive mới,
- * không màu mới, không font mới. Không dùng Orange (giữ accent budget cho CTA thật).
- * ========================================================================== */
-
-@layer layout {
-  /* Khoảng lặng đủ để trang lỗi không đọc như một trang bị hỏng dở. */
-  .status-page {
-    padding-block: var(--space-8) var(--space-9);
-  }
-  .status-page .eyebrow {
-    margin: 0 0 var(--space-4);
-  }
-  .status-page h1 {
-    max-width: 24ch;
-    margin: 0 0 var(--space-5);
-  }
-  .status-page-lead {
-    max-width: 56ch;
-    margin: 0 0 var(--space-6);
-  }
-  /* Hàng hành động: wrap ở mobile, không tràn ngang. */
-  .status-page-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
-    margin: 0;
-  }
-}
-
-@layer components {
-  .status-page-lead {
-    font-size: var(--text-lg);
-    color: var(--color-text-secondary);
-  }
-  /* Link hành động: ink + underline (điều hướng thật, không phải accent CTA). */
-  .status-page-actions a {
-    color: var(--color-text-primary);
-    text-underline-offset: 0.15em;
-  }
-  /* Nút retry đọc như link để hai loại hành động cùng một ngôn ngữ thị giác;
-     vẫn là <button> vì nó chạy hành vi, không điều hướng (semantic đúng). */
-  .status-page-retry {
-    padding: 0;
-    border: 0;
-    background: none;
-    font: inherit;
-    color: var(--color-text-primary);
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
-    cursor: pointer;
-  }
-}
-
-@layer responsive {
-  @media (min-width: 768px) {
-    .status-page {
-      padding-block: var(--space-9);
-    }
+  /* Nội dung rộng (bảng, khối mã, sơ đồ) tự cuộn ngang — trang không bao giờ cuộn ngang */
+  .scroll-x {
+    overflow-x: auto;
+    max-width: 100%;
   }
 }
 
 @layer accessibility {
   .skip-link {
     position: absolute;
-    left: -9999px;
-    top: 0;
+    left: var(--space-8);
+    top: var(--space-8);
+    z-index: 100;
+    transform: translateY(-200%);
+    background: var(--color-charcoal);
+    color: var(--color-page-white);
+    padding: var(--space-12) var(--space-20);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
   }
 
-  .skip-link:focus {
-    left: 0;
+  .skip-link:focus-visible {
+    transform: translateY(0);
   }
 
-  :focus-visible {
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
     outline: 2px solid var(--color-focus-ring);
-    outline-offset: 2px;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -992,6 +351,7 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
