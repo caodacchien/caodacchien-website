@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { RichText } from "@payloadcms/richtext-lexical/react";
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 
 import { payloadClient, isAuthenticated } from "@/lib/payload";
 import { getPillar } from "@/lib/pillars";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import ArticleBody from "@/components/ArticleBody";
 import styles from "./post.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -112,9 +112,10 @@ export default async function PostPage({ params }: Params) {
             </figure>
           )}
 
-          <div className={`${styles.body} prose`}>
-            <RichText data={post.content as SerializedEditorState} />
-          </div>
+          <ArticleBody
+            content={post.content as SerializedEditorState}
+            className={`${styles.body} prose`}
+          />
         </article>
       </main>
 

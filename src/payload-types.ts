@@ -173,6 +173,14 @@ export interface Post {
    * Bật cho nội dung minh hoạ giao diện. Bài vẫn hiện trên website nhưng không lên Google và không vào sitemap. Tắt khi đây là bài thật của anh.
    */
   isDemo?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -235,6 +243,14 @@ export interface Document {
   publishedAt?: string | null;
   status: 'draft' | 'published';
   isDemo?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -430,6 +446,13 @@ export interface PostsSelect<T extends boolean = true> {
   publishedAt?: T;
   status?: T;
   isDemo?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -449,6 +472,13 @@ export interface DocumentsSelect<T extends boolean = true> {
   publishedAt?: T;
   status?: T;
   isDemo?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
