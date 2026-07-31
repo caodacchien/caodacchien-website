@@ -1,0 +1,81 @@
+/* DESIGN.md §Section Showcase Card + §Don't: chiều sâu từ viền và bo góc,
+   tuyệt đối không bóng đổ. */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  background: var(--surface-card);
+  border: 1px solid var(--color-border-defined);
+  border-radius: var(--radius-card);
+  padding: var(--card-padding);
+  transition: background var(--duration-base) var(--ease-out);
+}
+
+.card:hover {
+  background: var(--surface-wash);
+}
+
+/* Cả thẻ bấm được: lớp phủ vô hình trải từ link tiêu đề ra toàn thẻ.
+   Cách này giữ được đúng một link cho trình đọc màn hình, khác với việc bọc
+   cả thẻ trong <a> rồi nhét tiêu đề, ngày tháng, mô tả vào trong đó. */
+.title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.media {
+  margin: calc(var(--card-padding) * -1) calc(var(--card-padding) * -1) 0;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  overflow: hidden;
+  background: #f5f5f7;
+}
+
+.media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  font-size: var(--text-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-meta);
+  font-weight: var(--weight-medium);
+}
+
+.pillar {
+  color: var(--color-accent-text);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  letter-spacing: var(--tracking-subheading);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-display);
+  text-wrap: balance;
+}
+
+.title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.excerpt {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}

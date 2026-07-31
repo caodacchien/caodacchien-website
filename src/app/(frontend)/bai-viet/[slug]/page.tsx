@@ -14,6 +14,12 @@ import TableOfContents from "@/components/TableOfContents";
 import ReadingProgress from "@/components/ReadingProgress";
 import styles from "./post.module.css";
 
+// Nội dung đến từ Payload và đổi mỗi khi chủ website bấm đăng, nên trang phải
+// render theo từng lượt truy cập. Dựng sẵn lúc build sẽ đóng băng nội dung ở thời
+// điểm deploy, và bản thân việc dựng cũng vỡ vì lúc đó chưa chắc có kết nối CSDL.
+export const dynamic = "force-dynamic";
+
+
 type Params = { params: Promise<{ slug: string }> };
 
 const ARTICLE_ID = "noi-dung-bai-viet";

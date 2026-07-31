@@ -1,0 +1,70 @@
+/* DESIGN.md §Navigation Bar: nền trắng, KHÔNG viền, KHÔNG bóng đổ — thanh điều hướng
+   hoà vào trang. Cảm giác "được neo" đến từ nhịp khoảng cách và độ đậm của wordmark,
+   không đến từ một đường kẻ. */
+
+.header {
+  background: var(--surface-canvas);
+  padding-block: var(--space-24);
+}
+
+.inner {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-24);
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-size: 18px;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-text-display);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wordmark:hover {
+  color: var(--color-text-display);
+}
+
+.dot {
+  color: var(--color-signal-orange);
+}
+
+.nav {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-24);
+  flex-wrap: wrap;
+}
+
+.link {
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-body);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.link:hover {
+  color: var(--color-accent-text);
+}
+
+/* Trang đang xem: gạch chân cam mảnh. DESIGN.md dành màu nhấn cho "active link" —
+   đây đúng là trường hợp đó. */
+.link[aria-current="page"] {
+  color: var(--color-text-display);
+  font-weight: var(--weight-medium);
+  box-shadow: inset 0 -2px 0 var(--color-signal-orange);
+}
+
+@media (max-width: 600px) {
+  .inner {
+    gap: var(--space-12);
+  }
+
+  .nav {
+    gap: var(--space-16);
+  }
+}

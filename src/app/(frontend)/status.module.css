@@ -1,0 +1,55 @@
+/* Dùng chung cho 404 và trang lỗi. */
+
+.wrap {
+  padding-block: var(--space-120);
+  max-width: 700px;
+}
+
+.code {
+  font-size: var(--text-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: var(--weight-medium);
+  color: var(--color-accent-text);
+  margin: 0 0 var(--space-24);
+}
+
+.title {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-display);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lede {
+  margin: var(--space-24) 0 var(--space-40);
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  letter-spacing: var(--tracking-subheading);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+/* Nút chính duy nhất của trang — DESIGN.md §Primary Pill Button, nhưng nền cam
+   và chữ đen theo Quyết định thiết kế 02. */
+.action {
+  display: inline-block;
+  background: var(--color-signal-orange);
+  color: var(--color-on-accent);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  padding: 12px 24px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.action:hover {
+  background: var(--color-signal-orange-hover);
+  color: var(--color-page-white);
+}

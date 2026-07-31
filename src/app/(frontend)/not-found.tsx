@@ -1,40 +1,27 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import StatusMessage from "@/components/StatusMessage";
+import styles from "./status.module.css";
 
-// 404 — trang lỗi theo IA §1 (`/404`), hoàn tất phạm vi Milestone 1.2 (Global layout).
-// Server component: không cần state, không cần JS phía client.
-//
-// Trung thực: nhiều route trong IA (/topics/, /case-studies/, /contact/…) CHƯA được dựng.
-// Copy nói đúng hai khả năng thật (đường dẫn sai HOẶC trang chưa xuất bản), không hứa
-// "sắp ra mắt", không gợi ý route không tồn tại, không search giả, không sitemap giả.
-
-export const metadata: Metadata = {
-  title: "Không tìm thấy trang | Cao Đắc Chiến",
-};
-
+// Trang 404. Copywriting phải đạt chuẩn xuất bản như mọi trang khác — một website
+// dùng làm bằng chứng năng lực thương hiệu không được để chuỗi mặc định của khung.
 export default function NotFound() {
   return (
     <>
-      {/* Không truyền currentPath: 404 không thuộc route nào trong nav → không aria-current. */}
       <SiteHeader />
-
       <main id="main-content">
-        {/* Một section duy nhất → h1 + landmark main đã đủ tên; không cần aria-labelledby. */}
-        <section className="status-page container-content">
-          <p className="eyebrow">404</p>
-          {/* h1 do StatusMessage render (đúng một h1 trên trang). */}
-          <StatusMessage
-            variant="page"
-            title="Không tìm thấy trang này."
-            description="Đường dẫn có thể đã thay đổi, hoặc trang chưa được xuất bản. Bạn có thể quay về trang chủ, hoặc dùng điều hướng ở đầu trang."
-            action={<Link href="/">Về trang chủ</Link>}
-          />
+        <section className={`container ${styles.wrap}`}>
+          <p className={styles.code}>404</p>
+          <h1 className={styles.title}>Trang này không tồn tại.</h1>
+          <p className={styles.lede}>
+            Có thể đường dẫn đã đổi, hoặc bài viết đã được gỡ. Thử quay lại danh sách
+            bài viết xem có thứ anh chị đang tìm không.
+          </p>
+          <Link href="/bai-viet" className={styles.action}>
+            Xem tất cả bài viết
+          </Link>
         </section>
       </main>
-
       <SiteFooter />
     </>
   );

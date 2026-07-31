@@ -1,50 +1,43 @@
 import Link from "next/link";
-import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
+import { SITE_NAME } from "@/lib/site";
+import styles from "./SiteHeader.module.css";
 
-// Header dùng chung cho toàn site (Home · About · Writing). Server component — không state,
-// không JS phía client, không hamburger/drawer: nav 3 mục xuống hàng bằng flex-wrap là đủ.
+// Thanh điều hướng theo DESIGN.md §Navigation Bar: nền trắng, không viền, không bóng đổ.
+// Trái là wordmark đậm, phải là các link chỉ có chữ — không nút có nền.
 //
-// Link honesty (Owner 1.5D-F): CHỈ liệt kê route đã thật sự tồn tại.
-// Nav 5 mục của D26 (Viết · Case study · Chủ đề · Giới thiệu · Liên hệ) sẽ đủ dần
-// khi /case-studies/ và /topics/ được dựng — không render trước link 404.
+// Chỉ liệt kê route đã thật sự tồn tại, không render link dẫn tới 404.
+// Danh sách nở dần khi dựng thêm: Tài liệu, Chủ đề, Giới thiệu, Liên hệ.
 
-type NavItem = { href: string; label: string; external?: boolean };
+type NavItem = { href: string; label: string };
 
-// Dạng URL theo IA/D31/D57 (route MVP có trailing slash). Chiến lược trailing-slash
-// ở tầng next.config vẫn hoãn tới deployment checkpoint — không đổi ở đây.
-const NAV: NavItem[] = [
-  { href: "/writing/", label: "Viết" },
-  { href: "/about/", label: "Giới thiệu" },
-  { href: `mailto:${CONTACT_EMAIL}`, label: "Liên hệ", external: true },
-];
+const NAV: NavItem[] = [{ href: "/bai-viet", label: "Bài viết" }];
 
 export default function SiteHeader({ currentPath }: { currentPath?: string }) {
   return (
-    <header className="site-header container-content">
-      <p className="wordmark">
-        <Link href="/">{SITE_NAME}</Link>
-      </p>
-      <nav className="primary-nav" aria-label="Điều hướng chính">
-        <ul>
-          {NAV.map((item) =>
-            // mailto không phải route nội bộ → không bao giờ nhận aria-current.
-            item.external ? (
-              <li key={item.href}>
-                <a href={item.href}>{item.label}</a>
-              </li>
-            ) : (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={item.href === currentPath ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ),
-          )}
-        </ul>
-      </nav>
+    <header className={styles.header}>
+      <div className={`container ${styles.inner}`}>
+        {/* Dấu chấm cam thay cho dấu sao của pop.site — cùng vai trò: một điểm màu
+            duy nhất trong thanh điều hướng, đủ để wordmark có nhịp riêng. */}
+        <Link href="/" className={styles.wordmark}>
+          {SITE_NAME}
+          <span aria-hidden="true" className={styles.dot}>
+            .
+          </span>
+        </Link>
+
+        <nav className={styles.nav} aria-label="Điều hướng chính">
+          {NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={styles.link}
+              aria-current={currentPath?.startsWith(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
     </header>
   );
 }
