@@ -1,0 +1,49 @@
+/* DESIGN.md §Footer: tối giản, giữ trong hệ trắng, không nền nặng.
+   Đường kẻ tóc phía trên là ranh giới duy nhất — đủ để tách chân trang khỏi nội dung. */
+
+.footer {
+  border-top: 1px solid var(--color-border-hairline);
+  margin-top: var(--space-80);
+  padding-block: var(--space-40) var(--space-60);
+}
+
+.inner {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-24);
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-size: 18px;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-text-display);
+}
+
+.dot {
+  color: var(--color-signal-orange);
+}
+
+.right {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-24);
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--color-text-meta);
+}
+
+.contact {
+  font-style: normal;
+}
+
+.contact a {
+  color: var(--color-text-body);
+  text-decoration-color: var(--color-mist);
+}
+
+.contact a:hover {
+  color: var(--color-accent-text);
+}

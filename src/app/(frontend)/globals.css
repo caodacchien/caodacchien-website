@@ -1,0 +1,371 @@
+/*
+ * Global CSS — nền tảng token theo hệ thiết kế pop.site.
+ *
+ * Nguồn: DESIGN.md (Pop Site — Style Reference). Thay toàn bộ hệ Kinetic 4-color
+ * (White/Black/Grey/Orange) đã khóa ở D46/D47 — xem quyết định A trong BRIEF.
+ * Bản Kinetic cũ khôi phục được bằng: git show main:src/app/globals.css
+ *
+ * Ba chỗ em cố ý đi chệch DESIGN.md, đều vì tiếng Việt hoặc vì khả năng tiếp cận —
+ * mỗi chỗ đánh dấu [CHỆCH] kèm lý do.
+ */
+
+@layer reset, tokens, base, layout, components, utilities, accessibility;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote {
+    margin: 0;
+  }
+}
+
+@layer tokens {
+  :root {
+    color-scheme: light;
+
+    /* ---- Màu (DESIGN.md §Tokens — Colors) ---- */
+    --color-page-white: #ffffff;
+    --color-ink-black: #000000;
+    --color-charcoal: #171717;
+    --color-granite: #5e5e5e;
+    --color-slate: #6e6e73;
+    --color-mist: #d2d2d7;
+
+    /* ---- Màu nhấn: CAM, không phải xanh của pop.site ----
+       Chủ dự án chọn giữ cam Kinetic #ff4000 của hệ thiết kế cũ (D47/§B.8).
+       Luật của pop.site vẫn nguyên hiệu lực — luật đó nói "đúng MỘT màu nhấn, dùng
+       thật tiết kiệm, chỉ cho nút chính và link đang hoạt động", không nói phải là xanh.
+       Đổi hue, giữ kỷ luật. */
+    --color-signal-orange: #ff4000;
+    --color-signal-orange-hover: #d63600;
+
+    /* Chữ cam trên nền trắng phải đậm hơn màu nền cam: #ff4000 làm chữ chỉ đạt 3.51:1,
+       trượt AA. #c42f00 đạt 5.59:1. Đây chính là --color-orange-700 mà COMPONENT_INVENTORY
+       §B.8 của hệ cũ đã derive — lấy lại nguyên giá trị. */
+    --color-accent-text: #c42f00;
+
+    /* Nền nhạt thay --color-wash-blue (#e3eeff) của pop.site */
+    --color-wash-orange: #fff1ec;
+
+    /* Chữ đặt TRÊN nền cam: đen 5.99:1 (đạt AA), trắng chỉ 3.51:1 (trượt).
+       Hệ cũ đã chốt --color-on-accent: deep-black — giữ nguyên kết luận đó.
+       Ghi chú: nút chính của chính pop.site (xanh + chữ trắng) chỉ đạt 3.68:1,
+       nên cam + chữ đen còn dễ đọc hơn bản gốc. */
+    --color-on-accent: var(--color-ink-black);
+
+    /* ---- Nền (DESIGN.md §Surfaces) ---- */
+    --surface-canvas: var(--color-page-white);
+    --surface-card: var(--color-page-white);
+    --surface-wash: var(--color-wash-orange);
+
+    /* ---- Ngữ nghĩa ---- */
+    --color-text-display: var(--color-ink-black);
+    --color-text-body: var(--color-charcoal);
+    --color-text-muted: var(--color-granite);
+    --color-text-meta: var(--color-slate);
+    --color-border-hairline: var(--color-mist);
+    --color-border-defined: var(--color-charcoal);
+    --color-focus-ring: var(--color-signal-orange);
+
+    /* ---- Chữ ---- */
+    /* --font-sans do next/font gắn vào <html> (Plus Jakarta Sans, có bộ dấu tiếng Việt).
+       Satoshi bị loại: file phát từ Fontshare thiếu 92/96 ký tự có dấu. Xem layout.tsx. */
+    --font-display: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, sans-serif;
+
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-bold: 700;
+
+    /* Thang chữ — cột "giá trị đích" là số desktop canonical của DESIGN.md.
+       clamp() để co xuống mobile: DESIGN.md chỉ cho số desktop, không cho thang mobile. */
+    --text-caption: 12px;
+    --text-body: 15px;
+    --text-subheading: clamp(17px, 1rem + 0.5vw, 21px);
+    --text-heading: clamp(30px, 1.4rem + 4.2vw, 53px);
+    --text-display: clamp(38px, 1.5rem + 7vw, 93px);
+    --text-display-xl: clamp(44px, 1.6rem + 9vw, 120px);
+
+    --leading-caption: 1.2;
+    --leading-body: 1.4;
+    --leading-subheading: 1.3;
+    --leading-heading: 1.12;
+
+    /* [CHỆCH 2] DESIGN.md đặt line-height 1.0 cho display và 0.9 cho display-xl.
+       Với tiếng Việt, dấu chồng (ế, ữ, ợ, ẵ) vươn cao hơn chiều cao chữ hoa — ở hai dòng
+       trở lên, 0.9 làm dấu dòng dưới đâm vào chân dòng trên. Nâng lên 1.02 / 0.96:
+       vẫn giữ được cảm giác dồn chặt, nhưng không chạm dấu. */
+    --leading-display: 1.02;
+    --leading-display-xl: 0.96;
+
+    /* Giãn chữ âm — dùng em thay px để co đúng tỉ lệ khi clamp thu nhỏ cỡ chữ.
+       DESIGN.md cho px ở cỡ desktop: -7.08px@120 = -0.059em, -4.65px@93 = -0.05em,
+       -2.44px@53 = -0.046em, -0.63px@21 = -0.03em. */
+    --tracking-subheading: -0.03em;
+    --tracking-heading: -0.046em;
+    --tracking-display: -0.05em;
+    --tracking-display-xl: -0.059em;
+
+    /* ---- Khoảng cách (DESIGN.md §Spacing Scale, base 4px) ---- */
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-20: 20px;
+    --space-24: 24px;
+    --space-36: 36px;
+    --space-40: 40px;
+    --space-60: 60px;
+    --space-80: 80px;
+    --space-120: 120px;
+
+    /* ---- Bo góc (DESIGN.md §Border Radius) ---- */
+    --radius-card: 8px;
+    --radius-input: 8px;
+    --radius-image: 22px;
+    --radius-feature-card: 22px;
+    --radius-secondary-button: 26px;
+    --radius-small-image: 42px;
+    --radius-pill: 9999px;
+
+    /* ---- Bố cục (DESIGN.md §Layout) ---- */
+    --page-max-width: 1200px;
+    --page-gutter: var(--space-24);
+    --section-gap: var(--space-80);
+    --card-padding: var(--space-20);
+    --element-gap: var(--space-16);
+
+    /* Cột đọc bài — DESIGN.md không quy định vì pop.site không có bài dài.
+       Website này lấy blog làm trục chính nên cần một giá trị: 68ch. */
+    --measure-prose: 68ch;
+
+    /* ---- Chuyển động — DESIGN.md không quy định. Giữ tối thiểu, đúng tinh thần "quiet". ---- */
+    --duration-fast: 120ms;
+    --duration-base: 160ms;
+    --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--color-text-body);
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: var(--weight-regular);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Tiêu đề — chữ đen tuyền, đậm 700, giãn chữ âm. DESIGN.md §Do:
+     "Set letter-spacing to -0.05em or tighter on any text 53px and above". */
+  :where(h1) {
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-display);
+    text-wrap: balance;
+  }
+
+  :where(h2) {
+    font-size: var(--text-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-display);
+    text-wrap: balance;
+  }
+
+  :where(h3) {
+    font-size: var(--text-subheading);
+    line-height: var(--leading-subheading);
+    letter-spacing: var(--tracking-subheading);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-display);
+    text-wrap: balance;
+  }
+
+  :where(h4) {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-display);
+  }
+
+  /* [CHỆCH 3] DESIGN.md giữ màu nhấn riêng cho nút chính và link đang hoạt động.
+     Link trong bài viết dài mà chỉ gạch chân đen thì người đọc khó phân biệt — nên link
+     nội dung gạch chân sẵn, và chuyển sang cam khi rê chuột. Không tô cam sẵn, để giữ
+     đúng luật "một điểm nhấn mỗi khung hình".
+     Màu hover dùng --color-accent-text (#c42f00, 5.59:1) chứ không phải #ff4000 (3.51:1),
+     vì đây là chữ cỡ nhỏ trên nền trắng. */
+  :where(a) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-mist);
+    transition: color var(--duration-fast) var(--ease-out),
+      text-decoration-color var(--duration-fast) var(--ease-out);
+  }
+
+  :where(a:hover) {
+    color: var(--color-accent-text);
+    text-decoration-color: currentColor;
+  }
+
+  :where(p) {
+    color: var(--color-text-body);
+  }
+
+  :where(strong, b) {
+    font-weight: var(--weight-bold);
+    color: var(--color-text-display);
+  }
+
+  :where(hr) {
+    border: 0;
+    border-top: 1px solid var(--color-border-hairline);
+  }
+
+  /* Số liệu xếp cột phải thẳng hàng */
+  :where(table, .tabular) {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer layout {
+  .container {
+    width: 100%;
+    max-width: var(--page-max-width);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+  }
+
+  .prose {
+    max-width: var(--measure-prose);
+  }
+
+  .section {
+    padding-block: var(--section-gap);
+  }
+
+  /* Đường kẻ tóc giữa các khối — DESIGN.md dựng chiều sâu bằng viền, không bằng bóng đổ */
+  .section + .section {
+    border-top: 1px solid var(--color-border-hairline);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--element-gap);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+  }
+}
+
+@layer utilities {
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+
+  .text-meta {
+    color: var(--color-text-meta);
+  }
+
+  /* Nhãn nhỏ chữ hoa — DESIGN.md không có, nhưng cần cho siêu dữ liệu bài viết */
+  .micro {
+    font-size: var(--text-caption);
+    line-height: var(--leading-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-meta);
+    font-weight: var(--weight-medium);
+  }
+
+  /* Nội dung rộng (bảng, khối mã, sơ đồ) tự cuộn ngang — trang không bao giờ cuộn ngang */
+  .scroll-x {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+}
+
+@layer accessibility {
+  .skip-link {
+    position: absolute;
+    left: var(--space-8);
+    top: var(--space-8);
+    z-index: 100;
+    transform: translateY(-200%);
+    background: var(--color-charcoal);
+    color: var(--color-page-white);
+    padding: var(--space-12) var(--space-20);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

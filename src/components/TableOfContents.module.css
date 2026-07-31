@@ -1,0 +1,66 @@
+.toc {
+  position: sticky;
+  top: var(--space-40);
+  max-height: calc(100vh - var(--space-80));
+  overflow-y: auto;
+  padding-right: var(--space-12);
+}
+
+.label {
+  font-size: var(--text-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-meta);
+  font-weight: var(--weight-medium);
+  margin-bottom: var(--space-16);
+  padding-bottom: var(--space-12);
+  border-bottom: 1px solid var(--color-border-hairline);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.sub {
+  padding-left: var(--space-16);
+}
+
+.list a {
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: var(--space-12);
+  margin-left: -14px;
+  transition: color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.list a:hover {
+  color: var(--color-text-display);
+}
+
+/* Mục đang đọc — vạch cam bên trái. Cùng ngôn ngữ với vạch cam của khối trích dẫn:
+   cam ở đây là dấu hiệu vị trí, không phải nút bấm. */
+.active {
+  color: var(--color-text-display) !important;
+  border-left-color: var(--color-signal-orange) !important;
+  font-weight: var(--weight-medium);
+}
+
+/* Thanh cuộn mảnh, không cướp sự chú ý khỏi cột đọc */
+.toc::-webkit-scrollbar {
+  width: 3px;
+}
+
+.toc::-webkit-scrollbar-thumb {
+  background: var(--color-border-hairline);
+  border-radius: var(--radius-pill);
+}

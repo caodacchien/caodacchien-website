@@ -1,0 +1,198 @@
+/* Trang bài viết — trục đọc chính của website.
+   Bám hệ token pop.site: nền trắng, viền tóc thay bóng đổ, cam là điểm nhấn duy nhất. */
+
+.draftBanner {
+  background: var(--color-signal-orange);
+  color: var(--color-on-accent);
+  text-align: center;
+  padding: var(--space-12) var(--space-24);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+
+/* --- Đầu bài --- */
+
+.head {
+  padding-block: var(--space-60) var(--space-40);
+  max-width: 900px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+  font-size: var(--text-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-meta);
+  font-weight: var(--weight-medium);
+  margin-bottom: var(--space-24);
+}
+
+.pillarLink {
+  color: var(--color-accent-text);
+  text-decoration: none;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+}
+
+.pillarLink:hover {
+  background: var(--surface-wash);
+}
+
+.excerpt {
+  margin-top: var(--space-24);
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  letter-spacing: var(--tracking-subheading);
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.cover {
+  margin: 0 auto var(--space-60);
+}
+
+.cover img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-image);
+}
+
+.cover figcaption {
+  margin-top: var(--space-12);
+  font-size: var(--text-caption);
+  color: var(--color-text-meta);
+}
+
+/* --- Bố cục hai cột ---
+   Trước đây bài chạy một cột 68ch dính lề trái, để trống nguyên nửa phải màn hình.
+   Giờ mục lục chiếm phần bên trái, cột đọc nới lên 76ch và dịch vào giữa.
+   Khoảng trắng còn lại là có chủ đích — cột đọc quá rộng thì mắt phải quét ngang xa,
+   đọc chậm và mỏi hơn. */
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: var(--space-60);
+  align-items: start;
+  padding-bottom: var(--space-120);
+}
+
+.rail {
+  position: relative;
+}
+
+.body {
+  max-width: 76ch;
+}
+
+/* Dưới 1024px: mục lục xuống trên, xếp gọn thành khối mở được */
+@media (max-width: 1023px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-40);
+  }
+
+  .rail {
+    order: -1;
+    border: 1px solid var(--color-border-hairline);
+    border-radius: var(--radius-card);
+    padding: var(--space-20);
+  }
+
+  .body {
+    max-width: none;
+  }
+}
+
+/* --- Nội dung bài --- */
+
+.body :global(p) {
+  margin-block: 0 var(--space-24);
+  font-size: 17px; /* Nhỉnh hơn 15px của giao diện: cột đọc dài, mắt cần nghỉ. */
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+/* scroll-margin-top: khi bấm mục lục nhảy tới, tiêu đề không bị dính sát mép trên
+   mà chừa ra một khoảng — nếu không, thanh tiến trình che mất dòng đầu. */
+.body :global(h2) {
+  margin-block: var(--space-60) var(--space-20);
+  scroll-margin-top: var(--space-40);
+}
+
+.body :global(h3) {
+  margin-block: var(--space-40) var(--space-16);
+  scroll-margin-top: var(--space-40);
+}
+
+.body :global(ul),
+.body :global(ol) {
+  margin-block: 0 var(--space-24);
+  padding-left: var(--space-24);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.body :global(li) {
+  margin-bottom: var(--space-8);
+}
+
+/* Trích dẫn: vạch cam bên trái — dấu hiệu cấu trúc, không phải nút bấm. */
+.body :global(blockquote) {
+  margin: var(--space-40) 0;
+  padding-left: var(--space-24);
+  border-left: 3px solid var(--color-signal-orange);
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  color: var(--color-text-display);
+}
+
+.body :global(a) {
+  color: var(--color-accent-text);
+  text-decoration-color: currentColor;
+}
+
+.body :global(figure) {
+  margin: var(--space-40) 0;
+}
+
+.body :global(img) {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-image);
+}
+
+.body :global(figcaption) {
+  margin-top: var(--space-12);
+  font-size: var(--text-caption);
+  color: var(--color-text-meta);
+}
+
+.body :global(hr) {
+  margin-block: var(--space-60);
+}
+
+/* Bảng dài tự cuộn trong khung của nó, không đẩy cả trang cuộn ngang */
+.body :global(table) {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body);
+  margin-block: var(--space-40);
+}
+
+.body :global(th),
+.body :global(td) {
+  border: 1px solid var(--color-border-hairline);
+  padding: var(--space-12);
+  text-align: left;
+}
+
+.body :global(th) {
+  font-weight: var(--weight-bold);
+  color: var(--color-text-display);
+}

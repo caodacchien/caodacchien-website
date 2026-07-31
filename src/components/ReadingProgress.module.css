@@ -1,0 +1,26 @@
+.track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 50;
+  background: transparent;
+  pointer-events: none;
+}
+
+.bar {
+  --progress: 0;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--progress));
+  background: var(--color-signal-orange);
+}
+
+/* Người bật giảm chuyển động vẫn cần biết mình đọc tới đâu — giữ thanh, bỏ hiệu ứng mượt. */
+@media (prefers-reduced-motion: no-preference) {
+  .bar {
+    transition: transform 60ms linear;
+  }
+}
