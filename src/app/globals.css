@@ -67,21 +67,33 @@
     --color-granite: #5e5e5e;
     --color-slate: #6e6e73;
     --color-mist: #d2d2d7;
-    --color-wash-blue: #e3eeff;
-    --color-signal-blue: #3b82f6;
-    --color-link-blue: #6ea5ff;
 
-    /* Hover của nút chính — DESIGN.md §Primary Pill Button */
-    --color-signal-blue-hover: #2f6fd6;
+    /* ---- Màu nhấn: CAM, không phải xanh của pop.site ----
+       Chủ dự án chọn giữ cam Kinetic #ff4000 của hệ thiết kế cũ (D47/§B.8).
+       Luật của pop.site vẫn nguyên hiệu lực — luật đó nói "đúng MỘT màu nhấn, dùng
+       thật tiết kiệm, chỉ cho nút chính và link đang hoạt động", không nói phải là xanh.
+       Đổi hue, giữ kỷ luật. */
+    --color-signal-orange: #ff4000;
+    --color-signal-orange-hover: #d63600;
 
-    /* [CHỆCH 1] --color-link-blue (#6ea5ff) chỉ đạt 2.3:1 trên nền trắng, dưới chuẩn AA 4.5:1.
-       DESIGN.md dùng nó cho chữ link. Ở đây giữ token cho đúng hệ, nhưng chữ link dùng
-       --color-signal-blue (4.5:1 — vừa đủ AA). Link-blue chỉ dùng cho viền và nền nhạt. */
+    /* Chữ cam trên nền trắng phải đậm hơn màu nền cam: #ff4000 làm chữ chỉ đạt 3.51:1,
+       trượt AA. #c42f00 đạt 5.59:1. Đây chính là --color-orange-700 mà COMPONENT_INVENTORY
+       §B.8 của hệ cũ đã derive — lấy lại nguyên giá trị. */
+    --color-accent-text: #c42f00;
+
+    /* Nền nhạt thay --color-wash-blue (#e3eeff) của pop.site */
+    --color-wash-orange: #fff1ec;
+
+    /* Chữ đặt TRÊN nền cam: đen 5.99:1 (đạt AA), trắng chỉ 3.51:1 (trượt).
+       Hệ cũ đã chốt --color-on-accent: deep-black — giữ nguyên kết luận đó.
+       Ghi chú: nút chính của chính pop.site (xanh + chữ trắng) chỉ đạt 3.68:1,
+       nên cam + chữ đen còn dễ đọc hơn bản gốc. */
+    --color-on-accent: var(--color-ink-black);
 
     /* ---- Nền (DESIGN.md §Surfaces) ---- */
     --surface-canvas: var(--color-page-white);
     --surface-card: var(--color-page-white);
-    --surface-wash: var(--color-wash-blue);
+    --surface-wash: var(--color-wash-orange);
 
     /* ---- Ngữ nghĩa ---- */
     --color-text-display: var(--color-ink-black);
@@ -90,7 +102,7 @@
     --color-text-meta: var(--color-slate);
     --color-border-hairline: var(--color-mist);
     --color-border-defined: var(--color-charcoal);
-    --color-focus-ring: var(--color-signal-blue);
+    --color-focus-ring: var(--color-signal-orange);
 
     /* ---- Chữ ---- */
     /* --font-sans do next/font gắn vào <html> (Plus Jakarta Sans, có bộ dấu tiếng Việt).
@@ -218,10 +230,12 @@
     color: var(--color-text-display);
   }
 
-  /* [CHỆCH 3] DESIGN.md §Don't cấm màu nào khác #3b82f6 làm điểm nhấn, và §Do bảo giữ
-     màu này riêng cho nút chính và link đang hoạt động. Link trong bài viết dài mà chỉ
-     gạch chân đen thì người đọc khó phân biệt — nên link nội dung dùng gạch chân + đổi
-     sang signal blue khi rê chuột. Không tô xanh sẵn, để giữ đúng luật "một điểm xanh". */
+  /* [CHỆCH 3] DESIGN.md giữ màu nhấn riêng cho nút chính và link đang hoạt động.
+     Link trong bài viết dài mà chỉ gạch chân đen thì người đọc khó phân biệt — nên link
+     nội dung gạch chân sẵn, và chuyển sang cam khi rê chuột. Không tô cam sẵn, để giữ
+     đúng luật "một điểm nhấn mỗi khung hình".
+     Màu hover dùng --color-accent-text (#c42f00, 5.59:1) chứ không phải #ff4000 (3.51:1),
+     vì đây là chữ cỡ nhỏ trên nền trắng. */
   :where(a) {
     color: inherit;
     text-decoration: underline;
@@ -233,7 +247,7 @@
   }
 
   :where(a:hover) {
-    color: var(--color-signal-blue);
+    color: var(--color-accent-text);
     text-decoration-color: currentColor;
   }
 
