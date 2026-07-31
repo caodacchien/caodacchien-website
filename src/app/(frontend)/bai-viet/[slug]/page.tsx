@@ -6,12 +6,17 @@ import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical
 
 import { payloadClient, isAuthenticated } from "@/lib/payload";
 import { getPillar } from "@/lib/pillars";
+import { extractToc } from "@/lib/toc";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ArticleBody from "@/components/ArticleBody";
+import TableOfContents from "@/components/TableOfContents";
+import ReadingProgress from "@/components/ReadingProgress";
 import styles from "./post.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
+
+const ARTICLE_ID = "noi-dung-bai-viet";
 
 async function findPost(slug: string) {
   const payload = await payloadClient();
@@ -35,12 +40,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const post = await findPost((await params).slug);
   if (!post) return {};
 
+  const seo = post.meta as { title?: string; description?: string } | undefined;
+
   return {
-    title: post.title,
-    description: post.excerpt,
-    // Bài mẫu không bao giờ được Google lập chỉ mục dưới tên chủ website.
-    // Bản nháp cũng vậy. Xem cờ isDemo trong BRIEF §5.
-    robots: post.isDemo || post.status !== "published" ? { index: false, follow: false } : undefined,
+    title: seo?.title || post.title,
+    description: seo?.description || post.excerpt,
+    // Bài mẫu và bản nháp không bao giờ được Google lập chỉ mục dưới tên chủ website.
+    robots:
+      post.isDemo || post.status !== "published"
+        ? { index: false, follow: false }
+        : undefined,
   };
 }
 
@@ -49,10 +58,9 @@ function formatDate(value?: string | null) {
   return new Intl.DateTimeFormat("vi-VN", { dateStyle: "long" }).format(new Date(value));
 }
 
-/** Ước lượng thời gian đọc từ số từ. 200 từ/phút là mức đọc tiếng Việt thông thường. */
+/** Ước lượng thời gian đọc. 200 từ/phút là mức đọc tiếng Việt thông thường. */
 function readingMinutes(state: unknown): number {
-  const text = JSON.stringify(state ?? "");
-  const words = (text.match(/"text":"(.*?)"/g) ?? [])
+  const words = (JSON.stringify(state ?? "").match(/"text":"(.*?)"/g) ?? [])
     .join(" ")
     .split(/\s+/)
     .filter(Boolean).length;
@@ -63,14 +71,17 @@ export default async function PostPage({ params }: Params) {
   const post = await findPost((await params).slug);
   if (!post) notFound();
 
+  const content = post.content as SerializedEditorState;
   const pillar = getPillar(post.pillar);
   const cover = typeof post.coverImage === "object" ? post.coverImage : null;
   const published = formatDate(post.publishedAt);
-  const minutes = readingMinutes(post.content);
+  const minutes = readingMinutes(content);
+  const toc = extractToc(content);
   const isDraft = post.status !== "published";
 
   return (
     <>
+      <ReadingProgress targetId={ARTICLE_ID} />
       <SiteHeader currentPath="/bai-viet" />
 
       <main id="main-content">
@@ -82,8 +93,9 @@ export default async function PostPage({ params }: Params) {
           </div>
         )}
 
-        <article className="container">
-          <header className={styles.head}>
+        <article>
+          {/* Phần đầu bài chạy hết bề rộng — tiêu đề lớn cần chỗ thở. */}
+          <header className={`container ${styles.head}`}>
             <div className={styles.meta}>
               {pillar && (
                 <Link href={`/chu-de/${pillar.slug}`} className={styles.pillarLink}>
@@ -99,7 +111,7 @@ export default async function PostPage({ params }: Params) {
           </header>
 
           {cover?.url && (
-            <figure className={styles.cover}>
+            <figure className={`container ${styles.cover}`}>
               <Image
                 src={cover.url}
                 alt={cover.alt ?? ""}
@@ -112,10 +124,18 @@ export default async function PostPage({ params }: Params) {
             </figure>
           )}
 
-          <ArticleBody
-            content={post.content as SerializedEditorState}
-            className={`${styles.body} prose`}
-          />
+          {/* Từ đây xuống chia hai cột: mục lục bám bên trái, bài đọc ở giữa. */}
+          <div className={`container ${styles.layout}`}>
+            <aside className={styles.rail}>
+              <TableOfContents items={toc} />
+            </aside>
+
+            <ArticleBody
+              content={content}
+              className={styles.body}
+              id={ARTICLE_ID}
+            />
+          </div>
         </article>
       </main>
 
