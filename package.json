@@ -44,5 +44,6 @@
   },
   "pnpm": {
     "overrides": {}
-  }
+  },
+  "type": "module"
 }

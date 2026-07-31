@@ -2,7 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { lexicalEditor, FixedToolbarFeature } from "@payloadcms/richtext-lexical";
 
 import { Posts } from "./collections/Posts";
 import { Media } from "./collections/Media";
@@ -22,7 +22,18 @@ export default buildConfig({
 
   collections: [Posts, Documents, DocumentFiles, Media, Leads, Contacts, Users],
 
-  editor: lexicalEditor(),
+  // Trình soạn thảo.
+  //
+  // Bộ tính năng mặc định của Payload đã có đủ: đậm, nghiêng, gạch chân, gạch ngang,
+  // tiêu đề H1–H6, danh sách, trích dẫn, liên kết, chèn ảnh, canh lề, thụt lề, đường kẻ.
+  //
+  // Thứ THIẾU không phải tính năng mà là cách bày: Payload để thanh công cụ ẨN, chỉ hiện
+  // khi bôi đen chữ. WordPress để thanh công cụ HIỆN THƯỜNG TRỰC ngay trên khung soạn.
+  // Với người quen WordPress, thanh ẩn = "không có chức năng bôi đậm".
+  // FixedToolbarFeature bật lại kiểu WordPress.
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()],
+  }),
 
   // Bí mật ký phiên đăng nhập. Không có giá trị mặc định — thiếu thì phải dừng,
   // chứ không được âm thầm chạy bằng một khoá đoán được.

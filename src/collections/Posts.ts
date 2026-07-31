@@ -11,6 +11,9 @@ export const Posts: CollectionConfig = {
     defaultColumns: ["title", "pillar", "status", "publishedAt"],
     description:
       "Bài viết dài về chiến lược, marketing và truyền thông. Đặt trạng thái Đã đăng thì bài mới hiện trên website.",
+    // Nút "Xem trước" — tương đương nút cùng tên trong WordPress.
+    // Mở đúng trang bài viết thật trên website, kể cả khi còn là bản nháp.
+    preview: (doc) => (doc?.slug ? `/bai-viet/${doc.slug}?draft=true` : null),
   },
   access: {
     // Chỉ bài đã đăng mới ra ngoài. Người chưa đăng nhập không thấy bản nháp.
