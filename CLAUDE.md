@@ -1,85 +1,153 @@
 # CLAUDE.md
 
-## Vai trò của Claude Code
+Tài liệu này là **nguồn sự thật duy nhất** về những gì đang chạy. Đọc file này trước khi
+viết bất kỳ dòng code nào.
 
-Claude Code đóng vai:
+> ⚠️ `docs/archive/` chứa 45 file của Phase 0 mô tả một hệ thiết kế và kiến trúc **đã bị
+> thay thế**. Đừng dùng chúng làm căn cứ. Lý do đầy đủ ở `docs/archive/README.md`.
 
-- Senior Product Engineer
-- Solution Architect
-- UI/UX implementation partner
-- Security-conscious reviewer
-- Documentation maintainer
+---
 
-Claude không phải là người quyết định cuối cùng. Chủ dự án là người phê duyệt mọi quyết định lớn.
+## Sản phẩm là gì
 
-## Nguồn sự thật
+Nền tảng xuất bản cá nhân của **Cao Đắc Chiến** tại `caodacchien.io.vn` — website cá nhân
+nhưng **hướng ra cộng đồng**, không phải trang nói về bản thân.
 
-Trước mọi công việc, phải đọc:
+Ba việc website làm: đăng bài viết về chiến lược marketing / thương hiệu / truyền thông,
+phát hành tài liệu tải về, và cho chủ website tự quản trị mọi thứ mà không cần lập trình viên.
 
-1. `README.md`
-2. `docs/00-foundation/PROJECT_CONSTITUTION.md`
-3. `docs/00-foundation/DECISION_LOG.md`
-4. `docs/01-product/BRAND_POSITIONING.md`
-5. `docs/01-product/PRODUCT_REQUIREMENTS.md`
-6. `docs/02-design/DESIGN_SYSTEM.md`
-7. `docs/02-design/INFORMATION_ARCHITECTURE.md`
-8. `docs/02-design/COMPONENT_INVENTORY.md`
-9. `docs/03-engineering/SYSTEM_ARCHITECTURE.md`
-10. `docs/03-engineering/DATABASE.md`
-11. `docs/04-ai/AI_RULEBOOK.md`
-12. `docs/05-devops/DEPLOYMENT.md`
-13. `docs/06-operations/ROADMAP.md`
-14. `docs/design-bible/` — governance layer (D50); với công việc thiết kế/UI, đọc theo trật tự ở `docs/design-bible/README.md`
+**Thước đo thành công số một:** chủ website đăng được một bài từ đầu đến cuối mà không cần
+mở VS Code, không cần gọi ai.
 
-**Governance hierarchy (D50):** Decision Log → Design Bible → Design System → Component Inventory → AI Rulebook → CLAUDE.md → Source. Tầng dưới không mâu thuẫn tầng trên; Decision Log là thẩm quyền tối cao; Source code không bao giờ là nguồn sự thật.
+## Ngăn xếp
 
-**Owner-approved route & content-readiness decisions:** route contract và điều kiện render nội dung do Decision Log + `CONTENT_INVENTORY.md` chi phối — `/topics/` hub (D51); kênh social render theo D53; "Làm việc cùng tôi" conditional (D54); featured Writing/Case theo ngưỡng thật (D55). Không tự tạo route/social/dịch vụ/bài/case/metric; chưa ready thì omit, không fabricate (AI_RULEBOOK §4.4).
+| Lớp | Công nghệ |
+|---|---|
+| Khung | Next.js 15 App Router · React 19 · TypeScript strict |
+| CMS | Payload 3 nhúng cùng repo, trang quản trị ở `/admin` |
+| Cơ sở dữ liệu | Supabase Postgres (Singapore), nối qua **Session pooler** |
+| Kiểu dáng | CSS thuần + CSS Modules. **Không Tailwind, không thư viện UI** |
+| Chữ | Plus Jakarta Sans qua `next/font` |
+| Hosting | Vercel · Cloudflare giữ DNS và SSL |
 
-Nếu tài liệu mâu thuẫn, dừng lại và báo rõ mâu thuẫn. Không tự suy đoán.
+## Cấu trúc thư mục
 
-## Quy trình bắt buộc
+```
+src/
+  app/
+    (frontend)/       # website người đọc thấy
+    (payload)/        # trang quản trị — file khuôn mẫu, KHÔNG sửa tay
+  collections/        # định nghĩa dữ liệu Payload
+  blocks/             # khối nhúng trong bài (hiện có: YouTube)
+  components/         # component dùng chung + CSS Module đi kèm
+  lib/                # pillars, posts, toc, payload, site
+  payload.config.ts   # cấu hình Payload
+docs/archive/         # lịch sử Phase 0 — KHÔNG dùng làm căn cứ
+```
 
-Trước khi sửa file:
+**Hai nhóm route bắt buộc phải tách.** Next.js chỉ cho một root layout, mà Payload cần
+root layout riêng cho `/admin`. Đừng gộp lại.
 
-1. Đọc yêu cầu.
-2. Tóm tắt mục tiêu.
-3. Liệt kê file dự kiến thay đổi.
-4. Nêu rủi ro và giả định.
-5. Chờ phê duyệt nếu thay đổi lớn.
+---
 
-Sau khi sửa:
+## Hệ thiết kế
 
-1. Tóm tắt thay đổi.
-2. Liệt kê file đã sửa.
-3. Chạy kiểm tra phù hợp.
-4. Báo lỗi còn tồn tại.
-5. Đề xuất commit message.
+Nguồn: `DESIGN.md` của pop.site (không nằm trong repo). Toàn bộ token đã chép vào
+`src/app/(frontend)/globals.css` kèm chú thích lý do.
 
-## Quy tắc kỹ thuật
+**Bốn luật không được phá:**
 
-- TypeScript strict.
-- Ưu tiên Server Components khi phù hợp.
-- Không thêm package nếu stack hiện tại đã giải quyết được.
-- Không duplicate logic.
-- Không hard-code secret.
-- Không tự ý đổi framework, database hoặc nền tảng deploy.
-- Không tự ý refactor module ổn định.
-- Không xóa file khi chưa giải thích tác động.
-- Không force push.
-- Không deploy production nếu chưa được yêu cầu rõ ràng.
+1. **Đúng một màu nhấn: cam `#FF4000`.** Dùng thật tiết kiệm — nút chính, link đang hoạt
+   động, vạch chỉ vị trí. Một điểm cam mỗi khung hình.
+2. **Không bóng đổ.** Chiều sâu đến từ viền tóc 1px và bo góc.
+3. **Nút bấm chỉ có hai bán kính: pill `9999px` hoặc lớn `22–26px`.** Không bao giờ 4–8px.
+4. **Một bộ chữ duy nhất.** Cỡ chữ chỉ lấy trong sáu bậc đã khai báo.
 
-## Quy tắc thiết kế
+**Ba chỗ cố ý chệch DESIGN.md**, đánh dấu `[CHỆCH]` trong `globals.css` — đều vì tiếng
+Việt hoặc khả năng tiếp cận, đọc chú thích tại chỗ trước khi sửa.
 
-- Không code UI trước khi Design Direction được duyệt.
-- Không pha trộn ngẫu nhiên nhiều phong cách.
-- Mọi component phải bám design tokens.
-- Accessibility tối thiểu WCAG AA.
-- Mobile-first và responsive.
-- Dark mode chỉ triển khai nếu đã được mô tả trong Design System.
+**Tương phản màu cam** (đã tính, đừng tính lại):
 
-## Quy tắc giao tiếp
+| Dùng ở đâu | Giá trị | Tỉ lệ |
+|---|---|---|
+| Nền nút | `#ff4000` + chữ **đen** | 5,99:1 ✅ |
+| Chữ cam trên nền trắng | `#c42f00` | 5,59:1 ✅ |
+| ~~`#ff4000` làm chữ~~ | | 3,51:1 ❌ trượt AA |
 
-- Trình bày rõ ràng, ưu tiên tiếng Việt.
-- Các tên file, code, commit và API dùng tiếng Anh.
-- Không phóng đại mức độ hoàn thiện.
-- Nêu rõ phần chưa chắc chắn.
+---
+
+## Bốn cái bẫy đã sập, đừng sập lại
+
+Bốn lỗi dưới đây đều **không làm build đỏ, không làm typecheck đỏ, không làm HTTP khác 200**.
+Chúng chỉ lộ ra khi mở mắt nhìn hoặc khi build production.
+
+**1. Cấu hình hợp lệ về kiểu ≠ cấu hình có hiệu lực.**
+`admin.livePreview` thiếu khoá `collections` → Payload bỏ qua trong im lặng, không báo gì.
+Kiểm bằng cách hỏi hệ thống đang chạy, không đọc file nguồn:
+- Trường trong CSDL → truy vấn `information_schema.columns`
+- Thành phần giao diện → `grep` chuỗi nhãn trong `.next` đã biên dịch
+
+**2. HTTP 200 không có nghĩa là trông đúng.**
+Trang quản trị từng chạy hoàn toàn không có CSS vì thiếu `import "@payloadcms/next/css"`.
+Vẫn trả 200. Với mọi thay đổi giao diện: đếm số thẻ `stylesheet` trong HTML, hoặc nhìn tận mắt.
+
+**3. Đừng bọc `headers()` trong try/catch.**
+Next.js báo hiệu "trang phải render động" bằng cách **ném lỗi** từ `headers()`. Nuốt lỗi đó
+là để Next đem trang đi dựng sẵn lúc build rồi vỡ vì chưa có kết nối CSDL. Chỉ nổ lúc build
+production, `pnpm dev` im lặng hoàn toàn.
+
+**4. Đừng chạy `pnpm build` khi `pnpm dev` đang chạy.**
+Hai lệnh dùng chung thư mục `.next`; build ghi đè và giết máy chủ dev đang phục vụ
+(`Cannot find module './4331.js'`). Trình tự đúng: dừng dev → build → chạy lại dev.
+
+---
+
+## Quy tắc viết code
+
+- **Trang đọc dữ liệu Payload phải có `export const dynamic = "force-dynamic"`.** Dựng sẵn
+  lúc build sẽ đóng băng nội dung ở thời điểm deploy — chủ website bấm đăng mà bài không hiện.
+- **Trạng thái rỗng phải viết như câu tiếng Việt thật.** Không bao giờ để "Không có dữ liệu".
+  Website này là bằng chứng năng lực thương hiệu; một chuỗi mặc định làm hỏng chính lập luận đó.
+- **Nội dung minh hoạ phải bật cờ `isDemo`** → tự động loại khỏi sitemap và gắn `noindex`.
+- **File tải lên bắt buộc điền `sourceNote`.** Chỉ đăng tài liệu do chủ website viết hoặc có
+  quyền phát hành — không đăng lại sách, giáo trình, slide của người khác.
+- **Nhãn trường trong Payload viết tiếng Việt.** Người dùng admin duy nhất không làm kỹ thuật.
+- **Không dùng `sharp`.** `next/image` đã đổi cỡ và định dạng tại edge; sinh sẵn nhiều cỡ chỉ
+  tốn dung lượng. Lý do đầy đủ trong `payload.config.ts`.
+
+## Lệnh
+
+```bash
+pnpm dev                  # phát triển
+pnpm check                # lint + typecheck
+pnpm build                # PHẢI dừng dev trước
+pnpm generate:types       # sau khi đổi collection
+pnpm generate:importmap   # sau khi thêm plugin hoặc feature có giao diện
+```
+
+## Biến môi trường
+
+`.env.local` trên máy, **Environment Variables** trên Vercel. Không bao giờ commit.
+
+| Biến | Dùng làm gì |
+|---|---|
+| `DATABASE_URI` | Supabase **Session pooler**. KHÔNG dùng Direct connection — nó chỉ có IPv6, Vercel không gọi được |
+| `PAYLOAD_SECRET` | Ký phiên đăng nhập quản trị |
+| `NEXT_PUBLIC_SITE_URL` | Dùng cho SEO và link xem trước |
+| `BLOB_READ_WRITE_TOKEN` | Kho ảnh và file. **Bắt buộc trên Vercel** — hệ thống file ở đó chỉ đọc |
+| `RESEND_API_KEY` | Email khôi phục mật khẩu và thông báo liên hệ |
+
+Thiếu ba biến cuối thì code vẫn chạy được ở máy, chỉ tắt tính năng tương ứng.
+
+---
+
+## Còn phải làm
+
+**Chặng 1 — trước khi lên sóng**
+Cỡ chữ và màu chữ trong trình soạn thảo (khóa bộ chữ) · URL có danh mục `/chien-luoc/ten-bai` ·
+Trang chủ đề · Thư viện tài liệu + đổi email lấy file · Giới thiệu · Liên hệ ·
+sitemap, ảnh OG, GA4
+
+**Chặng 2 — sau khi lên sóng**
+Chấm điểm SEO kiểu Yoast · Đánh giá độ dễ đọc tiếng Việt · Bình luận có đăng nhập ·
+Bán tài liệu (cần nâng Vercel Pro — gói Hobby cấm dùng cho mục đích thương mại)
